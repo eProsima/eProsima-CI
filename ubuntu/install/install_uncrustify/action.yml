@@ -1,0 +1,28 @@
+name: 'install_uncrustify'
+description: 'Install uncrustify project'
+
+inputs:
+  uncrustify_version:
+    description: 'Specify a branch to download'
+    required: false
+    default: 'uncrustify-0.71.0'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install uncrustify
+
+      run: |
+        echo "########################################## install_uncrustify ##########################################"
+        git clone https://github.com/uncrustify/uncrustify.git \
+          --branch ${{ inputs.uncrustify_version }} \
+          --single-branch uncrustify
+        mkdir -p uncrustify/build
+        cd uncrustify/build
+        cmake ..
+        sudo cmake --build . --target install
+        cd ../..
+        sudo rm -rf uncrustify
+
+      shell: bash

@@ -1,0 +1,95 @@
+name: 'uncrustify'
+description: 'Uncrustify action to check C++ linter over modified files.'
+
+inputs:
+
+  result_filename:
+    description: 'File name to store the changes'
+    required: false
+    default: uncrustify_results.xml
+
+runs:
+  using: composite
+  steps:
+
+    - name: Name action
+      run: |
+        echo "########################################## uncrustify ##########################################"
+      shell: bash
+
+    - name: Sync repository
+      uses: actions/checkout@v3
+      with:
+        path: src
+
+    - name: Fetch all branches and tags
+      run: |
+        cd src
+        git fetch --prune --unshallow
+      shell: bash
+
+    - name: Install apt packages
+      uses: eProsima/eProsima-CI/ubuntu/install/install_apt_packages@tools/tmp
+
+    - name: Install Python packages
+      uses: eProsima/eProsima-CI/ubuntu/install/install_python_packages@tools/tmp
+      with:
+        custom_packages: "colcon-common-extensions \ colcon-mixin"
+
+    - name: Install uncrustify
+      uses: eProsima/eProsima-CI/ubuntu/install/install_uncrustify@tools/tmp
+
+    # (TODO) Change to main branch when PR is merged
+    - name: Clone ament_lint
+      run: |
+        git clone --branch feature/fix-language-set https://github.com/jparisu/ament_lint.git src/ament_lint
+        colcon build --packages-up-to ament_uncrustify
+      shell: bash
+
+    - name: Fetch uncrustify config file
+      run: |
+        curl \
+          -l https://raw.githubusercontent.com/eProsima/cpp-style/master/uncrustify.cfg \
+          -o uncrustify.cfg
+      shell: bash
+
+    - name: Get Git difference
+      uses: eProsima/eProsima-CI/ubuntu/git/get_git_diff_files@tools/tmp
+      with:
+        result_env_var:
+          MODIFIED_FILES
+        head_ref:
+          origin/${GITHUB_HEAD_REF}
+        base_ref:
+          origin/${GITHUB_BASE_REF}
+        grep_args:
+          "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
+        workspace:
+          src
+
+    - name: Check difference is not empty
+      run: |
+        cd src
+        if [[ -z "${MODIFIED_FILES}" ]]
+        then
+          touch __empty.hpp
+          echo "MODIFIED_FILES=__empty.hpp" >> $GITHUB_ENV
+        fi
+        echo "Files to check: ${MODIFIED_FILES}"
+      shell: bash
+
+    - name: Check style
+      run: |
+        source install/local_setup.bash
+        cd src
+
+        echo "################################################################################################"
+        echo "###################################### UNCRUSTIFY RESULT #######################################"
+
+        ament_uncrustify \
+          -c ../uncrustify.cfg \
+          --language CPP \
+          --xunit-file ../${{ inputs.result_filename }} \
+          ${MODIFIED_FILES}
+
+      shell: bash

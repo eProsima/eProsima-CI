@@ -1,0 +1,23 @@
+name: 'install_python_packages'
+description: 'Install generic and required python packages with pip'
+
+inputs:
+  custom_packages:
+    description: 'Custom packages to install using pip'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_python_packages
+
+      run: |
+        echo "########################################## install_python_packages ##########################################"
+        sudo pip3 install -U \
+          vcstool \
+          setuptools==58.2.0 \
+          ${{ inputs.custom_packages }}
+
+      shell: bash
