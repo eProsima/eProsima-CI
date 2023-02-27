@@ -1,3 +1,11 @@
+# Execute Uncrustify job from the same repo that calls this action.
+#
+# Action steps:
+# - Checkout repository and fetch unshallow to be able to compare
+# - Install packages required, including manually installation of uncrustify and ament_uncrustify
+# - Get the file names of those files that has changed between base and head branch
+# - Execute uncrustify over those files (only c++ ones) and store in ${result_filename} file.
+
 name: 'uncrustify'
 description: 'Uncrustify action to check C++ linter over modified files.'
 
@@ -8,14 +16,20 @@ inputs:
     required: false
     default: uncrustify_results.xml
 
+  # This argument is passed to a grep function to make the filter, so use grep arguments
+  file_extensions_grep_args:
+    description: 'Extensions of the files to check as C++, as grep filter arguments.'
+    required: false
+    default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
+
+  uncrustify_version:
+    description: 'Specify a branch to download'
+    required: false
+    default: 'uncrustify-0.71.0'
+
 runs:
   using: composite
   steps:
-
-    - name: Name action
-      run: |
-        echo "########################################## uncrustify ##########################################"
-      shell: bash
 
     - name: Sync repository
       uses: actions/checkout@v3
@@ -38,8 +52,11 @@ runs:
 
     - name: Install uncrustify
       uses: eProsima/eProsima-CI/ubuntu/install/install_uncrustify@tools/tmp
+      with:
+        uncrustify_version: ${{ inputs.uncrustify_version }}
 
-    # (TODO) Change to main branch when PR is merged
+    # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
+    # (required for .ipp files)
     - name: Clone ament_lint
       run: |
         git clone --branch feature/fix-language-set https://github.com/jparisu/ament_lint.git src/ament_lint
@@ -54,6 +71,7 @@ runs:
       shell: bash
 
     - name: Get Git difference
+      id: GetGitDifference
       uses: eProsima/eProsima-CI/ubuntu/git/get_git_diff_files@tools/tmp
       with:
         result_env_var:
@@ -63,7 +81,7 @@ runs:
         base_ref:
           origin/${GITHUB_BASE_REF}
         grep_args:
-          "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
+          ${{ inputs.file_extensions_grep_args }}
         workspace:
           src
 
@@ -91,5 +109,7 @@ runs:
           --language CPP \
           --xunit-file ../${{ inputs.result_filename }} \
           ${MODIFIED_FILES}
+
+        echo "################################################################################################"
 
       shell: bash
