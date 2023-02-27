@@ -1,12 +1,19 @@
 # Fast-DDS-CI
 
-This is a github CI auxiliary repo that mimics the [gitlab
-one](https://gitlab.intranet.eprosima.com/eProsima/fastrtps-ci.git) currently used in the jenkins CI.
-The main goals are:
-- Keep colcon metas associated with the CI. The repo is used as a dictionary where branches are used as keys.
-  Some works have specific branches as the nightlies but generally the CI tries to match the `Fast-DDS` repo branch with
-  this repo branch in order to retrieve the metas. If no specific branch is found it fallbacks to main.
-- Keep [vcs](https://github.com/dirk-thomas/vcstool) depends files (`.repos`). Philosophy is the same followed in metas
-  management.
-- Keep github actions associated to the CI workflows. More or less what the `setup.py` files do on the gitlab repo
-  aforementioned.
+> This is the eProsima Annapurna Team branch of eprosima-CI
+
+This is a github CI auxiliary repo that contains common github steps and actions shared along multiple eProsima libraries and tools.
+The main idea is to collect every repeated or generic step of any CI to have a single more maintainable generic point.
+
+## Steps Implemented
+
+...
+
+## Full Actions Implemented
+
+* Install apt packages
+  * Install generic apt packages required by these actions and most eProsima projects.
+* Install python packages
+  * Install generic python packages required by these actions and most eProsima projects.
+* Uncrustify
+  * Check the C++ linter of the new files added to the repository.
