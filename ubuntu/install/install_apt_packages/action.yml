@@ -14,7 +14,7 @@ runs:
     - name: install_apt_packages
 
       run: |
-        echo "########################################## install_apt_packages ##########################################"
+        echo "::group::install_apt_packages"
         sudo apt update && sudo apt -y install \
           curl \
           grep \
@@ -23,5 +23,6 @@ runs:
           software-properties-common \
           wget \
           ${{ inputs.custom_packages }}
+        echo "::endgroup::"
 
       shell: bash

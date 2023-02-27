@@ -31,7 +31,6 @@ runs:
 
     - name: get_git_diff_files
       run: |
-        echo "########################################## get_git_diff_files ##########################################"
         cd ${{ inputs.workspace }}
         echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
       shell: bash
