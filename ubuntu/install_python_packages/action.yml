@@ -14,9 +14,11 @@ runs:
     - name: install_python_packages
 
       run: |
+        echo "::group::Install Python packages"
         sudo pip3 install -U \
           vcstool \
           setuptools==58.2.0 \
           ${{ inputs.custom_packages }}
+        echo "::endgroup::"
 
       shell: bash
