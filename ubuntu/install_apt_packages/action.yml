@@ -14,7 +14,7 @@ runs:
     - name: install_apt_packages
 
       run: |
-        echo "::group::install_apt_packages"
+        echo "::group::Install apt packages"
         sudo apt update && sudo apt -y install \
           curl \
           grep \

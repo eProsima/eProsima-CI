@@ -1,0 +1,17 @@
+name: 'install_uncrustify'
+description: 'Install uncrustify project'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Set Ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/set_platform@tools/tmp
+
+    - name: Install uncrustify 20.04
+      uses: eProsima/eProsima-CI/ubuntu-20.04/install_uncrustify@tools/tmp
+      if: contains( env.EPROSIMA_UBUNTU_VERSION , '20.04' )
+
+    - name: Install uncrustify 22.04
+      uses: eProsima/eProsima-CI/ubuntu-22.04/install_uncrustify@tools/tmp
+      if: contains( env.EPROSIMA_UBUNTU_VERSION , '22.04' )

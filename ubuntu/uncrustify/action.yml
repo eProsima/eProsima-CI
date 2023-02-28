@@ -22,10 +22,7 @@ inputs:
     required: false
     default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
 
-  uncrustify_version:
-    description: 'Specify a branch to download'
-    required: false
-    default: 'uncrustify-0.71.0'
+  # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22
 
 runs:
   using: composite
@@ -38,29 +35,31 @@ runs:
 
     - name: Fetch all branches and tags
       run: |
+        echo "::group::Fetch all branches"
         cd src
         git fetch --prune --unshallow
+        echo "::endgroup::"
       shell: bash
 
     - name: Install apt packages
-      uses: eProsima/eProsima-CI/ubuntu/install/install_apt_packages@tools/tmp
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@tools/tmp
 
     - name: Install Python packages
-      uses: eProsima/eProsima-CI/ubuntu/install/install_python_packages@tools/tmp
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@tools/tmp
       with:
         custom_packages: "colcon-common-extensions \ colcon-mixin"
 
     - name: Install uncrustify
-      uses: eProsima/eProsima-CI/ubuntu/install/install_uncrustify@tools/tmp
-      with:
-        uncrustify_version: ${{ inputs.uncrustify_version }}
+      uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@tools/tmp
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)
-    - name: Clone ament_lint
+    - name: Clone and build ament_lint
       run: |
+        echo "::group::Build ament_lint"
         git clone --branch feature/fix-language-set https://github.com/jparisu/ament_lint.git src/ament_lint
         colcon build --packages-up-to ament_uncrustify
+        echo "::endgroup::"
       shell: bash
 
     - name: Fetch uncrustify config file
@@ -72,7 +71,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/git/get_git_diff_files@tools/tmp
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@tools/tmp
       with:
         result_env_var:
           MODIFIED_FILES
@@ -110,6 +109,7 @@ runs:
           --xunit-file ../${{ inputs.result_filename }} \
           ${MODIFIED_FILES}
 
+        echo "################################# UNCRUSTIFY CHECK SUCCESSFUL ##################################"
         echo "################################################################################################"
 
       shell: bash

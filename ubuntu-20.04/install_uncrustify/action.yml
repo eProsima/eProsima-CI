@@ -5,7 +5,7 @@ inputs:
   uncrustify_version:
     description: 'Specify a branch to download'
     required: false
-    default: 'uncrustify-0.71.0'
+    default: 'uncrustify-0.72.0'
 
 runs:
   using: composite
@@ -14,6 +14,7 @@ runs:
     - name: Install uncrustify
 
       run: |
+        echo "::group::Install Uncrustify ubuntu 20.04"
         git clone https://github.com/uncrustify/uncrustify.git \
           --branch ${{ inputs.uncrustify_version }} \
           --single-branch uncrustify
@@ -23,5 +24,6 @@ runs:
         sudo cmake --build . --target install
         cd ../..
         sudo rm -rf uncrustify
+        echo "::endgroup::"
 
       shell: bash
