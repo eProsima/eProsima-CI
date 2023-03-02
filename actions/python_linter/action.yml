@@ -1,14 +1,23 @@
-# TODO
+# Execute Uncrustify job from the same repo that calls this action.
+#
+# Runs on:
+# - Ubuntu 20.04
+# - Ubuntu 22.04
+#
+# Steps:
+# - Checkout repository and fetch unshallow to be able to compare
+# - Install packages required
+# - Get the file names of those files that has changed between base and head branch
+# - Execute flake8 over those files (only python ones).
+#
+# Arguments:
+# - linter_configuration_version : branch of cpp-style repo to get configuration from [master]
+# - file_extensions_grep_args : grep filer for file extensions [-e '\\.py']
 
 name: 'python_linter'
 description: 'Python Linter action to check Python modified files.'
 
 inputs:
-
-  result_filename:
-    description: 'File name to store the changes'
-    required: false
-    default: uncrustify_results.xml
 
   linter_configuration_version:
     description: 'Branch of eProsima/cpp-style'
@@ -20,8 +29,6 @@ inputs:
     description: 'Extensions of the files to check as C++, as grep filter arguments.'
     required: false
     default: "-e '\\.py'"
-
-  # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22
 
 runs:
   using: composite
