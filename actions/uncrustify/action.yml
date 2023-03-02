@@ -50,17 +50,17 @@ runs:
         path: src
 
     - name: Fetch all branches and tags
-      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/uncrustify
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
       with:
         workspace: src
 
     - name: Install apt packages
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/uncrustify
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
       with:
         custom_packages: uncrustify
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/uncrustify
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)
@@ -81,7 +81,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@feature/uncrustify
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
       with:
         result_env_var:
           MODIFIED_FILES
