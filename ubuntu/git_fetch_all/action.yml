@@ -1,0 +1,21 @@
+name: 'git_fetch_all'
+description: 'Fetch all branches of a git repository'
+
+inputs:
+
+  workspace:
+    description: 'Workspace where the git project is'
+    required: false
+    default: '/.'
+
+runs:
+  using: composite
+  steps:
+
+    - name: git_fetch_all
+      run: |
+        echo "::group::Fetch all branches"
+        cd ${{ inputs.workspace }}
+        git fetch --prune --unshallow
+        echo "::endgroup::"
+      shell: bash
