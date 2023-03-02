@@ -12,11 +12,17 @@ runs:
   using: composite
   steps:
 
-    - name: Install uncrustify 20.04
+    - name: Set Ubuntu version
       run: |
+
+        echo "::group::Set ubuntu version in evn var ${{ inputs.ubuntu_version_env }}"
+
         if [[ -z ${${{ inputs.ubuntu_version_env }}} ]]; then
           export EPROSIMA_UBUNTU_VERSION_=$(lsb_release -d | cut -f2)
           echo "${{ inputs.ubuntu_version_env }}=${EPROSIMA_UBUNTU_VERSION_}" >> $GITHUB_ENV
           echo "Ubuntu version: ${{ inputs.ubuntu_version_env }} = ${EPROSIMA_UBUNTU_VERSION_}"
         fi
+
+        echo "::endgroup::"
+
       shell: bash

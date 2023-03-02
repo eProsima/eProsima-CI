@@ -12,11 +12,14 @@ runs:
   steps:
 
     - name: install_apt_packages
-
       run: |
-        echo "::group::Install apt packages"
-        sudo apt update && sudo apt -y install \
+
+        echo "::group::Install apt packages ${{ inputs.custom_packages }}"
+
+        sudo apt update
+        sudo apt -y install \
           ${{ inputs.custom_packages }}
+
         echo "::endgroup::"
 
       shell: bash
