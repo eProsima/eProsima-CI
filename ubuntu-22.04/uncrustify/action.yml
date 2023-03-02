@@ -1,8 +1,12 @@
 # Execute Uncrustify job from the same repo that calls this action.
 #
+# RunsOn:
+#   Ubuntu 22.04
+# To run in any other ubuntu platform, uncrustify must be installed manually
+#
 # Action steps:
 # - Checkout repository and fetch unshallow to be able to compare
-# - Install packages required, including manually installation of uncrustify and ament_uncrustify
+# - Install packages required, including uncrustify and ament_uncrustify
 # - Get the file names of those files that has changed between base and head branch
 # - Execute uncrustify over those files (only c++ ones) and store in ${result_filename} file.
 
@@ -34,23 +38,19 @@ runs:
         path: src
 
     - name: Fetch all branches and tags
-      run: |
-        echo "::group::Fetch all branches"
-        cd src
-        git fetch --prune --unshallow
-        echo "::endgroup::"
-      shell: bash
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/uncrustify
+      with:
+        workspace: src
 
     - name: Install apt packages
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@tools/tmp
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/uncrustify
+      with:
+        custom_packages: uncrustify
 
     - name: Install Python packages
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@tools/tmp
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/uncrustify
       with:
         custom_packages: "colcon-common-extensions \ colcon-mixin"
-
-    - name: Install uncrustify
-      uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@tools/tmp
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)
@@ -71,7 +71,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@tools/tmp
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@feature/uncrustify
       with:
         result_env_var:
           MODIFIED_FILES
