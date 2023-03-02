@@ -1,0 +1,21 @@
+name: 'install_colcon'
+description: 'Install colcon'
+
+inputs:
+  custom_packages:
+    description: 'Custom packages to install using pip'
+    required: false
+    default: 'vcstool setuptools'
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_colcon
+
+      run: |
+        echo "::group::Install colcon"
+        sudo pip3 install -U colcon-common-extensions \ colcon-mixin
+        echo "::endgroup::"
+
+      shell: bash

@@ -5,7 +5,7 @@ inputs:
   custom_packages:
     description: 'Custom packages to install using pip'
     required: false
-    default: ''
+    default: 'vcstool setuptools'
 
 runs:
   using: composite
@@ -16,8 +16,6 @@ runs:
       run: |
         echo "::group::Install Python packages"
         sudo pip3 install -U \
-          vcstool \
-          setuptools==58.2.0 \
           ${{ inputs.custom_packages }}
         echo "::endgroup::"
 

@@ -1,0 +1,90 @@
+# TODO
+
+name: 'python_linter'
+description: 'Python Linter action to check Python modified files.'
+
+inputs:
+
+  result_filename:
+    description: 'File name to store the changes'
+    required: false
+    default: uncrustify_results.xml
+
+  linter_configuration_version:
+    description: 'Branch of eProsima/cpp-style'
+    required: false
+    default: "master"
+
+  # This argument is passed to a grep function to make the filter, so use grep arguments
+  file_extensions_grep_args:
+    description: 'Extensions of the files to check as C++, as grep filter arguments.'
+    required: false
+    default: "-e '\\.py'"
+
+  # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22
+
+runs:
+  using: composite
+  steps:
+
+    - name: Sync repository
+      uses: actions/checkout@v3
+      with:
+        path: src
+
+    - name: Fetch all branches and tags
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
+      with:
+        workspace: src
+
+    - name: Install Flake8
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      with:
+        custom_packages: flake8==5.0.4 flake8-quotes
+
+    - name: Fetch python linter config file
+      run: |
+        curl \
+          -l https://raw.githubusercontent.com/eProsima/cpp-style/${{ inputs.linter_configuration_version }}/python_linter.cfg \
+          -o python_linter.cfg
+      shell: bash
+
+    - name: Get Git difference
+      id: GetGitDifference
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
+      with:
+        result_env_var:
+          MODIFIED_FILES
+        head_ref:
+          origin/${GITHUB_HEAD_REF}
+        base_ref:
+          origin/${GITHUB_BASE_REF}
+        grep_args:
+          ${{ inputs.file_extensions_grep_args }}
+        workspace:
+          src
+
+    - name: Check difference is not empty
+      run: |
+        cd src
+        if [[ -z "${MODIFIED_FILES}" ]]
+        then
+          touch __empty.py
+          echo "MODIFIED_FILES=__empty.py" >> $GITHUB_ENV
+        fi
+        echo "Files to check: ${MODIFIED_FILES}"
+      shell: bash
+
+    - name: Check style
+      run: |
+        cd src
+
+        echo "################################################################################################"
+        echo "#################################### PYTHON LINTER RESULTS #####################################"
+
+        python3 -m flake8 --config ../python_linter.cfg --count --statistics ${MODIFIED_FILES}
+
+        echo "################################ PYTHON LINTER CHECK SUCCESSFUL ################################"
+        echo "################################################################################################"
+
+      shell: bash
