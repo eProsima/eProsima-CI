@@ -1,8 +1,9 @@
 # Execute Uncrustify job from the same repo that calls this action.
 #
 # Runs on:
-#   Ubuntu 22.04
-# To run in any other ubuntu platform, uncrustify must be installed manually
+# - Ubuntu 22.04
+#
+# NOTE: To run in any other ubuntu platform, uncrustify must be installed manually
 #
 # Steps:
 # - Checkout repository and fetch unshallow to be able to compare
@@ -36,7 +37,8 @@ inputs:
     required: false
     default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
 
-  # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22. And on Ubuntu 22 there is only 1 version availabe in apt.
+  # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22.
+  # And on Ubuntu 22 there is only 1 version available in apt.
 
 runs:
   using: composite
