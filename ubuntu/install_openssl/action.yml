@@ -1,0 +1,11 @@
+name: 'install_openssl'
+description: 'Install Open SSl package'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/build_dependencies
+      with:
+        custom_packages: libssl-dev

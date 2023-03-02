@@ -1,0 +1,59 @@
+name: 'colcon_build'
+description: 'Import some repositories and their versions from a yaml file'
+
+inputs:
+
+  colcon_meta_file:
+    description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
+    required: false
+    default: ''
+
+  colcon_build_flags:
+    description: 'flags to pass to colcon build command'
+    required: false
+    default: ''
+
+  workspace:
+    description: 'Workspace to build'
+    required: false
+    default: './'
+
+  workspace_dependencies:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Fetch repositories
+      run: |
+
+        echo "::group::Compile colcon ${{ inputs.workspace }}"
+
+        cd ${{ inputs.workspace }}
+
+        if [[ -z ${{ inputs.colcon_meta_file }} ]]; then
+          touch colcon.meta
+          export COLCON_BUILD_META_="colcon.meta"
+        else
+          export COLCON_BUILD_META_="${{ inputs.colcon_meta_file }}"
+        fi
+
+        if [[ ! -z ${{ inputs.workspace_dependencies }} ]]; then
+          source ${{ inputs.workspace_dependencies }}/setup.bash
+        fi
+
+        colcon build \
+          --event-handlers=console_direct+ \
+          --metas ${COLCON_BUILD_META_} \
+          ${{ inputs.colcon_build_flags }}
+
+        if [[ -z ${{ inputs.colcon_meta_file }} ]]; then
+          rm colcon.meta
+        fi
+
+        echo "::endgroup::"
+
+      shell: bash

@@ -1,0 +1,16 @@
+name: 'install_openssl'
+description: 'TODO'
+
+inputs:
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/install_openssl@feature/build_dependencies
+      if: runner.os == 'Linux'
+
+    - name: Install in windows
+      uses: eProsima/eProsima-CI/windows/install_openssl@feature/build_dependencies
+      if: runner.os == 'Windows'
