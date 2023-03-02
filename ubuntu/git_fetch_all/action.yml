@@ -14,8 +14,12 @@ runs:
 
     - name: git_fetch_all
       run: |
-        echo "::group::Fetch all branches"
+
+        echo "::group::Fetch all branches in ${{ inputs.workspace }}"
+
         cd ${{ inputs.workspace }}
         git fetch --prune --unshallow
+
         echo "::endgroup::"
+
       shell: bash

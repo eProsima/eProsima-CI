@@ -12,11 +12,13 @@ runs:
   steps:
 
     - name: install_python_packages
-
       run: |
-        echo "::group::Install Python packages"
+
+        echo "::group::Install Python packages ${{ inputs.custom_packages }}"
+
         sudo pip3 install -U \
           ${{ inputs.custom_packages }}
+
         echo "::endgroup::"
 
       shell: bash
