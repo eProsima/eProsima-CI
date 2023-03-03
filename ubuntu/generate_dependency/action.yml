@@ -25,6 +25,9 @@ runs:
   using: composite
   steps:
 
+    - name: Install fast dependencies
+      uses: eProsima/eProsima-CI/ubuntu/install_fast_dependencies@feature/build_dependencies
+
     - name: Fetch repositories
       uses: eProsima/eProsima-CI/ubuntu/vcs_import@feature/build_dependencies
       with:

@@ -1,0 +1,17 @@
+name: 'install_fast_dependencies'
+description: 'Install Open SSl package'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install vcs tools
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/build_dependencies
+
+    - name: Install colcon
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/build_dependencies
+
+    - name: Install in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/build_dependencies
+      with:
+        custom_packages: libasio-dev libtinyxml2-dev libssl-dev

@@ -10,6 +10,7 @@ runs:
 
         echo "::group::Install colcon"
 
+        sudo pip3 install --upgrade --user setuptools==58.3.0
         sudo pip3 install -U colcon-common-extensions colcon-mixin
 
         echo "::endgroup::"

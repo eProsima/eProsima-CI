@@ -27,21 +27,21 @@ runs:
   using: composite
   steps:
 
-    - name: Fetch repositories
+    - name: Build workspace with colcon
       run: |
 
         echo "::group::Compile colcon ${{ inputs.workspace }}"
 
         cd ${{ inputs.workspace }}
 
-        if [[ -z ${{ inputs.colcon_meta_file }} ]]; then
+        if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
           touch colcon.meta
           export COLCON_BUILD_META_="colcon.meta"
         else
           export COLCON_BUILD_META_="${{ inputs.colcon_meta_file }}"
         fi
 
-        if [[ ! -z ${{ inputs.workspace_dependencies }} ]]; then
+        if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
           source ${{ inputs.workspace_dependencies }}/setup.bash
         fi
 
@@ -50,7 +50,7 @@ runs:
           --metas ${COLCON_BUILD_META_} \
           ${{ inputs.colcon_build_flags }}
 
-        if [[ -z ${{ inputs.colcon_meta_file }} ]]; then
+        if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
           rm colcon.meta
         fi
 
