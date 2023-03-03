@@ -1,0 +1,20 @@
+# This is an empty workflow to test new workflows from developing branches
+
+name: build_eprosima_dependencies
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every night at 00:00
+    - cron: '0 0 * * *'
+
+jobs:
+
+  ubuntu-build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Sync this repository
+        uses: actions/checkout@v3
+        with:
+          path: src/eprosima-CI
