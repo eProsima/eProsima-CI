@@ -1,28 +1,57 @@
-# This is an empty workflow to test new workflows from developing branches
+# TODO
 
 name: build_eprosima_dependencies
 
 on:
+
   workflow_dispatch:
 
-  inputs:
+    inputs:
 
-      fastdds_branch:
-        description: 'Branch or tag of Fast DDS repository (https://github.com/eProsima/Fast-DDS)'
-        required: true
-        default: 'master'
+      built_configuration_branch:
+        description: 'Branch or tag of eProsima-CI repository to get .repos and colcon.meta from that will be executed'
+        required: false
+        default: 'main'
+
+      artifacts_name_postfix:
+        description: 'Addition to artifacts name creation (use non default postfix when creating artifacts with specific arguments).'
+        required: false
+        default: ''
 
   schedule:
+
     # Every night at 00:00
     - cron: '0 0 * * *'
 
 jobs:
 
-  ubuntu-build:
-    runs-on: ubuntu-22.04
+  build_fastdds:
+
+    runs-on: ${{ matrix.ubuntu-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu-version:
+          - 'ubuntu-20.04'
+          - 'ubuntu-22.04'
 
     steps:
+
       - name: Sync this repository
         uses: actions/checkout@v3
         with:
           path: src/eprosima-CI
+
+      - name: Get colcon.meta and .repos files to build fastdds
+        uses: jparisu/eProsima-CI/ubuntu/get_configurations_from_repo@main
+        with:
+          source_repository_branch: ${{ inputs.built_configuration_branch }}
+          colcon_meta_file_path: .github/workflows/configurations/fastdds/colcon.meta
+          repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
+
+      - name: Build Fast DDS and generate artifact
+        uses: jparisu/eProsima-CI/ubuntu/generate_dependency@main
+        with:
+          vcs_repos_file: dependencies.repos
+          artifact_name: built_fastdds_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
+          colcon_meta_file: colcon.meta

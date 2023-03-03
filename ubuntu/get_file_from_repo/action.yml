@@ -1,0 +1,44 @@
+name: 'get_file_from_repo'
+description: 'TODO'
+
+inputs:
+
+  source_repository_branch:
+    description: 'TODO'
+    required: false
+    default: 'main'
+
+  source_repository:
+    description: 'TODO'
+    required: false
+    default: '$GITHUB_REPOSITORY'
+
+  file_name:
+    description: 'Colcon meta to give cmake options to packages'
+    required: true
+
+  file_result:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Get file using curl
+      run: |
+
+        echo "::group::Get file ${{ inputs.file_name }} from ${{ inputs.source_repository }} / ${{ inputs.source_repository_branch }}"
+
+        echo "Calling curl with url: https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}"
+        curl \
+          -l https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }} \
+          -o ${{ inputs.file_result }}
+
+        echo "File downloaded:"
+        cat ${{ inputs.file_result }}
+
+        echo "::endgroup::"
+
+      shell: bash

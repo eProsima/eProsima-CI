@@ -31,7 +31,7 @@ runs:
 
         echo "::group::Get Id from workflow ${{ inputs.workflow_source }}"
 
-        echo "$GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs"
+        echo "Access to url: $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs"
         export JOB_ID=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs | \
           jq '.workflow_runs[] | select(.status == "${{ inputs.job_status }}") | .id' | \
           head -n 1)
