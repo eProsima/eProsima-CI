@@ -4,6 +4,14 @@ name: build_eprosima_dependencies
 
 on:
   workflow_dispatch:
+
+  inputs:
+
+      fastdds_branch:
+        description: 'Branch or tag of Fast DDS repository (https://github.com/eProsima/Fast-DDS)'
+        required: true
+        default: 'master'
+
   schedule:
     # Every night at 00:00
     - cron: '0 0 * * *'
