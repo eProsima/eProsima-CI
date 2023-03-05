@@ -26,19 +26,20 @@ runs:
   steps:
 
     - name: Install fast dependencies
-      uses: eProsima/eProsima-CI/ubuntu/install_fast_dependencies@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/install_fast_dependencies@main
 
     - name: Fetch repositories
-      uses: eProsima/eProsima-CI/ubuntu/vcs_import@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/vcs_import@main
       with:
         vcs_repos_file: '${{ inputs.vcs_repos_file }}'
         destination_workspace: 'artifact/src'
 
     - name: Build workspace
-      uses: eProsima/eProsima-CI/ubuntu/colcon_build@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
       with:
-        colcon_meta_file: '${{ inputs.colcon_meta_file }}'
+        colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: 'artifact'
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Upload binaries
       uses: actions/upload-artifact@v3

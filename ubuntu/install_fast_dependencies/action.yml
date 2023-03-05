@@ -6,12 +6,12 @@ runs:
   steps:
 
     - name: Install vcs tools
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/install_colcon@main
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
       with:
         custom_packages: libasio-dev libtinyxml2-dev libssl-dev

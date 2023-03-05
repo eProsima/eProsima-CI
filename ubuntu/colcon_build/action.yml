@@ -42,7 +42,7 @@ runs:
         fi
 
         if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
-          source ${{ inputs.workspace_dependencies }}/setup.bash
+          source ../${{ inputs.workspace_dependencies }}/setup.bash
         fi
 
         colcon build \

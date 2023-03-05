@@ -21,7 +21,11 @@ runs:
 
         echo "::group::Import repositories from ${{ inputs.vcs_repos_file }}"
 
+        echo "Downloading following dependencies:"
+        cat ${{ inputs.vcs_repos_file }}
+
         mkdir -p ${{ inputs.destination_workspace }}
+
         vcs import ${{ inputs.destination_workspace }} < ${{ inputs.vcs_repos_file }}
 
         echo "::endgroup::"

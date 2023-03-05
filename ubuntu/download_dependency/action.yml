@@ -26,7 +26,7 @@ runs:
   steps:
 
     - name: Get build eProsima dependencies Job Id
-      uses: eProsima/eProsima-CI/ubuntu/get_workflow_id@feature/build_dependencies
+      uses: jparisu/eProsima-CI/ubuntu/get_workflow_id@main
       with:
         workflow_source: '${{ inputs.workflow_source }}'
         workflow_source_repository: '${{ inputs.workflow_source_repository }}'
