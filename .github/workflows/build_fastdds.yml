@@ -1,6 +1,6 @@
 # TODO
 
-name: build_eprosima_dependencies
+name: build_fastdds
 
 on:
 

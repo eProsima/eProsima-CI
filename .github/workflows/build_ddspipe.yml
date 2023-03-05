@@ -1,6 +1,6 @@
 # TODO
 
-name: build_dev_utils
+name: build_ddspipe
 
 on:
 
@@ -20,12 +20,12 @@ on:
 
   schedule:
 
-    # Every night at 01:00
-    - cron: '0 1 * * *'
+    # Every night at 02:00
+    - cron: '0 2 * * *'
 
 jobs:
 
-  build_fastdds:
+  build_ddspipe:
 
     runs-on: ${{ matrix.ubuntu-version }}
     strategy:
@@ -42,6 +42,9 @@ jobs:
         with:
           path: src/eprosima-CI
 
+      - name: Install yaml cpp dependency
+        uses: jparisu/eProsima-CI/ubuntu/install_yamlcpp@main
+
       - name: Get fastdds artifact
         uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
         with:
@@ -49,17 +52,24 @@ jobs:
           workflow_source: build_fastdds.yml
           target_workspace: dependencies/install
 
-      - name: Get colcon.meta and .repos files to build dev_utils
+      - name: Get dev_utils artifact
+        uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
+        with:
+          artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
+          workflow_source: build_dev_utils.yml
+          target_workspace: dependencies/install
+
+      - name: Get colcon.meta and .repos files to build ddspipe
         uses: jparisu/eProsima-CI/ubuntu/get_configurations_from_repo@main
         with:
           source_repository_branch: ${{ inputs.built_configuration_branch }}
-          colcon_meta_file_path: .github/workflows/configurations/dev_utils/colcon.meta
-          repos_file_path: .github/workflows/configurations/dev_utils/dependencies.repos
+          colcon_meta_file_path: .github/workflows/configurations/ddspipe/colcon.meta
+          repos_file_path: .github/workflows/configurations/ddspipe/dependencies.repos
 
-      - name: Build dev_utils and generate artifact
+      - name: Build ddspipe and generate artifact
         uses: jparisu/eProsima-CI/ubuntu/generate_dependency@main
         with:
           vcs_repos_file: dependencies.repos
-          artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
+          artifact_name: built_ddspipe_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
           colcon_meta_file: colcon.meta
           workspace_dependencies: dependencies/install
