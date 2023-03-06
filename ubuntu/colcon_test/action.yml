@@ -1,0 +1,34 @@
+name: 'colcon_test'
+description: 'Import some repositories and their versions from a yaml file'
+
+inputs:
+
+  colcon_test_flags:
+    description: 'flags to pass to colcon test command'
+    required: false
+    default: '--ctest-args --timeout 60'
+
+  workspace:
+    description: 'Workspace where built is done'
+    required: false
+    default: './'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Build workspace with colcon
+      run: |
+
+        echo "::group::Test colcon ${{ inputs.workspace }}"
+
+        cd ${{ inputs.workspace }}
+
+        colcon test \
+          --event-handlers=console_direct+ \
+          --return-code-on-test-failure \
+          ${{ inputs.colcon_test_flags }} \
+
+        echo "::endgroup::"
+
+      shell: bash
