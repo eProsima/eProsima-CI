@@ -13,22 +13,22 @@ inputs:
     default: '$GITHUB_REPOSITORY'
 
   colcon_meta_file_result:
-    description: 'Colcon meta to give cmake options to packages'
+    description: 'TODO'
     required: false
     default: 'colcon.meta'
 
   colcon_meta_file_path:
-    description: 'Colcon meta to give cmake options to packages'
+    description: 'TODO'
     required: false
     default: 'colcon.meta'
 
   repos_file_result:
-    description: 'Workspace to source where dependencies are'
+    description: 'TODO'
     required: false
     default: 'dependencies.repos'
 
   repos_file_path:
-    description: 'Workspace to source where dependencies are'
+    description: 'TODO'
     required: false
     default: 'dependencies.repos'
 

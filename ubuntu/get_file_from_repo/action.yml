@@ -18,9 +18,14 @@ inputs:
     required: true
 
   file_result:
-    description: 'Workspace to source where dependencies are'
+    description: 'Name of the file result'
     required: false
     default: ''
+
+  file_result_path:
+    description: 'Directory to save file'
+    required: false
+    default: './'
 
 runs:
   using: composite
@@ -31,10 +36,18 @@ runs:
 
         echo "::group::Get file ${{ inputs.file_name }} from ${{ inputs.source_repository }} / ${{ inputs.source_repository_branch }}"
 
+        if [[ -z "${{ inputs.file_result }}" ]]; then
+          export FILE_RESULT_="${{ inputs.file_name }}"
+        else
+          export FILE_RESULT_="${{ inputs.file_result }}"
+        fi
+
         echo "Calling curl with url: https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}"
-        curl \
-          -l https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }} \
-          -o ${{ inputs.file_result }}
+
+        wget \
+          -O ${FILE_RESULT_} \
+          -P ${{ inputs.file_result_path }} \
+          https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}
 
         echo "File downloaded:"
         cat ${{ inputs.file_result }}
@@ -42,3 +55,8 @@ runs:
         echo "::endgroup::"
 
       shell: bash
+
+# curl version
+# curl \
+  # -l https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }} \
+  # -o ${{ inputs.file_result_path }}/${{ inputs.file_result }}

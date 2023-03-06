@@ -16,7 +16,7 @@ on:
       artifacts_name_postfix:
         description: 'Addition to artifacts name creation (use non default postfix when creating artifacts with specific arguments).'
         required: false
-        default: ''
+        default: '_manual'
 
   schedule:
 
@@ -47,29 +47,37 @@ jobs:
 
       - name: Get fastdds artifact
         uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
+        env:
+          DEFAULT_ARTIFACT_POSTFIX: '_nightly'
         with:
-          artifact_name: built_fastdds_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
+          artifact_name: built_fastdds_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.DEFAULT_ARTIFACT_POSTFIX }}
           workflow_source: build_fastdds.yml
           target_workspace: dependencies/install
 
       - name: Get dev_utils artifact
         uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
+        env:
+          DEFAULT_ARTIFACT_POSTFIX: '_nightly'
         with:
-          artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
+          artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.DEFAULT_ARTIFACT_POSTFIX }}
           workflow_source: build_dev_utils.yml
           target_workspace: dependencies/install
 
       - name: Get colcon.meta and .repos files to build ddspipe
         uses: jparisu/eProsima-CI/ubuntu/get_configurations_from_repo@main
+        env:
+          DEFAULT_CONFIGURATION_BRANCH: 'main'
         with:
-          source_repository_branch: ${{ inputs.built_configuration_branch }}
+          source_repository_branch: ${{ inputs.built_configuration_branch || env.DEFAULT_CONFIGURATION_BRANCH }}
           colcon_meta_file_path: .github/workflows/configurations/ddspipe/colcon.meta
           repos_file_path: .github/workflows/configurations/ddspipe/dependencies.repos
 
       - name: Build ddspipe and generate artifact
         uses: jparisu/eProsima-CI/ubuntu/generate_dependency@main
+        env:
+          DEFAULT_ARTIFACT_POSTFIX: '_nightly'
         with:
           vcs_repos_file: dependencies.repos
-          artifact_name: built_ddspipe_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix }}
+          artifact_name: built_ddspipe_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.DEFAULT_ARTIFACT_POSTFIX }}
           colcon_meta_file: colcon.meta
           workspace_dependencies: dependencies/install
