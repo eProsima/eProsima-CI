@@ -1,4 +1,4 @@
-# Execute Uncrustify job from the same repo that calls this action.
+# Execute flake8 Python linter job from the same repo that calls this action.
 #
 # Runs on:
 # - Ubuntu 20.04

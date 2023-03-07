@@ -4,7 +4,7 @@ description: 'Install generic and required python packages with pip'
 inputs:
 
   eprosima_default_packages:
-    description: 'Wether to install the eProsima related python packages.'
+    description: 'Whether to install the eProsima related python packages.'
     required: false
     default: 1
 

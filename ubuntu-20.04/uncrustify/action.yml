@@ -34,7 +34,7 @@ inputs:
   file_extensions_grep_args:
     description: 'Extensions of the files to check as C++, as grep filter arguments.'
     required: false
-    default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
+    default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp' -e '\\.cxx'"
 
   # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22.
   # And on Ubuntu 22 there is only 1 version available in apt.
