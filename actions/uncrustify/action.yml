@@ -31,7 +31,6 @@ inputs:
     required: false
     default: "master"
 
-  # This argument is passed to a grep function to make the filter, so use grep arguments
   file_extensions_grep_args:
     description: 'Extensions of the files to check as C++, as grep filter arguments.'
     required: false
@@ -83,16 +82,11 @@ runs:
       id: GetGitDifference
       uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
       with:
-        result_env_var:
-          MODIFIED_FILES
-        head_ref:
-          origin/${GITHUB_HEAD_REF}
-        base_ref:
-          origin/${GITHUB_BASE_REF}
-        grep_args:
-          ${{ inputs.file_extensions_grep_args }}
-        workspace:
-          src
+        result_env_var: MODIFIED_FILES
+        head_ref: origin/${GITHUB_HEAD_REF}
+        base_ref: origin/${GITHUB_BASE_REF}
+        grep_args: ${{ inputs.file_extensions_grep_args }}
+        workspace: src
 
     - name: Check difference is not empty
       run: |

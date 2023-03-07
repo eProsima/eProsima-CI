@@ -24,7 +24,6 @@ inputs:
     required: false
     default: "master"
 
-  # This argument is passed to a grep function to make the filter, so use grep arguments
   file_extensions_grep_args:
     description: 'Extensions of the files to check as C++, as grep filter arguments.'
     required: false

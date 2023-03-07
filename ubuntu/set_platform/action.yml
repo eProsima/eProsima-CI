@@ -15,7 +15,7 @@ runs:
     - name: Set Ubuntu version
       run: |
 
-        echo "::group::Set ubuntu version in evn var ${{ inputs.ubuntu_version_env }}"
+        echo "::group::Set ubuntu version in env var ${{ inputs.ubuntu_version_env }}"
 
         if [[ -z ${${{ inputs.ubuntu_version_env }}} ]]; then
           export EPROSIMA_UBUNTU_VERSION_=$(lsb_release -d | cut -f2)
