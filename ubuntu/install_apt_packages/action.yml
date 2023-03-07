@@ -2,10 +2,20 @@ name: 'install_apt_packages'
 description: 'Install apt packages'
 
 inputs:
-  custom_packages:
+
+  packages:
     description: 'Custom packages to install using apt'
+    required: true
+
+  update:
+    description: 'Update apt'
     required: false
-    default: 'curl grep python3 python3-pip software-properties-common wget'
+    default: 1
+
+  upgrade:
+    description: 'Upgrade already installed apt packages'
+    required: false
+    default: 0
 
 runs:
   using: composite
@@ -16,9 +26,19 @@ runs:
 
         echo "::group::Install apt packages ${{ inputs.custom_packages }}"
 
-        sudo apt update
+        # Update apt repos
+        if ${{ inputs.update }} ; then
+          sudo apt update
+        fi
+
+        # Install custom packages
         sudo apt -y install \
-          ${{ inputs.custom_packages }}
+          ${{ inputs.packages }}
+
+        # Upgrade apt repos
+        if ${{ inputs.upgrade }} ; then
+          sudo apt upgrade
+        fi
 
         echo "::endgroup::"
 

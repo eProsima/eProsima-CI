@@ -2,10 +2,22 @@ name: 'install_python_packages'
 description: 'Install generic and required python packages with pip'
 
 inputs:
+
+  eprosima_default_packages:
+    description: 'Wether to install the eProsima related python packages.'
+    required: false
+    default: 1
+
   custom_packages:
     description: 'Custom packages to install using pip'
     required: false
-    default: 'vcstool setuptools'
+    default: ''
+
+  requirements_file_name:
+    description: 'If set, the file name of a requirements.txt file'
+    required: false
+    default: ''
+
 
 runs:
   using: composite
@@ -14,10 +26,27 @@ runs:
     - name: install_python_packages
       run: |
 
-        echo "::group::Install Python packages ${{ inputs.custom_packages }}"
+        echo "::group::Install Python packages"
 
-        sudo pip3 install -U \
-          ${{ inputs.custom_packages }}
+        # Set packages to install
+        if ${{ inputs.eprosima_default_packages }} ; then
+          export PYTHON_PACKAGES_TO_INSTALL_="vcstool setuptools ${{ inputs.custom_packages }}"
+        else
+          export PYTHON_PACKAGES_TO_INSTALL_="${{ inputs.custom_packages }}"
+        fi
+
+        # Install python packages if any
+        if [[ -z "${PYTHON_PACKAGES_TO_INSTALL_} ]] ; then
+          sudo pip3 install -U \
+            ${PYTHON_PACKAGES_TO_INSTALL_}
+        fi
+
+        # Install requirements file if any
+        if [[ -z "${{ inputs.requirements_file_name }} ]] ; then
+          sudo pip3 install -U \
+            -r ${{ inputs.requirements_file_name }}
+        fi
+
 
         echo "::endgroup::"
 
