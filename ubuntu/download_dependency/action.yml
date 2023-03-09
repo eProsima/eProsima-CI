@@ -39,3 +39,4 @@ runs:
         workflow: ${{ inputs.workflow_source }}
         path: ${{ inputs.target_workspace }}
         run_id: ${{ env.download_dependency_job_id }}
+        repo: ${{ inputs.workflow_source_repository }}

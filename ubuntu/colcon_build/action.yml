@@ -32,6 +32,10 @@ runs:
 
         echo "::group::Compile colcon ${{ inputs.workspace }}"
 
+        if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
+          source ${{ inputs.workspace_dependencies }}/setup.bash
+        fi
+
         cd ${{ inputs.workspace }}
 
         if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
@@ -39,10 +43,6 @@ runs:
           export COLCON_BUILD_META_="colcon.meta"
         else
           export COLCON_BUILD_META_="${{ inputs.colcon_meta_file }}"
-        fi
-
-        if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
-          source ../${{ inputs.workspace_dependencies }}/setup.bash
         fi
 
         colcon build \

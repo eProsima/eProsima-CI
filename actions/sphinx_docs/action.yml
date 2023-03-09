@@ -1,0 +1,56 @@
+# TODO
+
+name: 'sphinx_docs'
+description: TODO
+
+inputs:
+
+  docs_subpackage_name:
+    description: 'Name of colcon subpackage that contains the sphinx documentation'
+    required: false
+    default: ''
+
+  specific_build_flags:
+    description: 'Arguments for colcon build'
+    required: false
+    default: '--cmake-args -DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Sync repository
+      uses: actions/checkout@v3
+      with:
+        path: src
+
+    - name: Install docs dependencies
+      uses: jparisu/eProsima-CI/ubuntu/install_documentation_requirements@feature/docs
+
+    - name: Install Colcon
+      uses: jparisu/eProsima-CI/ubuntu/install_colcon@feature/docs
+
+    - name: Download cmake_utils artifact
+      uses: jparisu/eProsima-CI/ubuntu/download_dependency@feature/docs
+      with:
+        artifact_name: built_dev_utils_ubuntu-22.04_nightly
+        workflow_source: build_dev_utils.yml
+        workflow_source_repository: jparisu/eProsima-CI
+        target_workspace: './install'
+
+    - name: Build documentation with colcon
+      uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/docs
+      with:
+        colcon_build_flags: '--packages-select ${{ inputs.docs_subpackage_name }} ${{ inputs.specific_build_flags }}'
+        workspace_dependencies: './install'
+
+    - name: Run colcon test of documentation
+      uses: jparisu/eProsima-CI/ubuntu/colcon_test@feature/docs
+      with:
+        colcon_test_flags: --packages-select ${{ inputs.docs_subpackage_name }}
+
+    - name: Upload documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: Documentation HTML ${{ inputs.docs_subpackage_name }}
+        path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/
