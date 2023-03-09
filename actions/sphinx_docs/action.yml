@@ -33,7 +33,7 @@ runs:
     - name: Download cmake_utils artifact
       uses: jparisu/eProsima-CI/ubuntu/download_dependency@feature/docs
       with:
-        artifact_name: built_dev_utils_ubuntu-22.04_manual
+        artifact_name: built_dev_utils_ubuntu-22.04_nightly
         workflow_source: build_dev_utils.yml
         workflow_source_repository: jparisu/eProsima-CI
         target_workspace: './install'
