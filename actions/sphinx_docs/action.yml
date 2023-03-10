@@ -10,10 +10,10 @@ inputs:
     required: false
     default: ''
 
-  specific_build_flags:
+  specific_cmake_flags:
     description: 'Arguments for colcon build'
     required: false
-    default: '--cmake-args -DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
+    default: '-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
 
 runs:
   using: composite
@@ -41,7 +41,8 @@ runs:
     - name: Build documentation with colcon
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/docs
       with:
-        colcon_build_flags: '--packages-select ${{ inputs.docs_subpackage_name }} ${{ inputs.specific_build_flags }}'
+        colcon_build_flags: '--packages-select ${{ inputs.docs_subpackage_name }}'
+        cmake_args: '${{ inputs.specific_cmake_flags }}'
         workspace_dependencies: './install'
 
     - name: Run colcon test of documentation

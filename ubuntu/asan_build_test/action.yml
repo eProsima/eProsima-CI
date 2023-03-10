@@ -12,10 +12,10 @@ inputs:
     required: false
     default: ''
 
-  colcon_build_flags:
-    description: 'flags to colcon build execution'
+  cmake_args:
+    description: 'Cmake args for colcon build'
     required: false
-    default: '--cmake-args -DASAN_BUILD=ON'
+    default: '-DASAN_BUILD=ON'
 
   colcon_test_flags:
     description: 'flags to colcon test execution'
@@ -41,7 +41,7 @@ runs:
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        colcon_build_flags: ${{ inputs.colcon_build_flags }}
+        cmake_args: ${{ inputs.colcon_args }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         colcon_test_flags: ${{ inputs.colcon_test_flags }}

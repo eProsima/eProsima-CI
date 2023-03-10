@@ -13,6 +13,11 @@ inputs:
     required: false
     default: ''
 
+  cmake_args:
+    description: 'CMake arguments'
+    required: false
+    default: ''
+
   workspace:
     description: 'Workspace to build'
     required: false
@@ -48,8 +53,9 @@ runs:
         colcon build \
           --event-handlers=console_direct+ \
           --metas ${COLCON_BUILD_META_} \
-          --cmake-args -DCMAKE_CXX_FLAGS="-Werror -Wall" -- \
-          ${{ inputs.colcon_build_flags }}
+          ${{ inputs.colcon_build_flags }} \
+          --cmake-args -DCMAKE_CXX_FLAGS="-Werror -Wall" \
+            ${{ inputs.cmake_args }}
 
         if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
           rm colcon.meta

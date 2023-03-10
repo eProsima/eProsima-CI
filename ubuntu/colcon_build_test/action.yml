@@ -12,8 +12,8 @@ inputs:
     required: false
     default: ''
 
-  colcon_build_flags:
-    description: 'flags to colcon build execution'
+  cmake_args:
+    description: 'Cmake arguments'
     required: false
     default: ''
 
@@ -40,7 +40,8 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        colcon_build_flags: '--packages-up-to ${{ inputs.packages_names }} ${{ inputs.colcon_build_flags }}'
+        colcon_build_flags: '--packages-up-to ${{ inputs.packages_names }}'
+        cmake_args: ' ${{ inputs.cmake_args }}'
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
