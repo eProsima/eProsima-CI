@@ -38,6 +38,7 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
+        workspace: 'artifact'
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Upload binaries

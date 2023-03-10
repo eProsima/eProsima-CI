@@ -4,7 +4,7 @@ description: 'Import some repositories and their versions from a yaml file'
 inputs:
 
   colcon_meta_file:
-    description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
+    description: 'colcon.meta file to set cmake options. If empty, it uses an empty file'
     required: false
     default: ''
 

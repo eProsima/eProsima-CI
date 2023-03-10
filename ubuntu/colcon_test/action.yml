@@ -27,7 +27,7 @@ runs:
         colcon test \
           --event-handlers=console_direct+ \
           --return-code-on-test-failure \
-          ${{ inputs.colcon_test_flags }} \
+          ${{ inputs.colcon_test_flags }}
 
         echo "::endgroup::"
 
