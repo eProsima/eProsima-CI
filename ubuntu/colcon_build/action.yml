@@ -48,6 +48,7 @@ runs:
         colcon build \
           --event-handlers=console_direct+ \
           --metas ${COLCON_BUILD_META_} \
+          --cmake-args -DCMAKE_CXX_FLAGS="-Werror -Wall" -- \
           ${{ inputs.colcon_build_flags }}
 
         if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
