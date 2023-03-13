@@ -3,13 +3,13 @@ description: 'Run clang tidy check.'
 
 inputs:
 
-  build_directory_arg:
+  build_directory:
     description: 'Directory where builds are'
     required: false
     default: 'build'
 
   packages_names:
-    description: 'If set, it will look for these packages inside directory <build_directory_arg>'
+    description: 'If set, it will look for these packages inside directory <build_directory>'
     required: false
     default: ''
 
@@ -28,14 +28,24 @@ runs:
         echo "::group::Run clang tidy"
 
         if [[ ! -z "${{ inputs.packages_names }}" ]]; then
-          mkdir -p ${{ inputs.build_directory_arg }}/_all
-          cp --recursive ${{ inputs.build_directory_arg }}/${{ inputs.packages_names }} ${{ inputs.build_directory_arg }}/_all
-          cd ${{ inputs.build_directory_arg }}/_all
+          mkdir -p ${{ inputs.build_directory }}/_all
+          cp --recursive ${{ inputs.build_directory }}/${{ inputs.packages_names }} ${{ inputs.build_directory }}/_all
+          cd ${{ inputs.build_directory }}/_all
         else
-          cd ${{ inputs.build_directory_arg }}
+          cd ${{ inputs.build_directory }}
         fi
 
-        run-clang-tidy -header-filter='.*' -checks='clang-analyzer-cplusplus' -quiet 2> ${{ inputs.result_file_name }}
+        run-clang-tidy -header-filter='.*' -quiet > ${{ inputs.result_file_name }} 2>&1
+
+        echo "Clang results:"
+        cat ${{ inputs.result_file_name }}
+
+        tail -f ${{ inputs.result_file_name }} | grep -r 'warning|error'
+        if [ $? -eq 0 ]; then
+          echo "No errors or warnings"
+        else
+          return 1
+        fi
 
         echo "::endgroup::"
 
