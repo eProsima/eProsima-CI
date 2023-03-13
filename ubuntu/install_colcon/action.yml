@@ -8,4 +8,4 @@ runs:
     - name: Install colcon
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:
-        custom_packages: vcstool setuptools colcon-common-extensions colcon-mixin
+        packages: vcstool setuptools colcon-common-extensions colcon-mixin
