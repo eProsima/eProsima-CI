@@ -51,7 +51,7 @@ jobs:
         with:
           artifact_name: built_fastdds_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           workflow_source: build_fastdds.yml
-          target_workspace: dependencies/install
+          target_workspace: install
           workflow_source_repository: jparisu/eProsima-CI
           # TODO: check why GITHUB_REPOSITORY is not correctly being set
 
@@ -68,4 +68,5 @@ jobs:
           vcs_repos_file: dependencies.repos
           artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           colcon_meta_file: colcon.meta
-          workspace_dependencies: dependencies/install
+          workspace: ./
+          workspace_dependencies: install

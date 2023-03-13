@@ -1,5 +1,5 @@
 name: 'tsan_build_test'
-description: 'Compile code with colcon and using TSAN flags, and run colcon test.'
+description: 'Compile code with colcon, and run colcon test.'
 
 inputs:
 
@@ -17,10 +17,10 @@ inputs:
     required: false
     default: ''
 
-  colcon_test_flags:
-    description: 'flags to colcon test execution'
+  ctest_args:
+    description: 'cTest arguments'
     required: false
-    default: '--ctest-args --timeout 60'
+    default: ''
 
   workspace:
     description: 'Workspace to build'
@@ -40,13 +40,14 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        colcon_build_flags: '--packages-up-to ${{ inputs.packages_names }}'
+        colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
         cmake_args: ' ${{ inputs.cmake_args }}'
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Test
-      uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
+      uses: jparisu/eProsima-CI/ubuntu/colcon_test@main
       with:
         workspace: ${{ inputs.workspace }}
-        colcon_test_flags: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_flags }}'
+        colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'
+        ctest_args: ' ${{ inputs.ctest_args }}'

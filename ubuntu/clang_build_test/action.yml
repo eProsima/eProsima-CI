@@ -1,4 +1,4 @@
-name: 'asan_build_test'
+name: 'clang_build_test'
 description: 'Compile code with colcon and using ASAN flags, and run colcon test.'
 
 inputs:
@@ -35,7 +35,7 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        colcon_build_flags: '--packages-up-to ${{ inputs.packages_names }}'
+        colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
         cmake_args: '${{ inputs.cmake_args }}'
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}

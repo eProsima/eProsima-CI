@@ -3,13 +3,13 @@ description: 'Run clang tidy check.'
 
 inputs:
 
-  build_directory:
+  build_directory_arg:
     description: 'Directory where builds are'
     required: false
-    defalut: 'build'
+    default: 'build'
 
   packages_names:
-    description: 'If set, it will look for these packages inside directory <build_directory>'
+    description: 'If set, it will look for these packages inside directory <build_directory_arg>'
     required: false
     default: ''
 
@@ -27,12 +27,12 @@ runs:
 
         echo "::group::Run clang tidy"
 
-        if [[ ! -z "${{ inputs.merge_builds }}" ]]; then
-          mkdir -p ${{ inputs.build_directory }}/_all
-          cp --recursive ${{ inputs.build_directory }}/${{ inputs.packages_names }} ${{ inputs.build_directory }}/_all
-          cd ${{ inputs.build_directory }}/_all
+        if [[ ! -z "${{ inputs.packages_names }}" ]]; then
+          mkdir -p ${{ inputs.build_directory_arg }}/_all
+          cp --recursive ${{ inputs.build_directory_arg }}/${{ inputs.packages_names }} ${{ inputs.build_directory_arg }}/_all
+          cd ${{ inputs.build_directory_arg }}/_all
         else
-          cd ${{ inputs.build_directory }}
+          cd ${{ inputs.build_directory_arg }}
         fi
 
         run-clang-tidy -header-filter='.*' -checks='clang-analyzer-cplusplus' -quiet 2> ${{ inputs.result_file_name }}

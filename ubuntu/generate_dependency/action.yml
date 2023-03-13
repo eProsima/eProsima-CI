@@ -16,6 +16,11 @@ inputs:
     required: false
     default: ''
 
+  workspace:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: 'artifact'
+
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
     required: false
@@ -31,18 +36,18 @@ runs:
     - name: Fetch repositories
       uses: jparisu/eProsima-CI/ubuntu/vcs_import@main
       with:
-        vcs_repos_file: '${{ inputs.vcs_repos_file }}'
-        destination_workspace: 'artifact/src'
+        vcs_repos_file: ${{ inputs.vcs_repos_file }}
+        destination_workspace: ${{ inputs.workspace }}/src
 
     - name: Build workspace
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        workspace: 'artifact'
+        workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Upload binaries
       uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.artifact_name }}
-        path: 'artifact/install'
+        path: ${{ inputs.workspace }}/install

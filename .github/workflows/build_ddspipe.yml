@@ -49,21 +49,12 @@ jobs:
       - name: Install yaml cpp dependency
         uses: jparisu/eProsima-CI/ubuntu/install_yamlcpp@main
 
-      - name: Get fastdds artifact
-        uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
-        with:
-          artifact_name: built_fastdds_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
-          workflow_source: build_fastdds.yml
-          target_workspace: dependencies/install
-          workflow_source_repository: jparisu/eProsima-CI
-          # TODO: check why GITHUB_REPOSITORY is not correctly being set
-
       - name: Get dev_utils artifact
         uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
         with:
           artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           workflow_source: build_dev_utils.yml
-          target_workspace: dependencies/install
+          target_workspace: install
           workflow_source_repository: jparisu/eProsima-CI
           # TODO: check why GITHUB_REPOSITORY is not correctly being set
 
@@ -80,4 +71,5 @@ jobs:
           vcs_repos_file: dependencies.repos
           artifact_name: built_ddspipe_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           colcon_meta_file: colcon.meta
-          workspace_dependencies: dependencies/install
+          workspace: ./
+          workspace_dependencies: install

@@ -15,12 +15,12 @@ inputs:
   cmake_args:
     description: 'Cmake args for colcon build'
     required: false
-    default: '-DASAN_BUILD=ON'
+    default: '-DBUILD_TESTS=ON -DASAN_BUILD=ON -DCMAKE_BUILD_TYPE=Debug'
 
-  colcon_test_flags:
+  ctest_args:
     description: 'flags to colcon test execution'
     required: false
-    default: '--ctest-args --timeout 60 --label-exclude "xfail|xasan"'
+    default: '--label-exclude "xfail|xasan"'
 
   workspace:
     description: 'Workspace to build'
@@ -41,7 +41,7 @@ runs:
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        cmake_args: ${{ inputs.colcon_args }}
+        cmake_args: ${{ inputs.cmake_args }}
+        ctest_args: ${{ inputs.ctest_args }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
-        colcon_test_flags: ${{ inputs.colcon_test_flags }}

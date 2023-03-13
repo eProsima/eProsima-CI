@@ -10,7 +10,7 @@ inputs:
     required: false
     default: ''
 
-  specific_cmake_flags:
+  specific_cmake_args:
     description: 'Arguments for colcon build'
     required: false
     default: '-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
@@ -41,14 +41,14 @@ runs:
     - name: Build documentation with colcon
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/docs
       with:
-        colcon_build_flags: '--packages-select ${{ inputs.docs_subpackage_name }}'
-        cmake_args: '${{ inputs.specific_cmake_flags }}'
+        colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
+        cmake_args: '${{ inputs.specific_cmake_args }}'
         workspace_dependencies: './install'
 
     - name: Run colcon test of documentation
       uses: jparisu/eProsima-CI/ubuntu/colcon_test@feature/docs
       with:
-        colcon_test_flags: --packages-select ${{ inputs.docs_subpackage_name }}
+        colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
 
     - name: Upload documentation
       uses: actions/upload-artifact@v3
