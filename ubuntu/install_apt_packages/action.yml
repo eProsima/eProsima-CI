@@ -1,0 +1,45 @@
+name: 'install_apt_packages'
+description: 'Install apt packages'
+
+inputs:
+
+  packages:
+    description: 'Custom packages to install using apt'
+    required: true
+
+  update:
+    description: 'Update apt'
+    required: false
+    default: true
+
+  upgrade:
+    description: 'Upgrade already installed apt packages'
+    required: false
+    default: false
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_apt_packages
+      run: |
+
+        echo "::group::Install apt packages ${{ inputs.packages }}"
+
+        # Update apt repos
+        if [ "${{ inputs.update }}" = "true" ]; then
+          sudo apt update
+        fi
+
+        # Install custom packages
+        sudo apt -y install \
+          ${{ inputs.packages }}
+
+        # Upgrade apt repos
+        if [ "${{ inputs.upgrade }}" = "true" ] ; then
+          sudo apt upgrade
+        fi
+
+        echo "::endgroup::"
+
+      shell: bash

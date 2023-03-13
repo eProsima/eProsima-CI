@@ -1,0 +1,11 @@
+name: 'install_colcon'
+description: 'Install colcon'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install colcon
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      with:
+        custom_packages: colcon-common-extensions colcon-mixin

@@ -1,0 +1,42 @@
+name: 'get_git_diff_files'
+description: 'Get names of files that are different between git branches'
+
+inputs:
+
+  result_env_var:
+    description: 'Environment Variable name for result'
+    required: true
+
+  head_ref:
+    description: 'Reference to Git Head to compare with'
+    required: true
+
+  base_ref:
+    description: 'Reference to Git current'
+    required: true
+
+  grep_args:
+    description: 'Arguments to filter the result'
+    required: false
+    default: ''
+
+  workspace:
+    description: 'Workspace where the git project is'
+    required: false
+    default: '/.'
+
+runs:
+  using: composite
+  steps:
+
+    - name: get_git_diff_files
+      run: |
+
+        echo "::group::Get git modified files in ${{ inputs.workspace }}"
+
+        cd ${{ inputs.workspace }}
+        echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
+
+        echo "::endgroup::"
+
+      shell: bash
