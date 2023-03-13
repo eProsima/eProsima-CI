@@ -1,4 +1,4 @@
-name: 'colcon_build_test'
+name: 'colcon_build_test_flaky'
 description: 'Compile code with colcon, and run colcon test.'
 
 inputs:
@@ -15,12 +15,12 @@ inputs:
   cmake_args:
     description: 'Cmake arguments'
     required: false
-    default: ''
+    default: '-DBUILD_TESTS=ON'
 
   ctest_args:
     description: 'cTest arguments'
     required: false
-    default: ''
+    default: '--label-regex "xfail"'
 
   workspace:
     description: 'Workspace to build'
