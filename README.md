@@ -11,11 +11,11 @@ These actions could be used right away in any repository.
 
 ---
 
-* [uncrustify](ubuntu-20.04/uncrustify/action.yml)
+* [uncrustify](ubuntu-22.04/uncrustify/action.yml)
   * Check the C++ linter of the new files added to the repository.
 
 ```yml
-uses: eProsima/eProsima-CI/ubuntu-20.04/uncrustify@main
+uses: eProsima/eProsima-CI/ubuntu-22.04/uncrustify@main
 with:
   result_filename: uncrustify_results.xml  # File to store results
   uncrustify_configuration_version: master  # Version of eProsima/cpp-style repo to get configuration

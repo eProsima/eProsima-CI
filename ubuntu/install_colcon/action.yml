@@ -5,13 +5,7 @@ runs:
   using: composite
   steps:
 
-    - name: install_colcon
-      run: |
-
-        echo "::group::Install colcon"
-
-        sudo pip3 install -U colcon-common-extensions colcon-mixin
-
-        echo "::endgroup::"
-
-      shell: bash
+    - name: Install colcon
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      with:
+        custom_packages: colcon-common-extensions colcon-mixin

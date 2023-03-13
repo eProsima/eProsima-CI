@@ -6,7 +6,7 @@ inputs:
   eprosima_default_packages:
     description: 'Whether to install the eProsima related python packages.'
     required: false
-    default: 1
+    default: true
 
   custom_packages:
     description: 'Custom packages to install using pip'
@@ -29,7 +29,7 @@ runs:
         echo "::group::Install Python packages"
 
         # Set packages to install
-        if ${{ inputs.eprosima_default_packages }} ; then
+        if [ "${{ inputs.eprosima_default_packages }}" = "true" ]; then
           export PYTHON_PACKAGES_TO_INSTALL_="vcstool setuptools ${{ inputs.custom_packages }}"
         else
           export PYTHON_PACKAGES_TO_INSTALL_="${{ inputs.custom_packages }}"

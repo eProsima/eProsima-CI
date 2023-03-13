@@ -10,12 +10,12 @@ inputs:
   update:
     description: 'Update apt'
     required: false
-    default: 1
+    default: true
 
   upgrade:
     description: 'Upgrade already installed apt packages'
     required: false
-    default: 0
+    default: false
 
 runs:
   using: composite
@@ -24,10 +24,10 @@ runs:
     - name: install_apt_packages
       run: |
 
-        echo "::group::Install apt packages ${{ inputs.custom_packages }}"
+        echo "::group::Install apt packages ${{ inputs.packages }}"
 
         # Update apt repos
-        if ${{ inputs.update }} ; then
+        if [ "${{ inputs.update }}" = "true" ]; then
           sudo apt update
         fi
 
@@ -36,7 +36,7 @@ runs:
           ${{ inputs.packages }}
 
         # Upgrade apt repos
-        if ${{ inputs.upgrade }} ; then
+        if [ "${{ inputs.upgrade }}" = "true" ] ; then
           sudo apt upgrade
         fi
 

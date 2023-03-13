@@ -56,7 +56,7 @@ runs:
     - name: Install apt packages
       uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
       with:
-        custom_packages: uncrustify
+        packages: uncrustify
 
     - name: Install Colcon
       uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
