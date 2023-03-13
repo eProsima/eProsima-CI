@@ -3,12 +3,7 @@ description: 'Install generic and required python packages with pip'
 
 inputs:
 
-  eprosima_default_packages:
-    description: 'Whether to install the eProsima related python packages.'
-    required: false
-    default: true
-
-  custom_packages:
+  packages:
     description: 'Custom packages to install using pip'
     required: false
     default: ''
@@ -28,21 +23,14 @@ runs:
 
         echo "::group::Install Python packages"
 
-        # Set packages to install
-        if [ "${{ inputs.eprosima_default_packages }}" = "true" ]; then
-          export PYTHON_PACKAGES_TO_INSTALL_="vcstool setuptools ${{ inputs.custom_packages }}"
-        else
-          export PYTHON_PACKAGES_TO_INSTALL_="${{ inputs.custom_packages }}"
-        fi
-
         # Install python packages if any
-        if [[ -z "${PYTHON_PACKAGES_TO_INSTALL_} ]] ; then
+        if [[ ! -z "${{ inputs.packages }}" ]] ; then
           sudo pip3 install -U \
-            ${PYTHON_PACKAGES_TO_INSTALL_}
+            ${{ inputs.packages }}
         fi
 
         # Install requirements file if any
-        if [[ -z "${{ inputs.requirements_file_name }} ]] ; then
+        if [[ ! -z "${{ inputs.requirements_file_name }}" ]] ; then
           sudo pip3 install -U \
             -r ${{ inputs.requirements_file_name }}
         fi
