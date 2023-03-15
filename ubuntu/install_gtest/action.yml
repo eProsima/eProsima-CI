@@ -1,0 +1,20 @@
+name: 'install_gtest'
+description: 'Install and setup GTest for linking and building test application in Linux'
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_apt_packages
+      run: |
+        echo "::group::Install GTest and GMock"
+        sudo apt install libgtest-dev libgmock-dev
+        (cd /usr/src/gtest && sudo `which cmake` .)
+        sudo make -j $(nproc) -C /usr/src/gtest
+        sudo ln -s /usr/src/gtest/libgtest.a /usr/lib/libgtest.a
+        sudo ln -s /usr/src/gtest/libgtest_main.a /usr/lib/libgtest_main.a
+        (cd /usr/src/googletest/googlemock && sudo `which cmake` .)
+        sudo make -j $(nproc) -C /usr/src/googletest/googlemock
+        sudo ln -s /usr/src/googletest/googlemock/libgmock.a /usr/lib/libgmock.a
+        echo "::endgroup::"
+      shell: bash
