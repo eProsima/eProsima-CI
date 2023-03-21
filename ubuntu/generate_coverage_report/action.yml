@@ -44,7 +44,10 @@ runs:
 
         mkdir -p ${{ inputs.build_directory }}/_all
         if [[ ! -z "${{ inputs.packages_names }}" ]]; then
-          cp --recursive ${{ inputs.build_directory }}/${{ inputs.packages_names }} ${{ inputs.build_directory }}/_all
+          for file in ${{ inputs.packages_names }}
+          do
+            cp --recursive ${{ inputs.build_directory }}/${file} ${{ inputs.build_directory }}/_all
+          done
         else
           cp --recursive ${{ inputs.build_directory }} ${{ inputs.build_directory }}/_all
         fi

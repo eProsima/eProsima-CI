@@ -39,14 +39,17 @@ runs:
 
         echo "Clang results:"
         cat ${{ inputs.result_file_name }}
+        echo ""
 
-        tail -f ${{ inputs.result_file_name }} | grep -r 'warning|error'
+        tail -n 3 ${{ inputs.result_file_name }} | grep '\b\(warning\|error\|warnings\|errors\)\b'
         if [ $? -eq 0 ]; then
-          echo "No errors or warnings"
-        else
           return 1
+        else
+          echo "No errors or warnings"
         fi
 
         echo "::endgroup::"
 
-      shell: bash
+      # It requires bash {0} otherwise grep not finding anything will make bash crash,
+      # when this is not the expected behavior (it actually remove set -e)
+      shell: bash {0}

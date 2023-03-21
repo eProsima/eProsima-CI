@@ -1,3 +1,5 @@
+# TODO this action takes only into consideration the last complete job, and not the look deeper if the name does not match.
+# It should look recursively till a max depth in completed jobs for the artifact name asked
 name: 'generate_dependency'
 description: 'TODO'
 

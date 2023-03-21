@@ -1,6 +1,6 @@
 repositories:
 
-    dev_utils:
+    dds_pipe:
         type: git
         url: https://github.com/eProsima/DDS-Pipe.git
         version: main
