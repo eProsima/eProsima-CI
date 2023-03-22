@@ -28,6 +28,11 @@ inputs:
     required: false
     default: './'
 
+  workspace_dependencies:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -36,6 +41,10 @@ runs:
       run: |
 
         echo "::group::Test colcon ${{ inputs.workspace }}"
+
+        if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
+          source ${{ inputs.workspace_dependencies }}/setup.bash
+        fi
 
         cd ${{ inputs.workspace }}
 

@@ -51,3 +51,4 @@ runs:
         workspace: ${{ inputs.workspace }}
         colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'
         ctest_args: ' ${{ inputs.ctest_args }}'
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}
