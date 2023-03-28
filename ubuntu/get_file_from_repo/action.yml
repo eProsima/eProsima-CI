@@ -32,9 +32,9 @@ runs:
   steps:
 
     - name: Get file using curl
+      group: Get file using curl
+      shell: bash
       run: |
-
-        echo "::group::Get file ${{ inputs.file_name }} from ${{ inputs.source_repository }} / ${{ inputs.source_repository_branch }}"
 
         if [[ -z "${{ inputs.file_result }}" ]]; then
           export FILE_RESULT_="${{ inputs.file_name }}"
@@ -42,7 +42,7 @@ runs:
           export FILE_RESULT_="${{ inputs.file_result }}"
         fi
 
-        echo "Calling curl with url: https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}"
+        echo "Calling wget with url: https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}"
 
         wget \
           -O ${FILE_RESULT_} \
@@ -51,10 +51,6 @@ runs:
 
         echo "File downloaded:"
         cat ${{ inputs.file_result }}
-
-        echo "::endgroup::"
-
-      shell: bash
 
 # curl version
 # curl \

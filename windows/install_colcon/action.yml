@@ -1,0 +1,13 @@
+name: 'install_colcon'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install colcon
+      group: Install colcon
+      shell: pwsh
+      run: |
+
+        pip3 install --upgrade --user setuptools==58.3.0
+        pip3 install -U colcon-common-extensions colcon-mixin

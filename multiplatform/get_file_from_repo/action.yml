@@ -1,0 +1,52 @@
+name: 'get_file_from_repo'
+description: 'TODO'
+
+inputs:
+
+  source_repository_branch:
+    description: 'TODO'
+    required: false
+    default: 'main'
+
+  source_repository:
+    description: 'TODO'
+    required: false
+    default: '$GITHUB_REPOSITORY'
+
+  file_name:
+    description: 'Colcon meta to give cmake options to packages'
+    required: true
+
+  file_result:
+    description: 'Name of the file result'
+    required: false
+    default: ''
+
+  file_result_path:
+    description: 'Directory to save file'
+    required: false
+    default: '.\'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: jparisu/eProsima-CI/ubuntu/install_fast_dependencies@main/feature/windows-support
+      if: runner.os == 'Linux'
+      with:
+        source_repository_branch: ${{ inputs.source_repository_branch }}
+        source_repository: ${{ inputs.source_repository }}
+        file_name: ${{ inputs.file_name }}
+        file_result: ${{ inputs.file_result }}
+        file_result_path: ${{ inputs.file_result_path }}
+
+    - name: Run in windows
+      uses: jparisu/eProsima-CI/windows/install_fast_dependencies@main/feature/windows-support
+      if: runner.os == 'Windows'
+      with:
+        source_repository_branch: ${{ inputs.source_repository_branch }}
+        source_repository: ${{ inputs.source_repository }}
+        file_name: ${{ inputs.file_name }}
+        file_result: ${{ inputs.file_result }}
+        file_result_path: ${{ inputs.file_result_path }}

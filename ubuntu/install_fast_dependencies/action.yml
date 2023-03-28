@@ -1,5 +1,5 @@
 name: 'install_fast_dependencies'
-description: 'Install Open SSl package'
+description: 'Install Fast DDS dependencies in ubuntu'
 
 runs:
   using: composite
@@ -14,7 +14,11 @@ runs:
     - name: Install GTest
       uses: jparisu/eProsima-CI/ubuntu/install_gtest@main
 
-    - name: Install in ubuntu
-      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
-      with:
-        custom_packages: libasio-dev libtinyxml2-dev libssl-dev
+    - name: Install asio
+      uses: jparisu/eProsima-CI/ubuntu/install_asio@main
+
+    - name: Install Tiny XML
+      uses: jparisu/eProsima-CI/ubuntu/install_tinyxml@main
+
+    - name: Install Open SSL
+      uses: jparisu/eProsima-CI/ubuntu/install_openssl@main

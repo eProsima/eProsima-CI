@@ -1,4 +1,4 @@
-name: 'install_openssl'
+name: 'install_asio'
 
 runs:
   using: composite
@@ -7,4 +7,4 @@ runs:
     - name: Install in ubuntu
       uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
       with:
-        custom_packages: libssl-dev
+        custom_packages: libasio-dev

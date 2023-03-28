@@ -1,0 +1,15 @@
+name: 'install_fast_dependencies'
+description: 'Install Fast DDS dependencies in ubuntu'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install colcon
+      uses: jparisu/eProsima-CI/windows/install_colcon@main
+
+    - name: Install GTest
+      uses: jparisu/eProsima-CI/windows/install_gtest@main
+
+    - name: Install Open SSL
+      uses: jparisu/eProsima-CI/windows/install_openssl@main

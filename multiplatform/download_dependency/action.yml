@@ -1,0 +1,42 @@
+name: 'download_dependency'
+description: 'TODO'
+
+inputs:
+
+  artifact_name:
+    description: 'Name of the artifact to upload the binary result'
+    required: true
+
+  workflow_source:
+    description: 'Name of the artifact to upload the binary result'
+    required: true
+
+  workflow_source_repository:
+    description: 'Name of the artifact to upload the binary result'
+    required: false
+    default: '$GITHUB_REPOSITORY'
+
+  target_workspace:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: './install'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Get build eProsima dependencies Job Id
+      uses: jparisu/eProsima-CI/ubuntu/get_workflow_id@main/feature/windows-support
+      with:
+        workflow_source: '${{ inputs.workflow_source }}'
+        workflow_source_repository: '${{ inputs.workflow_source_repository }}'
+        id_job_result: download_dependency_job_id
+
+    - name: Download dependency
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: ${{ inputs.artifact_name }}
+        workflow: ${{ inputs.workflow_source }}
+        path: ${{ inputs.target_workspace }}
+        run_id: ${{ env.download_dependency_job_id }}
+        repo: ${{ inputs.workflow_source_repository }}
