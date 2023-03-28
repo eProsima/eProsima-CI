@@ -1,6 +1,6 @@
 # TODO this action takes only into consideration the last complete job, and not the look deeper if the name does not match.
 # It should look recursively till a max depth in completed jobs for the artifact name asked
-name: 'generate_dependency'
+name: 'get_workflow_id'
 description: 'TODO'
 
 inputs:
@@ -28,18 +28,25 @@ runs:
   using: composite
   steps:
 
-    - name: Get build eProsima dependencies Job Id
-      run: |
+    - name: Download using wget
+      shell: pwsh
+      run:
 
-        echo "::group::Get Id from workflow ${{ inputs.workflow_source }}"
+        "::group::Get workflow id from ${{ inputs.workflow_source_repository }}"
 
-        echo "Access to url: $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs"
-        export JOB_ID=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs | \
-          jq '.workflow_runs[] | select(.status == "${{ inputs.job_status }}") | .id' | \
-          head -n 1)
-        echo "Job Id: ${JOB_ID}"
-        echo "${{ inputs.id_job_result }}=${JOB_ID}" >> $GITHUB_ENV
+        $secret = ConvertTo-SecureString -String "${{ secrets.GITHUB_TOKEN }}" -AsPlainText
+        $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
 
-        echo "::endgroup::"
+        # Check available queries according with github policy
+        ((Invoke-WebRequest -Authentication OAuth -Token $secret `
+          -Uri https://api.github.com/users/octocat).Headers.GetEnumerator() |
+          ? Key -like "X-RateLimit*") | Out-Host
 
-      shell: bash
+        ((Invoke-WebRequest -Authentication OAuth -Token $secret -Uri $RUNS_URI).Content |
+          ConvertFrom-Json).workflow_runs |
+          ? status -eq '${{ inputs.job_status }}' |
+          select -first 1 id |
+          % { "${{ inputs.id_job_result }}=" + $_.id } |
+          Out-File $env:GITHUB_ENV -Append
+
+        "::endgroup::"

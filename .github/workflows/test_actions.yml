@@ -40,3 +40,11 @@ jobs:
         with:
           file_name: LICENSE
           file_result: license
+
+      - name: Get fastdds artifact
+        uses: jparisu/eProsima-CI/ubuntu/download_dependency@feature/windows-support
+        with:
+          artifact_name: built_fastdds_ubuntu-20.04_nightly
+          workflow_source: build_fastdds.yml
+          target_workspace: install
+          workflow_source_repository: jparisu/eProsima-CI
