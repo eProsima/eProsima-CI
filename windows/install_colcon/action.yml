@@ -8,5 +8,10 @@ runs:
       shell: pwsh
       run: |
 
-        pip3 install --upgrade --user setuptools==58.3.0
-        pip3 install -U colcon-common-extensions colcon-mixin
+        "::group::Install colcon"
+
+        pip3 install vcstool
+        pip3 install setuptools==58.3.0
+        pip3 install colcon-common-extensions colcon-mixin
+
+        "::endgroup::"

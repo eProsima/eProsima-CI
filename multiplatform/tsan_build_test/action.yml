@@ -25,7 +25,7 @@ inputs:
   workspace:
     description: 'Workspace to build'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'

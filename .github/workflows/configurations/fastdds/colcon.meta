@@ -1,5 +1,12 @@
 {
     "names":
     {
+        "fastrtps":
+        {
+            "cmake-args":
+            [
+                "-DTHIRDPARTY=ON"
+            ]
+        }
     }
 }

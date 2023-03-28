@@ -1,5 +1,5 @@
 name: 'colcon_test'
-description: 'Import some repositories and their versions from a yaml file'
+description: 'Execute colcon test command with arguments given'
 
 inputs:
 
@@ -26,7 +26,7 @@ inputs:
   workspace:
     description: 'Workspace where built is done'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -38,23 +38,21 @@ runs:
   steps:
 
     - name: Build workspace with colcon
+      shell: pwsh
       run: |
 
-        echo "::group::Test colcon ${{ inputs.workspace }}"
+        "::group::Run tests using colcon"
 
-        if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
-          source ${{ inputs.workspace_dependencies }}/setup.bash
-        fi
+        if ([string]::IsNullOrEmpty(${{ inputs.file_result }})) {
+          ${{ inputs.workspace_dependencies }}/setup.ps1
+        }
 
         cd ${{ inputs.workspace }}
 
-        colcon test \
-          ${{ inputs.colcon_test_args_default }} \
-          ${{ inputs.colcon_test_args }} \
-          --ctest-args \
-            ${{ inputs.ctest_args_default }} \
-            ${{ inputs.ctest_args }} \
+        colcon test `
+          ${{ inputs.colcon_test_args_default }} `
+          ${{ inputs.colcon_test_args }} `
+          --ctest-args `
+            ${{ inputs.ctest_args_default }} ${{ inputs.ctest_args }}
 
-        echo "::endgroup::"
-
-      shell: bash
+        "::endgroup::"

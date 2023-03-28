@@ -36,14 +36,14 @@ runs:
         artifact_name: built_dev_utils_ubuntu-22.04_nightly
         workflow_source: build_dev_utils.yml
         workflow_source_repository: jparisu/eProsima-CI
-        target_workspace: './install'
+        target_workspace: '${{ github.workspace }}/install'
 
     - name: Build documentation with colcon
       uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/windows-support
       with:
         colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
         cmake_args: '${{ inputs.specific_cmake_args }}'
-        workspace_dependencies: './install'
+        workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Run colcon test of documentation
       uses: jparisu/eProsima-CI/ubuntu/colcon_test@feature/windows-support

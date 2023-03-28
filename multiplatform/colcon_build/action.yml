@@ -31,7 +31,7 @@ inputs:
   workspace:
     description: 'Workspace to build'
     required: false
-    default: './'
+    default: ''
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -62,6 +62,7 @@ runs:
         colcon_build_args: ${{ inputs.colcon_build_args }}
         colcon_build_args_default: ${{ inputs.colcon_build_args_default }}
         cmake_args: ${{ inputs.cmake_args }}
-        cmake_args_default: ${{ inputs.cmake_args_default }}
+        # cmake_args_default: ${{ inputs.cmake_args_default }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
+        # TODO find a way to use it for windows

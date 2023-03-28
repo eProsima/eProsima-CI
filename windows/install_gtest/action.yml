@@ -15,6 +15,8 @@ runs:
       shell: pwsh
       run: |
 
+        "::group::Install GTest"
+
         cmake --find-package -DNAME=GTest -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;
         if ( $res -notlike '*GTest found.*')
         {
@@ -23,3 +25,5 @@ runs:
             -B build\gtest -A x64 -T host=x64 googletest;
           cmake --build build\gtest --config ${{ inputs.cmake_build_type }} --target install
         }
+
+        "::endgroup::"

@@ -19,7 +19,7 @@ inputs:
   workspace:
     description: 'Workspace to source where dependencies are'
     required: false
-    default: 'artifact'
+    default: '${{ github.workspace }}/xartifact'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -31,16 +31,16 @@ runs:
   steps:
 
     - name: Install fast dependencies
-      uses: jparisu/eProsima-CI/ubuntu/install_fast_dependencies@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/install_fast_dependencies@feature/windows-support
 
     - name: Fetch repositories
-      uses: jparisu/eProsima-CI/ubuntu/vcs_import@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/vcs_import@feature/windows-support
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.workspace }}/src
 
     - name: Build workspace
-      uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build@feature/windows-support
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}

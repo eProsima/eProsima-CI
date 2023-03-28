@@ -15,6 +15,8 @@ runs:
       shell: pwsh
       run: |
 
+        "::group::Install yamlcpp"
+
         cmake --find-package -DNAME=yamlcpp -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;
         if ( $res -notlike '*yamlcpp found.*')
         {
@@ -22,3 +24,5 @@ runs:
           cmake -DCMAKE_INSTALL_PREFIX='C:\Program Files\yamlcpp' -B build\yamlcpp yaml-cpp
           cmake --build build\yamlcpp --config ${{ inputs.cmake_build_type }} --target install
         }
+
+        "::endgroup::"

@@ -26,7 +26,7 @@ inputs:
   workspace:
     description: 'Workspace where built is done'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -53,7 +53,7 @@ runs:
           ${{ inputs.colcon_test_args }} \
           --ctest-args \
             ${{ inputs.ctest_args_default }} \
-            ${{ inputs.ctest_args }} \
+            ${{ inputs.ctest_args }}
 
         echo "::endgroup::"
 

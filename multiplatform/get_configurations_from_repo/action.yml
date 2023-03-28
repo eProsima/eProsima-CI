@@ -10,7 +10,7 @@ inputs:
   source_repository:
     description: 'TODO'
     required: false
-    default: '$GITHUB_REPOSITORY'
+    default: '${{ github.repository }}'
 
   colcon_meta_file_result:
     description: 'TODO'
@@ -37,17 +37,19 @@ runs:
   steps:
 
     - name: Get colcon.meta file
-      uses: jparisu/eProsima-CI/ubuntu/get_file_from_repo@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/get_file_from_repo@feature/windows-support
       with:
         source_repository_branch: ${{ inputs.source_repository_branch }}
         source_repository: ${{ inputs.source_repository }}
         file_name: ${{ inputs.colcon_meta_file_path }}
         file_result: ${{ inputs.colcon_meta_file_result }}
+        file_result_path: '${{ github.workspace }}'
 
     - name: Get dependencies.repos file
-      uses: jparisu/eProsima-CI/ubuntu/get_file_from_repo@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/get_file_from_repo@feature/windows-support
       with:
         source_repository_branch: ${{ inputs.source_repository_branch }}
         source_repository: ${{ inputs.source_repository }}
         file_name: ${{ inputs.repos_file_path }}
         file_result: ${{ inputs.repos_file_result }}
+        file_result_path: '${{ github.workspace }}'

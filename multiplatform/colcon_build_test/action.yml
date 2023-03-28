@@ -25,7 +25,7 @@ inputs:
   workspace:
     description: 'Workspace to build'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -37,7 +37,7 @@ runs:
   steps:
 
     - name: Build
-      uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build@feature/windows-support
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
@@ -46,7 +46,7 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Test
-      uses: jparisu/eProsima-CI/ubuntu/colcon_test@feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/colcon_test@feature/windows-support
       with:
         workspace: ${{ inputs.workspace }}
         colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'

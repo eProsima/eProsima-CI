@@ -11,7 +11,7 @@ inputs:
   source_repository:
     description: 'TODO'
     required: false
-    default: '$GITHUB_REPOSITORY'
+    default: '${{ github.repository }}'
 
   file_name:
     description: 'Colcon meta to give cmake options to packages'
@@ -25,7 +25,7 @@ inputs:
   file_result_path:
     description: 'Directory to save file'
     required: false
-    default: '.\'
+    default: '${{ github.workspace }}'
 
 runs:
   using: composite
@@ -35,10 +35,19 @@ runs:
       shell: pwsh
       run: |
 
-        if ([string]::IsNullOrEmpty(${{ inputs.file_result }})) {
-          $env:FILE_RESULT_ = ${{ inputs.file_name }}
+        "::group::Getting file ${{ inputs.file_name }} from ${{ inputs.source_repository }}"
+
+        if ([string]::IsNullOrEmpty("${{ inputs.file_result }}")) {
+          $env:FILE_RESULT_ = "${{ inputs.file_name }}"
         } else {
-          $env:FILE_RESULT_ = ${{ inputs.file_result }}
+          $env:FILE_RESULT_ = "${{ inputs.file_result }}"
         }
 
-        wget https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }} -output ${{ inputs.file_result_path }}/$env:FILE_RESULT_
+        Invoke-WebRequest `
+          -Uri "https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}" `
+          -OutFile "${{ inputs.file_result_path }}\$env:FILE_RESULT_"
+
+        echo "Downloaded file in path <${{ inputs.file_result_path }}/$env:FILE_RESULT_>"
+        cat ${{ inputs.file_result_path }}/$env:FILE_RESULT_
+
+        "::endgroup::"

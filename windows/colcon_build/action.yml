@@ -26,12 +26,13 @@ inputs:
   cmake_args_default:
     description: 'Default CMake arguments'
     required: false
-    default: '-DCMAKE_CXX_FLAGS="-Werror -Wall"'
+    default: ''
+    # TODO add werror flags
 
   workspace:
     description: 'Workspace to build'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -43,35 +44,45 @@ runs:
   steps:
 
     - name: Build workspace with colcon
+      shell: pwsh
       run: |
 
-        echo "::group::Compile colcon ${{ inputs.workspace }}"
+        "::group::Build using colcon"
 
-        if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
-          source ${{ inputs.workspace_dependencies }}/setup.bash
-        fi
+        if (! [string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
+          ${{ inputs.workspace_dependencies }}/setup.ps1
+        }
+
+        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+          New-Item -ItemType File colcon.meta
+          $env:COLCON_BUILD_META_ = "colcon.meta"
+        } else {
+          $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
+        }
+
+        echo "Using colcon.meta file <$env:COLCON_BUILD_META_>"
+        cat $env:COLCON_BUILD_META_
 
         cd ${{ inputs.workspace }}
 
-        if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
-          touch colcon.meta
-          export COLCON_BUILD_META_="colcon.meta"
-        else
-          export COLCON_BUILD_META_="${{ inputs.colcon_meta_file }}"
-        fi
+        ls -Path @(${Env:ProgramFiles},${Env:ProgramFiles(x86)}) -Filter '*Visual Studio*' -Directory  -ErrorAction SilentlyContinue |
+        ls -R -Filter 'Microsoft.VisualStudio.DevShell.dll' | select -First 1 -OutVariable pwshmodule ; `
+          Import-Module $pwshmodule;Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
+          -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
 
-        colcon build \
-          --metas ${COLCON_BUILD_META_} \
-          ${{ inputs.colcon_build_args_default }} \
-          ${{ inputs.colcon_build_args }} \
-          --cmake-args \
-            ${{ inputs.cmake_args_default }} \
-            ${{ inputs.cmake_args }}
+        colcon build `
+          --metas $env:COLCON_BUILD_META_ `
+          ${{ inputs.colcon_build_args_default }} `
+          ${{ inputs.colcon_build_args }} `
+          --cmake-args ${{ inputs.cmake_args_default }} ${{ inputs.cmake_args }}
 
-        if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
-          rm colcon.meta
-        fi
+        cd ..
 
-        echo "::endgroup::"
+        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+          New-Item -ItemType File colcon.meta
+          $env:COLCON_BUILD_META_ = "colcon.meta"
+        } else {
+          $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
+        }
 
-      shell: bash
+        "::endgroup::"
