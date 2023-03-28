@@ -32,7 +32,6 @@ runs:
   steps:
 
     - name: Get file using curl
-      group: Get file using curl
       shell: bash
       run: |
 

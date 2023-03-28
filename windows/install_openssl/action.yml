@@ -7,7 +7,6 @@ runs:
 
     - name: Install openssl
       shell: pwsh
-      group: Install openssl
       run: |
 
         choco install openssl -yr --no-progress;

@@ -37,7 +37,7 @@ runs:
   steps:
 
     - name: Get colcon.meta file
-      uses: jparisu/eProsima-CI/ubuntu/get_file_from_repo@main/feature/windows-support
+      uses: jparisu/eProsima-CI/ubuntu/get_file_from_repo@feature/windows-support
       with:
         source_repository_branch: ${{ inputs.source_repository_branch }}
         source_repository: ${{ inputs.source_repository }}
@@ -45,7 +45,7 @@ runs:
         file_result: ${{ inputs.colcon_meta_file_result }}
 
     - name: Get dependencies.repos file
-      uses: jparisu/eProsima-CI/ubuntu/get_file_from_repo@main/feature/windows-support
+      uses: jparisu/eProsima-CI/ubuntu/get_file_from_repo@feature/windows-support
       with:
         source_repository_branch: ${{ inputs.source_repository_branch }}
         source_repository: ${{ inputs.source_repository }}

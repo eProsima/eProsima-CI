@@ -13,7 +13,6 @@ runs:
 
     - name: Install yamlcpp
       shell: pwsh
-      group: Install yamlcpp
       run: |
 
         cmake --find-package -DNAME=yamlcpp -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;

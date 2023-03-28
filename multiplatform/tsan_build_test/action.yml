@@ -37,7 +37,7 @@ runs:
   steps:
 
     - name: Build
-      uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@main/feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@feature/windows-support
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}

@@ -13,7 +13,6 @@ runs:
 
     - name: Install python packages
       shell: pwsh
-      group: Install python packages
       run: |
 
         pip3 install -U ${{ inputs.custom_packages }}

@@ -5,7 +5,6 @@ runs:
   steps:
 
     - name: Install colcon
-      group: Install colcon
       shell: pwsh
       run: |
 

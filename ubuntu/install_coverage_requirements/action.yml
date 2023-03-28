@@ -6,13 +6,13 @@ runs:
   steps:
 
     - name: Install docs requirements with apt
-      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
+      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@feature/windows-support
       with:
         custom_packages: \
           lcov
 
     - name: Install docs requirements with pip
-      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
+      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@feature/windows-support
       with:
         custom_packages: \
           gcovr==5.0

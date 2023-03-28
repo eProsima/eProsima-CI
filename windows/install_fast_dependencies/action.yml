@@ -6,10 +6,10 @@ runs:
   steps:
 
     - name: Install colcon
-      uses: jparisu/eProsima-CI/windows/install_colcon@main
+      uses: jparisu/eProsima-CI/windows/install_colcon@feature/windows-support
 
     - name: Install GTest
-      uses: jparisu/eProsima-CI/windows/install_gtest@main
+      uses: jparisu/eProsima-CI/windows/install_gtest@feature/windows-support
 
     - name: Install Open SSL
-      uses: jparisu/eProsima-CI/windows/install_openssl@main
+      uses: jparisu/eProsima-CI/windows/install_openssl@feature/windows-support

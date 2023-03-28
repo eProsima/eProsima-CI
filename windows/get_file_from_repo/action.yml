@@ -33,7 +33,6 @@ runs:
 
     - name: Download using wget
       shell: pwsh
-      group: Download using wget
       run: |
 
         if ([string]::IsNullOrEmpty(${{ inputs.file_result }})) {

@@ -6,6 +6,6 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
+      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@feature/windows-support
       with:
         custom_packages: libyaml-cpp-dev

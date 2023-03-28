@@ -13,7 +13,6 @@ runs:
 
     - name: Install gtest
       shell: pwsh
-      group: Install gtest
       run: |
 
         cmake --find-package -DNAME=GTest -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;

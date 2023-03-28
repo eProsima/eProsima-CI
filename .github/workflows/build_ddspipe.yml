@@ -47,10 +47,10 @@ jobs:
           path: src/eprosima-CI
 
       - name: Install yaml cpp dependency
-        uses: jparisu/eProsima-CI/ubuntu/install_yamlcpp@main
+        uses: jparisu/eProsima-CI/ubuntu/install_yamlcpp@feature/windows-support
 
       - name: Get dev_utils artifact
-        uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
+        uses: jparisu/eProsima-CI/ubuntu/download_dependency@feature/windows-support
         with:
           artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           workflow_source: build_dev_utils.yml
@@ -59,14 +59,14 @@ jobs:
           # TODO: check why GITHUB_REPOSITORY is not correctly being set
 
       - name: Get colcon.meta and .repos files to build artifact
-        uses: jparisu/eProsima-CI/ubuntu/get_configurations_from_repo@main
+        uses: jparisu/eProsima-CI/ubuntu/get_configurations_from_repo@feature/windows-support
         with:
           source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/ddspipe/colcon.meta
           repos_file_path: .github/workflows/configurations/ddspipe/dependencies.repos
 
       - name: Build and generate artifact
-        uses: jparisu/eProsima-CI/ubuntu/generate_dependency@main
+        uses: jparisu/eProsima-CI/ubuntu/generate_dependency@feature/windows-support
         with:
           vcs_repos_file: dependencies.repos
           artifact_name: built_ddspipe_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}

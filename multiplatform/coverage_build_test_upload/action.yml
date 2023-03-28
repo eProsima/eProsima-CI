@@ -50,10 +50,10 @@ runs:
   steps:
 
     - name: Build
-      uses: jparisu/eProsima-CI/ubuntu/install_gcov@main/feature/windows-support
+      uses: jparisu/eProsima-CI/ubuntu/install_gcov@feature/windows-support
 
     - name: Build
-      uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@main/feature/windows-support
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@feature/windows-support
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
@@ -63,7 +63,7 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Generate report
-      uses: jparisu/eProsima-CI/ubuntu/generate_coverage_report@main/feature/windows-support
+      uses: jparisu/eProsima-CI/ubuntu/generate_coverage_report@feature/windows-support
       with:
         packages_names: ${{ inputs.packages_names }}
         result_file_name: coverage.xml

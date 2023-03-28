@@ -43,7 +43,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: jparisu/eProsima-CI/ubuntu/colcon_build@main/feature/windows-support
+      uses: jparisu/eProsima-CI/ubuntu/colcon_build@feature/windows-support
       if: runner.os == 'Linux'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
@@ -55,7 +55,7 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Run in windows
-      uses: jparisu/eProsima-CI/windows/colcon_build@main/feature/windows-support
+      uses: jparisu/eProsima-CI/windows/colcon_build@feature/windows-support
       if: runner.os == 'Windows'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
