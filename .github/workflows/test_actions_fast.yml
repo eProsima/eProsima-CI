@@ -38,7 +38,7 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@feature/windows-support
         with:
           source_repository_branch: feature/windows-support
-          colcon_meta_file_path: .github/workflows/configurations/fastdds/colcon.meta
+          colcon_meta_file_path: .github/workflows/configurations/fastdds/${{ matrix.windows-version }}/colcon.meta
           repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
 
       - name: dependencies

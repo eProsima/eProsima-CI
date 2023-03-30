@@ -31,13 +31,23 @@ jobs:
 
   build_ddspipe:
 
-    runs-on: ${{ matrix.ubuntu-version }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        ubuntu-version:
-          - 'ubuntu-20.04'
-          - 'ubuntu-22.04'
+        cmake-config:
+          - Release
+          - Debug
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+        exclude:
+          - os: ubuntu-20.04
+            cmake-config: Debug
+          - os: ubuntu-22.04
+            cmake-config: Debug
 
     steps:
 
@@ -52,7 +62,7 @@ jobs:
       - name: Get dev_utils artifact
         uses: jparisu/eProsima-CI/multiplatform/download_dependency@feature/windows-support
         with:
-          artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          artifact_name: built_dev_utils_${{ matrix.os }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           workflow_source: build_dev_utils.yml
           target_workspace: install
           workflow_source_repository: jparisu/eProsima-CI
@@ -62,14 +72,14 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@feature/windows-support
         with:
           source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
-          colcon_meta_file_path: .github/workflows/configurations/ddspipe/colcon.meta
+          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
           repos_file_path: .github/workflows/configurations/ddspipe/dependencies.repos
 
       - name: Build and generate artifact
         uses: jparisu/eProsima-CI/multiplatform/generate_dependency@feature/windows-support
         with:
           vcs_repos_file: dependencies.repos
-          artifact_name: built_ddspipe_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          artifact_name: built_ddspipe_${{ matrix.os }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           colcon_meta_file: colcon.meta
           workspace: ${{ github.workspace }}
           workspace_dependencies: install

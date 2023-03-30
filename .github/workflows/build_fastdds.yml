@@ -31,7 +31,7 @@ jobs:
 
   build_fastdds:
 
-    runs-on: ${{ matrix.ubuntu-version }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -60,7 +60,7 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@feature/windows-support
         with:
           source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
-          colcon_meta_file_path: .github/workflows/configurations/fastdds/colcon.meta
+          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
           repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
 
       - name: Build Fast DDS and generate artifact

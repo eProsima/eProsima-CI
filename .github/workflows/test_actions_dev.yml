@@ -27,9 +27,6 @@ jobs:
       CXXFLAGS: /MP
       OPENSSL64_ROOT: "C:/Program Files/OpenSSL-Win64"
 
-    # if: ${{ always() }}
-    # needs: windows-build-test
-
     steps:
 
       - name: Sync this repository
@@ -41,7 +38,7 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/download_dependency@feature/windows-support
         with:
           artifact_name: built_fastdds_${{ matrix.windows-version }}_${{ matrix.cmake-config }}
-          workflow_source: test_actions.yml
+          workflow_source: test_actions_fast.yml
           target_workspace: ${{ github.workspace }}\install
           workflow_source_repository: ${{ github.repository }}
           # workflow_source_repository: jparisu/eProsima-CI
@@ -51,7 +48,7 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@feature/windows-support
         with:
           source_repository_branch: feature/windows-support
-          colcon_meta_file_path: .github/workflows/configurations/dev_utils/colcon.meta
+          colcon_meta_file_path: .github/workflows/configurations/dev_utils/${{ matrix.windows-version }}/colcon.meta
           repos_file_path: .github/workflows/configurations/dev_utils/dependencies.repos
 
       - name: Build and generate artifact
