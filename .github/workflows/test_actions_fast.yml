@@ -1,5 +1,5 @@
 
-name: test_actions
+name: test_actions_fast
 
 on:
   workflow_dispatch:
@@ -48,6 +48,6 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/generate_dependency@feature/windows-support
         with:
           vcs_repos_file: ${{ github.workspace }}\dependencies.repos
-          artifact_name: built_fastdds_${{ matrix.windows-version }}
+          artifact_name: built_fastdds_${{ matrix.windows-version }}_${{ matrix.cmake-config }}
           colcon_meta_file: ${{ github.workspace }}\colcon.meta
           cmake-config: ${{ matrix.cmake-config }}

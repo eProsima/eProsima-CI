@@ -1,0 +1,64 @@
+
+name: test_actions_dev
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 1 * * *'
+
+jobs:
+
+  windows-build-test-dev-utils:
+    runs-on: ${{ matrix.windows-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        cmake-config:
+          - 'Release'
+          - 'Debug'
+        windows-version:
+          - 'windows-2019'
+          - 'windows-2022'
+    env:
+      CXXFLAGS: /MP
+      OPENSSL64_ROOT: "C:/Program Files/OpenSSL-Win64"
+
+    # if: ${{ always() }}
+    # needs: windows-build-test
+
+    steps:
+
+      - name: Sync this repository
+        uses: actions/checkout@v3
+        with:
+          path: src/eprosima-CI
+
+      - name: Get fastdds artifact
+        uses: jparisu/eProsima-CI/multiplatform/download_dependency@feature/windows-support
+        with:
+          artifact_name: built_fastdds_${{ matrix.windows-version }}_${{ matrix.cmake-config }}
+          workflow_source: test_actions.yml
+          target_workspace: ${{ github.workspace }}\install
+          workflow_source_repository: ${{ github.repository }}
+          # workflow_source_repository: jparisu/eProsima-CI
+          # TODO: check why GITHUB_REPOSITORY is not correctly being set
+
+      - name: Get colcon.meta and .repos files to build artifact
+        uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@feature/windows-support
+        with:
+          source_repository_branch: feature/windows-support
+          colcon_meta_file_path: .github/workflows/configurations/dev_utils/colcon.meta
+          repos_file_path: .github/workflows/configurations/dev_utils/dependencies.repos
+
+      - name: Build and generate artifact
+        uses: jparisu/eProsima-CI/multiplatform/generate_dependency@feature/windows-support
+        with:
+          vcs_repos_file: ${{ github.workspace }}\dependencies.repos
+          artifact_name: built_dev_utils_${{ matrix.ubuntu-version }}_${{ matrix.cmake-config }}
+          colcon_meta_file: ${{ github.workspace }}\colcon.meta
+          workspace_dependencies: ${{ github.workspace }}\install
+          cmake-config: ${{ matrix.cmake-config }}
