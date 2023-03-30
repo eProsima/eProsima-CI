@@ -50,3 +50,4 @@ jobs:
           vcs_repos_file: ${{ github.workspace }}\dependencies.repos
           artifact_name: built_fastdds_${{ matrix.windows-version }}
           colcon_meta_file: ${{ github.workspace }}\colcon.meta
+          cmake-config: ${{ matrix.cmake-config }}

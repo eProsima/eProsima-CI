@@ -35,9 +35,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu-version:
-          - 'ubuntu-20.04'
-          - 'ubuntu-22.04'
+        cmake-config:
+          - Release
+          - Debug
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+        exclude:
+          - os: ubuntu-20.04
+            cmake-config: Debug
+          - os: ubuntu-22.04
+            cmake-config: Debug
 
     steps:
 
@@ -57,5 +67,6 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/generate_dependency@feature/windows-support
         with:
           vcs_repos_file: dependencies.repos
-          artifact_name: built_fastdds_${{ matrix.ubuntu-version }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          artifact_name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake-config }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           colcon_meta_file: colcon.meta
+          cmake-config: ${{ matrix.cmake-config }}

@@ -19,12 +19,17 @@ inputs:
   workspace:
     description: 'Workspace to source where dependencies are'
     required: false
-    default: '${{ github.workspace }}/xartifact'
+    default: '${{ github.workspace }}/artifact'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
     required: false
     default: ''
+
+  cmake-config:
+    description: 'CMake configuration flag'
+    required: false
+    default: Release
 
 runs:
   using: composite
@@ -45,6 +50,7 @@ runs:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
+        cmake_args: ${{ inputs.cmake-config }}
 
     - name: Upload binaries
       uses: actions/upload-artifact@v3
