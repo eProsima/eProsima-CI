@@ -17,17 +17,13 @@ runs:
   steps:
 
     - name: vcs_import
+      shell: pwsh
       run: |
 
-        echo "::group::Import repositories from ${{ inputs.vcs_repos_file }}"
+        "::group::Import repositories from ${{ inputs.vcs_repos_file }}"
 
-        echo "Downloading following dependencies:"
-        cat ${{ inputs.vcs_repos_file }}
+        New-Item -ItemType Directory -Path ${{ inputs.destination_workspace }} -Force
 
-        mkdir -p ${{ inputs.destination_workspace }}
+        vcs import ${{ inputs.destination_workspace }} --input ${{ inputs.vcs_repos_file }}
 
-        vcs import ${{ inputs.destination_workspace }} < ${{ inputs.vcs_repos_file }}
-
-        echo "::endgroup::"
-
-      shell: bash
+        "::endgroup::"

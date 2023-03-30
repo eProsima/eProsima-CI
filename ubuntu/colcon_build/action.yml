@@ -28,10 +28,15 @@ inputs:
     required: false
     default: '-DCMAKE_CXX_FLAGS="-Werror -Wall"'
 
+  cmake_build_type:
+    description: 'Set the cmake build type'
+    required: false
+    default: 'Release'
+
   workspace:
     description: 'Workspace to build'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -65,6 +70,7 @@ runs:
           ${{ inputs.colcon_build_args_default }} \
           ${{ inputs.colcon_build_args }} \
           --cmake-args \
+            -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} \
             ${{ inputs.cmake_args_default }} \
             ${{ inputs.cmake_args }}
 

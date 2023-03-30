@@ -31,22 +31,22 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/install_colcon@main
 
     - name: Download cmake_utils artifact
-      uses: jparisu/eProsima-CI/ubuntu/download_dependency@main
+      uses: jparisu/eProsima-CI/multiplatform/download_dependency@main
       with:
-        artifact_name: built_dev_utils_ubuntu-22.04_nightly
+        artifact_name: built_dev_utils_ubuntu-22.04_Release_nightly
         workflow_source: build_dev_utils.yml
         workflow_source_repository: jparisu/eProsima-CI
-        target_workspace: './install'
+        target_workspace: '${{ github.workspace }}/install'
 
     - name: Build documentation with colcon
-      uses: jparisu/eProsima-CI/ubuntu/colcon_build@main
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build@main
       with:
         colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
         cmake_args: '${{ inputs.specific_cmake_args }}'
-        workspace_dependencies: './install'
+        workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Run colcon test of documentation
-      uses: jparisu/eProsima-CI/ubuntu/colcon_test@main
+      uses: jparisu/eProsima-CI/multiplatform/colcon_test@main
       with:
         colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
 

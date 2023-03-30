@@ -1,0 +1,46 @@
+name: 'clang_build_test'
+description: 'Compile code with colcon and using ASAN flags, and run colcon test.'
+
+inputs:
+
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
+  colcon_meta_file:
+    description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
+    required: false
+    default: ''
+
+  cmake_args:
+    description: 'flags to colcon build execution'
+    required: false
+    default: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+
+  workspace:
+    description: 'Workspace to build'
+    required: false
+    default: '${{ github.workspace }}'
+
+  workspace_dependencies:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Build
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build@main
+      with:
+        colcon_meta_file: ${{ inputs.colcon_meta_file }}
+        colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
+        cmake_args: '${{ inputs.cmake_args }}'
+        workspace: ${{ inputs.workspace }}
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}
+
+    - name: Test clang
+      uses: jparisu/eProsima-CI/multiplatform/clang_tidy_check@main
+      with:
+        packages_names: ${{ inputs.packages_names }}

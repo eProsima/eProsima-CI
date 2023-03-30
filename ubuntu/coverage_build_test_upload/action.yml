@@ -38,7 +38,7 @@ inputs:
   workspace:
     description: 'Workspace to build'
     required: false
-    default: './'
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -53,7 +53,7 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/install_gcov@main
 
     - name: Build
-      uses: jparisu/eProsima-CI/ubuntu/colcon_build_test@main
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@main
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}

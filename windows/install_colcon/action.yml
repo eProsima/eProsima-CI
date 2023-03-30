@@ -1,0 +1,17 @@
+name: 'install_colcon'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install colcon
+      shell: pwsh
+      run: |
+
+        "::group::Install colcon"
+
+        pip3 install vcstool
+        pip3 install setuptools==58.3.0
+        pip3 install colcon-common-extensions colcon-mixin
+
+        "::endgroup::"

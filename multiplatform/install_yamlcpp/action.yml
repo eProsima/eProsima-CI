@@ -1,0 +1,24 @@
+name: install_yamlcpp
+description: Install and setup yaml-cpp for linking and building in Windows
+
+inputs:
+  cmake_build_type:
+    description: 'Specifies the build type on single-configuration generators'
+    required: true
+    default: 'Release'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: jparisu/eProsima-CI/ubuntu/install_yamlcpp@main
+      if: runner.os == 'Linux'
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+
+    - name: Run in windows
+      uses: jparisu/eProsima-CI/windows/install_yamlcpp@main
+      if: runner.os == 'Windows'
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}

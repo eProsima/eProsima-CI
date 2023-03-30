@@ -6,12 +6,12 @@ inputs:
   source_code_directory:
     description: 'Source code directory'
     required: false
-    default: './src'
+    default: '${{ github.workspace }}/src'
 
   build_directory:
     description: 'Source code directory'
     required: false
-    default: './build'
+    default: '${{ github.workspace }}/build'
 
   packages_names:
     description: 'If set, it will look for these packages inside directory <build_directory>'
