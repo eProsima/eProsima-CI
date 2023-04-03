@@ -24,6 +24,14 @@ inputs:
     required: false
     default: 'completed'
 
+  # This must be passed as an argument because actions do not access to workflow secrets:
+  # Unrecognized named-value: 'secrets'. https://github.com/orgs/community/discussions/27054
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -34,28 +42,36 @@ runs:
 
         "::group::Get workflow id from ${{ inputs.workflow_source_repository }}"
 
-        # $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
+        if ([string]::IsNullOrEmpty("${{ inputs.secret_token }}")) {
 
-        # ((Invoke-WebRequest -Uri $RUNS_URI).Content |
-        #   ConvertFrom-Json).workflow_runs |
-        #   ? status -eq '${{ inputs.job_status }}' |
-        #   select -first 1 id |
-        #   % { "${{ inputs.id_job_result }}=" + $_.id } |
-        #   Out-File $env:GITHUB_ENV -Append
+          # Without secret
+          $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
 
-        $secret = ConvertTo-SecureString -String "${{ secrets.GITHUB_TOKEN }}" -AsPlainText
-        $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
+          ((Invoke-WebRequest -Uri $RUNS_URI).Content |
+            ConvertFrom-Json).workflow_runs |
+            ? status -eq '${{ inputs.job_status }}' |
+            select -first 1 id |
+            % { "${{ inputs.id_job_result }}=" + $_.id } |
+            Out-File $env:GITHUB_ENV -Append
 
-        # Check available queries according with github policy
-        ((Invoke-WebRequest -Authentication OAuth -Token $secret `
-          -Uri https://api.github.com/users/octocat).Headers.GetEnumerator() |
-          ? Key -like "X-RateLimit*") | Out-Host
+        } else {
 
-        ((Invoke-WebRequest -Authentication OAuth -Token $secret -Uri $RUNS_URI).Content |
-          ConvertFrom-Json).workflow_runs |
-          ? status -eq '${{ inputs.job_status }}' |
-          select -first 1 id |
-          % { "${{ inputs.id_job_result }}=" + $_.id } |
-          Out-File $env:GITHUB_ENV -Append
+          # With secret
+          $secret = ConvertTo-SecureString -String "${{ inputs.secret_token }}" -AsPlainText
+          $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
+
+          # Check available queries according with github policy
+          ((Invoke-WebRequest -Authentication OAuth -Token $secret `
+            -Uri https://api.github.com/users/octocat).Headers.GetEnumerator() |
+            ? Key -like "X-RateLimit*") | Out-Host
+
+          ((Invoke-WebRequest -Authentication OAuth -Token $secret -Uri $RUNS_URI).Content |
+            ConvertFrom-Json).workflow_runs |
+            ? status -eq '${{ inputs.job_status }}' |
+            select -first 1 id |
+            % { "${{ inputs.id_job_result }}=" + $_.id } |
+            Out-File $env:GITHUB_ENV -Append
+
+        }
 
         "::endgroup::"

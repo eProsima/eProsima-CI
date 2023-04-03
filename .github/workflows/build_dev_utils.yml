@@ -49,6 +49,11 @@ jobs:
           - os: ubuntu-22.04
             cmake_build_type: Debug
 
+    # Windows env variables
+    env:
+      CXXFLAGS: /MP
+      OPENSSL64_ROOT: "C:/Program Files/OpenSSL-Win64"
+
     steps:
 
       - name: Sync this repository
@@ -63,6 +68,7 @@ jobs:
           workflow_source: build_fastdds.yml
           target_workspace: install
           workflow_source_repository: ${{ github.repository }}
+          secret_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get colcon.meta and .repos files to build artifact
         uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@main

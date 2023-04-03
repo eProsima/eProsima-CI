@@ -24,6 +24,10 @@ inputs:
     required: false
     default: 'completed'
 
+  secret_token:
+    description: 'Unused parameter'
+    required: false
+
 runs:
   using: composite
   steps:
