@@ -43,7 +43,7 @@ runs:
 
         "::group::Run tests using colcon"
 
-        if ([string]::IsNullOrEmpty(${{ inputs.file_result }})) {
+        if ([string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
           ${{ inputs.workspace_dependencies }}/setup.ps1
         }
 

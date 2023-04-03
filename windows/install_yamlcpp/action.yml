@@ -21,13 +21,14 @@ runs:
         if ( $res -notlike '*yamlcpp found.*')
         {
           git clone --branch yaml-cpp-0.7.0 https://github.com/jbeder/yaml-cpp yamlcpp;
-          cmake -DCMAKE_INSTALL_PREFIX='C:\Program Files\yamlcpp' -B build\yamlcpp yamlcpp
+
+          # Remove test because it installs gtest
+          Remove-Item 'yamlcpp\test' -Recurse
+
+          cmake -DCMAKE_INSTALL_PREFIX='C:\Program Files\yamlcpp' -DYAML_CPP_BUILD_TESTS=OFF -B build\yamlcpp yamlcpp
           cmake --build build\yamlcpp --config ${{ inputs.cmake_build_type }} --target install
           New-Item -ItemType File yamlcpp/COLCON_IGNORE
         }
-
-        # Remove test because it installs gtest
-        Remove-Item 'yamlcpp\test' -Recurse
 
         echo "C:\Program Files\yamlcpp" >> ${{ github.path }}
 
