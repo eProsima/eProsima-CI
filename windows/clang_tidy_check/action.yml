@@ -1,0 +1,34 @@
+name: 'clang_tidy_check'
+description: 'Run clang tidy check.'
+
+inputs:
+
+  build_directory:
+    description: 'Directory where builds are'
+    required: false
+    default: 'build'
+
+  packages_names:
+    description: 'If set, it will look for these packages inside directory <build_directory>'
+    required: false
+    default: ''
+
+  result_file_name:
+    description: 'Name of file to save result (advisable to use absolute path).'
+    required: false
+    default: 'clang_results.yml'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run clang tidy check
+      shell: bash
+      run: |
+
+        "::group::Build using colcon"
+
+        // TODO Unsupported for windows
+        exit 1
+
+        "::endgroup::"

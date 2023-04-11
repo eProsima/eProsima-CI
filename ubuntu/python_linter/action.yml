@@ -39,14 +39,14 @@ runs:
         path: src
 
     - name: Fetch all branches and tags
-      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/annapurna-workflows
       with:
         workspace: src
 
     - name: Install Flake8
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/annapurna-workflows
       with:
-        custom_packages: flake8==5.0.4 flake8-quotes
+        packages: flake8==5.0.4 flake8-quotes
 
     - name: Fetch python linter config file
       run: |
@@ -57,7 +57,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@feature/annapurna-workflows
       with:
         result_env_var:
           MODIFIED_FILES

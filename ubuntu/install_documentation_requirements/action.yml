@@ -1,0 +1,18 @@
+name: 'install_documentation_requirements'
+description: 'Install yaml cpp'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install docs requirements with pip
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/annapurna-workflows
+      with:
+        packages: \
+          sphinx==4.3.1 \
+          sphinx==4.3.1 \
+          doc8==0.10.1 \
+          sphinx_rtd_theme==0.5.2 \
+          sphinxcontrib.spelling==7.2.1 \
+          sphinxcontrib-imagehelper==1.1.1 \
+          sphinx-tabs==3.2.0

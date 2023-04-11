@@ -1,0 +1,10 @@
+name: 'install_asio'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/annapurna-workflows
+      with:
+        packages: libasio-dev

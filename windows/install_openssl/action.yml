@@ -1,0 +1,17 @@
+name: install_openssl
+description: Install and setup Open SSL for linking and building in Windows
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install openssl
+      shell: pwsh
+      run: |
+
+        "::group::Install Open SSL"
+
+        choco install openssl -yr --no-progress;
+        @(ls -Path C:\Windows\System32\* -Include libssl-*.dll; ls -Path C:\Windows\SysWOW64\* -Include libssl-*.dll) | rm -ErrorAction SilentlyContinue
+
+        "::endgroup::"

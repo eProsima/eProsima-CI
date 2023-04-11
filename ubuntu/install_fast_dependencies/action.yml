@@ -1,0 +1,29 @@
+name: 'install_fast_dependencies'
+description: 'Install Fast DDS dependencies in ubuntu'
+
+inputs:
+  cmake_build_type:
+    description: 'Unused variable'
+    required: false
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install vcs tools
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/annapurna-workflows
+
+    - name: Install colcon
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/annapurna-workflows
+
+    - name: Install GTest
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@feature/annapurna-workflows
+
+    - name: Install asio
+      uses: eProsima/eProsima-CI/ubuntu/install_asio@feature/annapurna-workflows
+
+    - name: Install Tiny XML
+      uses: eProsima/eProsima-CI/ubuntu/install_tinyxml@feature/annapurna-workflows
+
+    - name: Install Open SSL
+      uses: eProsima/eProsima-CI/ubuntu/install_openssl@feature/annapurna-workflows

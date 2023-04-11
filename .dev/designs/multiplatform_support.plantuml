@@ -1,0 +1,114 @@
+
+@startuml
+
+' TYPES
+
+class Id #PaleGoldenRod
+{
+    + Id ()
+    + Id (name)
+    ..
+    + str   get_name()
+    + bool  is_defined()
+}
+
+enum NodeKind #BlanchedAlmond
+{
+    UNDETERMINED
+    ..
+    DISCOVERY
+    AGENT
+    MAIN
+    COMPUTATIONAL
+    EDGE
+    STATUS
+}
+
+enum StateKind #BlanchedAlmond
+{
+    UNKNOWN
+    ..
+    RUNNING
+    STOPPED
+    DROPPED
+}
+
+class Status #PaleGoldenRod
+{
+    + Status ()
+    + Status (id, node_kind, state)
+    ..
+    + Id   get_id ()
+    + NodeKind          get_node_kind ()
+    + StateKind         get_status_kind ()
+}
+Status  --* Id
+Status  --* NodeKind
+Status  --* StateKind
+
+class Job #PaleGoldenRod
+{
+    + Job (str)
+    ..
+    + str   to_string()
+}
+
+class JobSolution #PaleGoldenRod
+{
+    + JobSolution (str)
+    ..
+    + str   to_string()
+}
+
+' LISTENERS
+
+entity StatusListener #PaleTurquoise
+{
+    + void  status_received (Status )
+}
+StatusListener  -->  Status  :  <<process>>
+
+entity JobListener #PaleTurquoise
+{
+    + JobSolution   process_job (Job )
+}
+JobListener  -->  JobSolution  :  <<return>>
+JobListener  <--  Job  :  <<get>>
+
+' NODES
+
+class StatusNode #APPLICATION
+{
+    + StatusNode (name)
+    ..
+    + void              process_status_async (lambda(Status) )
+    + void              process_status_async (StatusListener )
+    + void              stop_processing ()
+    + Id   get_id ()
+}
+StatusNode  --o  StatusListener  :  <<process_status_async>>
+StatusNode  --*  Id  :  <<has>>
+
+class MainNode #APPLICATION
+{
+    + MainNode (name)
+    ..
+    + (JobSolution, Id)    request_job_solution (Job )
+    + Id                           get_id ()
+}
+MainNode  -->  Job  :  <<send>>
+MainNode  -->  JobSolution  :  <<receives>>
+MainNode  --*  Id  :  <<has>>
+
+class ComputingNode #APPLICATION
+{
+    + ComputingNode (name)
+    ..
+    + Id   process_job (lamnda(Job) )
+    + Id   process_job (JobListener )
+    + Id   get_id ()
+}
+ComputingNode  --o  JobListener  :  <<process_job>>
+ComputingNode  --*  Id  :  <<has>>
+
+@enduml

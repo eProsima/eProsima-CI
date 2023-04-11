@@ -1,0 +1,16 @@
+name: 'install_gcov'
+description: 'Install coverage requirements'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu by apt
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/annapurna-workflows
+      with:
+        packages: lcov
+
+    - name: Install in ubuntu by pip
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/annapurna-workflows
+      with:
+        packages: gcovr==5.0

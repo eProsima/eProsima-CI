@@ -1,0 +1,72 @@
+name: 'generate_coverage_report'
+description: 'Generate Codecov report of a built and tested repo.'
+
+inputs:
+
+  source_code_directory:
+    description: 'Source code directory'
+    required: false
+    default: '${{ github.workspace }}/src'
+
+  build_directory:
+    description: 'Source code directory'
+    required: false
+    default: '${{ github.workspace }}/build'
+
+  packages_names:
+    description: 'If set, it will look for these packages inside directory <build_directory>'
+    required: false
+    default: ''
+
+  exclude_tags:
+    description: 'arguments to exclude files or directories for gcovr'
+    required: false
+    default: ''
+
+  exclude_tags_default:
+    description: 'Default arguments to exclude files or directories for gcovr'
+    required: false
+    default: '--exclude=".*docs/.*" --exclude=".*test/.*" --exclude=".*github/.*" --exclude=".*dev/.*" --exclude=".*thirdparty/.*" --exclude=".*resources"'
+
+  result_file_name:
+    description: 'Name of file to save result (advisable to use absolute path).'
+    required: false
+    default: 'coverage.xml'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Generate coverage
+      run: |
+
+        echo "::group::Generate coverage"
+
+        mkdir -p ${{ inputs.build_directory }}/_all
+        if [[ ! -z "${{ inputs.packages_names }}" ]]; then
+          for file in ${{ inputs.packages_names }}
+          do
+            cp --recursive ${{ inputs.build_directory }}/${file} ${{ inputs.build_directory }}/_all
+          done
+        else
+          cp --recursive ${{ inputs.build_directory }} ${{ inputs.build_directory }}/_all
+        fi
+
+        mkdir -p coverage-report
+
+        gcovr \
+          --root ${{ inputs.source_code_directory }} \
+          --output ${{ inputs.result_file_name }} \
+          --xml-pretty \
+          --exclude-unreachable-branches \
+          ${{ inputs.exclude_tags_default }} \
+          ${{ inputs.exclude_tags }} \
+          ${{ inputs.build_directory }}/_all
+
+        if [[ -f "${{ inputs.result_file_name }}" ]]; then
+            echo "Coverage file saved!"
+        fi
+
+        echo "::endgroup::"
+
+      shell: bash

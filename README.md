@@ -15,7 +15,7 @@ These actions could be used right away in any repository.
   * Check the C++ linter of the new files added to the repository.
 
 ```yml
-uses: eProsima/eProsima-CI/ubuntu-22.04/uncrustify@main
+uses: eProsima/eProsima-CI/ubuntu-22.04/uncrustify@feature/annapurna-workflows
 with:
   result_filename: uncrustify_results.xml  # File to store results
   uncrustify_configuration_version: master  # Version of eProsima/cpp-style repo to get configuration
@@ -28,7 +28,7 @@ with:
   * Check the Python linter of the new files added to the repository.
 
 ```yml
-uses: eProsima/eProsima-CI/ubuntu/uncrustify@main
+uses: eProsima/eProsima-CI/ubuntu/uncrustify@feature/annapurna-workflows
 with:
   linter_configuration_version: master  # Version of eProsima/cpp-style repo to get configuration
   file_extensions_grep_args: "-e '\\.py'"  # Grep arguments to include files to check
@@ -45,24 +45,24 @@ These actions are of generic use, commonly as auxiliary steps in other actions
 
 * [get_git_diff_files](ubuntu/get_git_diff_files/action.yml)
   * Get the files that differ from one github reference to another. Can grep result.
-  * `uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main`
+  * `uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@feature/annapurna-workflows`
 
 * [git_fetch_all](ubuntu/git_fetch_all/action.yml)
   * Get all branches of a specific repository.
-  * `uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main`
+  * `uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/annapurna-workflows`
 
 * [install_apt_packages](ubuntu/install_apt_packages/action.yml)
   * Install generic apt packages required by these actions and most eProsima projects.
-  * `uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main`
+  * `uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/annapurna-workflows`
 
 * [install_colcon](ubuntu/install_colcon/action.yml)
   * Install colcon and its dependencies depending on the platform.
-  * `uses: eProsima/eProsima-CI/ubuntu/install_colcon@main`
+  * `uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/annapurna-workflows`
 
 * [install_python_packages](ubuntu/install_python_packages/action.yml)
   * Install generic python packages required by these actions and most eProsima projects.
-  * `uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main`
+  * `uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/annapurna-workflows`
 
-* [set_platform](ubuntu/set_platform/action.yml)
+* [get_platform](ubuntu/get_platform/action.yml)
   * Set the platform OS version in a environment variable.
-  * `uses: eProsima/eProsima-CI/ubuntu/set_platform@main`
+  * `uses: eProsima/eProsima-CI/ubuntu/get_platform@feature/annapurna-workflows`

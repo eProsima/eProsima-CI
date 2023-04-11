@@ -1,0 +1,48 @@
+name: 'get_file_from_repo'
+description: 'TODO'
+
+inputs:
+
+  source_repository_branch:
+    description: 'TODO'
+    required: false
+    default: 'main'
+
+  source_repository:
+    description: 'TODO'
+    required: false
+    default: '${{ github.repository }}'
+
+  file_name:
+    description: 'Colcon meta to give cmake options to packages'
+    required: true
+
+  file_result:
+    description: 'Name of the file result'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Download using wget
+      shell: pwsh
+      run: |
+
+        "::group::Getting file ${{ inputs.file_name }} from ${{ inputs.source_repository }}"
+
+        if ([string]::IsNullOrEmpty("${{ inputs.file_result }}")) {
+          $env:FILE_RESULT_ = "${{ inputs.file_name }}"
+        } else {
+          $env:FILE_RESULT_ = "${{ inputs.file_result }}"
+        }
+
+        Invoke-WebRequest `
+          -Uri "https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}" `
+          -OutFile "$env:FILE_RESULT_"
+
+        echo "Downloaded file in path <$env:FILE_RESULT_>"
+        cat $env:FILE_RESULT_
+
+        "::endgroup::"

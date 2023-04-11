@@ -1,0 +1,39 @@
+name: 'clang_tidy_check'
+description: 'Run clang tidy check.'
+
+inputs:
+
+  build_directory:
+    description: 'Directory where builds are'
+    required: false
+    default: 'build'
+
+  packages_names:
+    description: 'If set, it will look for these packages inside directory <build_directory>'
+    required: false
+    default: ''
+
+  result_file_name:
+    description: 'Name of file to save result (advisable to use absolute path).'
+    required: false
+    default: 'clang_results.yml'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/clang_tidy_check@feature/annapurna-workflows
+      if: runner.os == 'Linux'
+      with:
+        build_directory: ${{ inputs.build_directory }}
+        packages_names: ${{ inputs.packages_names }}
+        result_file_name: ${{ inputs.result_file_name }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/clang_tidy_check@feature/annapurna-workflows
+      if: runner.os == 'Windows'
+      with:
+        build_directory: ${{ inputs.build_directory }}
+        packages_names: ${{ inputs.packages_names }}
+        result_file_name: ${{ inputs.result_file_name }}

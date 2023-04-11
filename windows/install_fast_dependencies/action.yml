@@ -1,0 +1,23 @@
+name: 'install_fast_dependencies'
+description: 'Install Fast DDS dependencies in ubuntu'
+
+inputs:
+  cmake_build_type:
+    description: 'Specifies the build type on single-configuration generators'
+    required: true
+    default: 'Release'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install colcon
+      uses: eProsima/eProsima-CI/windows/install_colcon@feature/annapurna-workflows
+
+    - name: Install GTest
+      uses: eProsima/eProsima-CI/windows/install_gtest@feature/annapurna-workflows
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+
+    - name: Install Open SSL
+      uses: eProsima/eProsima-CI/windows/install_openssl@feature/annapurna-workflows

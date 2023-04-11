@@ -25,6 +25,11 @@ inputs:
     required: false
     default: '/.'
 
+  add_deleted:
+    description: 'Wether to add in list result those files that have been removed'
+    required: false
+    default: false
+
 runs:
   using: composite
   steps:
@@ -34,8 +39,14 @@ runs:
 
         echo "::group::Get git modified files in ${{ inputs.workspace }}"
 
+        if [ "${{ inputs.add_deleted }}" == "true" ]; then
+          export GIT_FLAGS_=""
+        else
+          export GIT_FLAGS_="--diff-filter=d"
+        fi
+
         cd ${{ inputs.workspace }}
-        echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
+        echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
 
         echo "::endgroup::"
 

@@ -1,0 +1,77 @@
+# TODO this action takes only into consideration the last complete job, and not the look deeper if the name does not match.
+# It should look recursively till a max depth in completed jobs for the artifact name asked
+name: 'get_workflow_id'
+description: 'TODO'
+
+inputs:
+
+  workflow_source:
+    description: 'Name of the workflow to look for'
+    required: true
+
+  workflow_source_repository:
+    description: 'Name of the repository to look for the job id [this repository]'
+    required: false
+    default: '$GITHUB_REPOSITORY'
+
+  id_job_result:
+    description: 'Name of the env variable to store the job id'
+    required: false
+    default: 'job_id'
+
+  job_status:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: 'completed'
+
+  # This must be passed as an argument because actions do not access to workflow secrets:
+  # Unrecognized named-value: 'secrets'. https://github.com/orgs/community/discussions/27054
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Download using wget
+      shell: pwsh
+      run: |
+
+        "::group::Get workflow id from ${{ inputs.workflow_source_repository }}"
+
+        if ([string]::IsNullOrEmpty("${{ inputs.secret_token }}")) {
+
+          # Without secret
+          $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
+
+          ((Invoke-WebRequest -Uri $RUNS_URI).Content |
+            ConvertFrom-Json).workflow_runs |
+            ? status -eq '${{ inputs.job_status }}' |
+            select -first 1 id |
+            % { "${{ inputs.id_job_result }}=" + $_.id } |
+            Out-File $env:GITHUB_ENV -Append
+
+        } else {
+
+          # With secret
+          $secret = ConvertTo-SecureString -String "${{ inputs.secret_token }}" -AsPlainText
+          $RUNS_URI = '${{ github.api_url }}/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs'
+
+          # Check available queries according with github policy
+          ((Invoke-WebRequest -Authentication OAuth -Token $secret `
+            -Uri https://api.github.com/users/octocat).Headers.GetEnumerator() |
+            ? Key -like "X-RateLimit*") | Out-Host
+
+          ((Invoke-WebRequest -Authentication OAuth -Token $secret -Uri $RUNS_URI).Content |
+            ConvertFrom-Json).workflow_runs |
+            ? status -eq '${{ inputs.job_status }}' |
+            select -first 1 id |
+            % { "${{ inputs.id_job_result }}=" + $_.id } |
+            Out-File $env:GITHUB_ENV -Append
+
+        }
+
+        "::endgroup::"
