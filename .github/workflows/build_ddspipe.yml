@@ -43,11 +43,6 @@ jobs:
           - ubuntu-22.04
           - windows-2019
           - windows-2022
-        exclude:
-          - os: ubuntu-20.04
-            cmake_build_type: Debug
-          - os: ubuntu-22.04
-            cmake_build_type: Debug
 
     # Windows env variables
     env:
