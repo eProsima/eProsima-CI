@@ -9,6 +9,10 @@ inputs:
     description: 'Name of the workflow to look for'
     required: true
 
+  artifact_name:
+    description: 'Name of the artifact to look for'
+    required: true
+
   workflow_source_repository:
     description: 'Name of the repository to look for the job id [this repository]'
     required: false
@@ -35,12 +39,38 @@ runs:
     - name: Get build eProsima dependencies Job Id
       run: |
 
-        echo "::group::Get Id from workflow ${{ inputs.workflow_source }}"
+        echo "::group::Get Id from workflow ${{ inputs.workflow_source }} for artifact ${{ inputs.artifact_name }}"
 
         echo "Access to url: $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs"
-        export JOB_ID=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs | \
-          jq '.workflow_runs[] | select(.status == "${{ inputs.job_status }}") | .id' | \
-          head -n 1)
+
+        # First, get the JSON with all workflow run
+        JOB_ID=""
+        RUNS=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs)
+
+        # Loop in descending order each workflow run
+        for RUN in $(echo "${RUNS}" | jq '.[] | reverse')
+        do
+          # Get workflow run ID
+          JOB_ID=$(echo "${RUN}" | jq '.id')
+
+          # Check if workflow run has been completed
+          RUN_STATUS=$(echo "${RUN}" | jq '.status')
+          if [ "${RUN_STATUS}" != "\"completed\"" ]; then
+            continue
+          fi
+
+          # Get artifacts for current workflow run
+          ARTIFACTS=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/runs/${JOB_ID}/artifacts | jq '.artifacts')
+
+          # Check if specified artifact exists in current workflow run
+          ARTIFACT_ID=$(echo "${ARTIFACTS}" | jq --arg artifact "${{ inputs.artifact_name }}" '.[] | select(.name == ${{ inputs.artifact_name }}) | .id')
+          if [ "${ARTIFACT_ID}" != "" ]; then
+            break
+          fi
+
+        done
+        # Thanks to Chat GPT to help me with this bash API
+
         echo "Job Id: ${JOB_ID}"
         echo "${{ inputs.id_job_result }}=${JOB_ID}" >> $GITHUB_ENV
 

@@ -9,6 +9,10 @@ inputs:
     description: 'Name of the workflow to look for'
     required: true
 
+  artifact_name:
+    description: 'Name of the artifact to look for'
+    required: true
+
   workflow_source_repository:
     description: 'Name of the repository to look for the job id [this repository]'
     required: false
@@ -40,6 +44,7 @@ runs:
       if: runner.os == 'Linux'
       with:
         workflow_source: ${{ inputs.workflow_source }}
+        artifact_name: '${{ inputs.artifact_name }}'
         workflow_source_repository: ${{ inputs.workflow_source_repository }}
         id_job_result: ${{ inputs.id_job_result }}
         job_status: ${{ inputs.job_status }}
@@ -50,6 +55,7 @@ runs:
       if: runner.os == 'Windows'
       with:
         workflow_source: ${{ inputs.workflow_source }}
+        artifact_name: '${{ inputs.artifact_name }}'
         workflow_source_repository: ${{ inputs.workflow_source_repository }}
         id_job_result: ${{ inputs.id_job_result }}
         job_status: ${{ inputs.job_status }}

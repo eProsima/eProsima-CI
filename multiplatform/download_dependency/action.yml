@@ -36,6 +36,7 @@ runs:
       uses: jparisu/eProsima-CI/multiplatform/get_workflow_id@main
       with:
         workflow_source: '${{ inputs.workflow_source }}'
+        artifact_name: '${{ inputs.artifact_name }}'
         workflow_source_repository: '${{ inputs.workflow_source_repository }}'
         id_job_result: download_dependency_job_id
         secret_token: ${{ inputs.secret_token }}

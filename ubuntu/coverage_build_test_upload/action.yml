@@ -11,9 +11,14 @@ inputs:
     description: 'token of codecov (use codecov environment and use <secrets.CODECOV_TOKEN> as argument)'
     required: true
 
-  codecov_file_path:
-    description: 'path to codecov xml file'
+  codecov_fix_file_path:
+    description: 'path to codecov yml fixes file'
     required: true
+
+  codecov_result_file_path:
+    description: 'path to codecov xml result file'
+    required: false
+    default: ${{ github.workspace }}/coverage.xml
 
   colcon_meta_file:
     description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
@@ -66,12 +71,13 @@ runs:
       uses: jparisu/eProsima-CI/ubuntu/generate_coverage_report@main
       with:
         packages_names: ${{ inputs.packages_names }}
-        result_file_name: coverage.xml
+        result_file_name: ${{ inputs.codecov_result_file_path }}
+        fix_file_path: ${{ inputs.codecov_fix_file_path }}
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
         token: ${{ inputs.codecov_token }}
-        files: ${{ inputs.codecov_file_path }}
-        root_dir: src/
+        files: ${{ inputs.codecov_result_file_path }}
+        root_dir: ${{ inputs.workspace_dependencies }}
         fail_ci_if_error: true

@@ -3,6 +3,10 @@ description: 'Generate Codecov report of a built and tested repo.'
 
 inputs:
 
+  fix_file_path:
+    description: 'path to codecov yml fixes file'
+    required: true
+
   source_code_directory:
     description: 'Source code directory'
     required: false
@@ -31,7 +35,7 @@ inputs:
   result_file_name:
     description: 'Name of file to save result (advisable to use absolute path).'
     required: false
-    default: 'coverage.xml'
+    default: ${{ github.workspace }}/coverage.xml
 
 runs:
   using: composite
@@ -41,6 +45,10 @@ runs:
       run: |
 
         echo "::group::Generate coverage"
+
+        if [[ ! -z "${{ inputs.fix_file_path }}" ]]; then
+          cp ${{ inputs.fix_file_path }} ./codecov.yml
+        fi
 
         mkdir -p ${{ inputs.build_directory }}/_all
         if [[ ! -z "${{ inputs.packages_names }}" ]]; then
@@ -64,7 +72,8 @@ runs:
           ${{ inputs.build_directory }}/_all
 
         if [[ -f "${{ inputs.result_file_name }}" ]]; then
-            echo "Coverage file saved!"
+            echo "Coverage file saved in ${{ inputs.result_file_name }}!"
+            cat ${{ inputs.result_file_name }}
         fi
 
         echo "::endgroup::"
