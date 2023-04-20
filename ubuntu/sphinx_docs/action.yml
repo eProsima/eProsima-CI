@@ -15,6 +15,12 @@ inputs:
     required: false
     default: '-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
 
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -37,6 +43,7 @@ runs:
         workflow_source: build_dev_utils.yml
         workflow_source_repository: jparisu/eProsima-CI
         target_workspace: '${{ github.workspace }}/install'
+        secret_token: ${{ inputs.secret_token }}
 
     - name: Build documentation with colcon
       uses: jparisu/eProsima-CI/multiplatform/colcon_build@main

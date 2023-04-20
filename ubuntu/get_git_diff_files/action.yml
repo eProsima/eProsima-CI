@@ -48,7 +48,6 @@ runs:
           export GIT_FLAGS_="--diff-filter=d"
         fi
 
-        cd ${{ inputs.workspace }}
         echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
 
         echo "::endgroup::"

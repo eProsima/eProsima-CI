@@ -19,6 +19,7 @@ runs:
 
         cd ${{ inputs.workspace }}
         git fetch --prune --unshallow
+        cd -
 
         echo "::endgroup::"
 
