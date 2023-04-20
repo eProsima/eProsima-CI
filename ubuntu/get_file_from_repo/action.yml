@@ -1,0 +1,51 @@
+name: 'get_file_from_repo'
+description: 'TODO'
+
+inputs:
+
+  source_repository_branch:
+    description: 'TODO'
+    required: false
+    default: 'main'
+
+  source_repository:
+    description: 'TODO'
+    required: false
+    default: '$GITHUB_REPOSITORY'
+
+  file_name:
+    description: 'Colcon meta to give cmake options to packages'
+    required: true
+
+  file_result:
+    description: 'Name of the file result'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Get file using curl
+      shell: bash
+      run: |
+
+        if [[ -z "${{ inputs.file_result }}" ]]; then
+          export FILE_RESULT_="${{ inputs.file_name }}"
+        else
+          export FILE_RESULT_="${{ inputs.file_result }}"
+        fi
+
+        echo "Calling wget with url: https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}"
+
+        wget \
+          -O ${FILE_RESULT_} \
+          https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }}
+
+        echo "File downloaded:"
+        cat ${{ inputs.file_result }}
+
+# curl version
+# curl \
+  # -l https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }} \
+  # -o ${{ inputs.file_result_path }}/${{ inputs.file_result }}

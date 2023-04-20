@@ -1,0 +1,44 @@
+name: 'download_dependency'
+description: 'TODO'
+
+inputs:
+
+  artifact_name:
+    description: 'Name of the artifact to download the binary result'
+    required: true
+
+  workflow_source:
+    description: 'Name of the workflow (yaml file) that generated the artifact'
+    required: true
+
+  workflow_source_repository:
+    description: 'User and name of the repository to download it from'
+    required: false
+    default: '$GITHUB_REPOSITORY'
+
+  target_workspace:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: '${{ github.workspace }}install'
+
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    # It is not needed to look for the workflow id as this action do it itself
+
+    - name: Download dependency
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: ${{ inputs.artifact_name }}
+        workflow: ${{ inputs.workflow_source }}
+        path: ${{ inputs.target_workspace }}
+        repo: ${{ inputs.workflow_source_repository }}
+        github_token: ${{ inputs.secret_token }}
+        search_artifacts: true

@@ -1,0 +1,24 @@
+name: 'install_fast_dependencies'
+description: 'Install Fast DDS system dependencies'
+
+inputs:
+  cmake_build_type:
+    description: 'Specifies the build type on single-configuration generators'
+    required: true
+    default: 'Release'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu
+      uses: jparisu/eProsima-CI/ubuntu/install_fast_dependencies@main
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+      if: runner.os == 'Linux'
+
+    - name: Install in windows
+      uses: jparisu/eProsima-CI/windows/install_fast_dependencies@main
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+      if: runner.os == 'Windows'

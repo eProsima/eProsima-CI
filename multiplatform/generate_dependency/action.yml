@@ -1,0 +1,59 @@
+name: 'generate_dependency'
+description: 'TODO'
+
+inputs:
+
+  vcs_repos_file:
+    description: '.repos file to import repositories'
+    required: true
+
+  artifact_name:
+    description: 'Name of the artifact to upload the binary result'
+    required: true
+
+  colcon_meta_file:
+    description: 'Colcon meta to give cmake options to packages'
+    required: false
+    default: ''
+
+  workspace:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: '${{ github.workspace }}/artifact'
+
+  workspace_dependencies:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
+  cmake_build_type:
+    description: 'CMake configuration flag'
+    required: false
+    default: Release
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install fast dependencies
+      uses: jparisu/eProsima-CI/multiplatform/install_fast_dependencies@main
+
+    - name: Fetch repositories
+      uses: jparisu/eProsima-CI/multiplatform/vcs_import@main
+      with:
+        vcs_repos_file: ${{ inputs.vcs_repos_file }}
+        destination_workspace: ${{ inputs.workspace }}/src
+
+    - name: Build workspace
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build@main
+      with:
+        colcon_meta_file: ${{ inputs.colcon_meta_file }}
+        workspace: ${{ inputs.workspace }}
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+
+    - name: Upload binaries
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ${{ inputs.workspace }}/install

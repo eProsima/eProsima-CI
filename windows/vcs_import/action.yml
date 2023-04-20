@@ -1,0 +1,29 @@
+name: 'vcs_import'
+description: 'Import some repositories and their versions from a yaml file'
+
+inputs:
+
+  vcs_repos_file:
+    description: '.repos file to import repositories'
+    required: true
+
+  destination_workspace:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: vcs_import
+      shell: pwsh
+      run: |
+
+        "::group::Import repositories from ${{ inputs.vcs_repos_file }}"
+
+        New-Item -ItemType Directory -Path ${{ inputs.destination_workspace }} -Force
+
+        vcs import ${{ inputs.destination_workspace }} --input ${{ inputs.vcs_repos_file }}
+
+        "::endgroup::"

@@ -1,0 +1,16 @@
+name: 'install_gcov'
+description: 'Install coverage requirements'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu by apt
+      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
+      with:
+        custom_packages: lcov
+
+    - name: Install in ubuntu by pip
+      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
+      with:
+        custom_packages: gcovr==5.0

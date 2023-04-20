@@ -1,0 +1,23 @@
+name: 'install_fast_dependencies'
+description: 'Install Fast DDS dependencies in ubuntu'
+
+inputs:
+  cmake_build_type:
+    description: 'Specifies the build type on single-configuration generators'
+    required: true
+    default: 'Release'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install colcon
+      uses: jparisu/eProsima-CI/windows/install_colcon@main
+
+    - name: Install GTest
+      uses: jparisu/eProsima-CI/windows/install_gtest@main
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+
+    - name: Install Open SSL
+      uses: jparisu/eProsima-CI/windows/install_openssl@main

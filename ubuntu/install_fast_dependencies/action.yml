@@ -1,0 +1,29 @@
+name: 'install_fast_dependencies'
+description: 'Install Fast DDS dependencies in ubuntu'
+
+inputs:
+  cmake_build_type:
+    description: 'Unused variable'
+    required: false
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install vcs tools
+      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
+
+    - name: Install colcon
+      uses: jparisu/eProsima-CI/ubuntu/install_colcon@main
+
+    - name: Install GTest
+      uses: jparisu/eProsima-CI/ubuntu/install_gtest@main
+
+    - name: Install asio
+      uses: jparisu/eProsima-CI/ubuntu/install_asio@main
+
+    - name: Install Tiny XML
+      uses: jparisu/eProsima-CI/ubuntu/install_tinyxml@main
+
+    - name: Install Open SSL
+      uses: jparisu/eProsima-CI/ubuntu/install_openssl@main

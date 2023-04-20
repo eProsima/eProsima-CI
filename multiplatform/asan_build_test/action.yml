@@ -1,0 +1,47 @@
+name: 'asan_build_test'
+description: 'Compile code with colcon and using ASAN flags, and run colcon test.'
+
+inputs:
+
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
+  colcon_meta_file:
+    description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
+    required: false
+    default: ''
+
+  cmake_args:
+    description: 'Cmake args for colcon build'
+    required: false
+    default: '-DBUILD_TESTS=ON -DASAN_BUILD=ON -DCMAKE_BUILD_TYPE=Debug'
+
+  ctest_args:
+    description: 'flags to colcon test execution'
+    required: false
+    default: '--label-exclude "xfail|xasan"'
+
+  workspace:
+    description: 'Workspace to build'
+    required: false
+    default: '${{ github.workspace }}'
+
+  workspace_dependencies:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Build
+      uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@main
+      with:
+        packages_names: ${{ inputs.packages_names }}
+        colcon_meta_file: ${{ inputs.colcon_meta_file }}
+        cmake_args: ${{ inputs.cmake_args }}
+        ctest_args: ${{ inputs.ctest_args }}
+        workspace: ${{ inputs.workspace }}
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}
