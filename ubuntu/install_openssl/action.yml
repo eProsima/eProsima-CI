@@ -7,4 +7,4 @@ runs:
     - name: Install in ubuntu
       uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
       with:
-        custom_packages: libssl-dev
+        packages: libssl-dev
