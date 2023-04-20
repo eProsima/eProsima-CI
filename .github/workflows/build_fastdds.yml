@@ -1,0 +1,69 @@
+# TODO
+
+name: build_fastdds
+
+on:
+
+  workflow_dispatch:
+
+    inputs:
+
+      built_configuration_branch:
+        description: 'Branch or tag of eProsima-CI repository to get .repos and colcon.meta from that will be executed'
+        required: false
+        default: 'main'
+
+      artifacts_name_postfix:
+        description: 'Addition to artifacts name creation (use non default postfix when creating artifacts with specific arguments).'
+        required: false
+        default: '_manual'
+
+  schedule:
+
+    # Every night at 00:00
+    - cron: '0 0 * * *'
+
+env:
+  default_configuration_branch: 'main'
+  default_artifact_postfix: '_nightly'
+
+jobs:
+
+  build_fastdds:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        cmake_build_type:
+          - Release
+          - Debug
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+
+    steps:
+
+      - name: Sync this repository
+        uses: actions/checkout@v3
+        with:
+          path: src/eprosima-CI
+
+      - name: Get colcon.meta and .repos files to build fastdds
+        uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        with:
+          source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
+          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
+          repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
+          colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
+          repos_file_result: ${{ github.workspace }}/dependencies.repos
+
+      - name: Build Fast DDS and generate artifact
+        uses: jparisu/eProsima-CI/multiplatform/generate_dependency@main
+        with:
+          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
+          artifact_name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          colcon_meta_file: ${{ github.workspace }}/colcon.meta
+          cmake_build_type: ${{ matrix.cmake_build_type }}

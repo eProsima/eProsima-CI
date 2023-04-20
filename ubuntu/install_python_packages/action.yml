@@ -13,7 +13,6 @@ inputs:
     required: false
     default: ''
 
-
 runs:
   using: composite
   steps:
@@ -34,7 +33,6 @@ runs:
           sudo pip3 install -U \
             -r ${{ inputs.requirements_file_name }}
         fi
-
 
         echo "::endgroup::"
 
