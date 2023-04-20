@@ -1,7 +1,6 @@
-# TODO this action takes only into consideration the last complete job, and not the look deeper if the name does not match.
-# It should look recursively till a max depth in completed jobs for the artifact name asked
 name: 'get_workflow_id'
 description: 'TODO'
+  # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
 
 inputs:
 
@@ -44,35 +43,32 @@ runs:
         echo "Access to url: $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs"
 
         # First, get the JSON with all workflow run
-        JOB_ID=""
-        RUNS=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/workflows/${{ inputs.workflow_source }}/runs)
+        JOB_ID_RESULT=""
+        RUNS=$(curl -sL https://api.github.com/repos/jparisu/eProsima-CI/actions/workflows/build_fastdds.yml/runs)
 
         # Loop in descending order each workflow run
-        for RUN in $(echo "${RUNS}" | jq '.[] | reverse')
+        for JOB_ID in $(echo "${RUNS}" | jq '.workflow_runs[] | select(.status == "${{ inputs.job_status }}") | .id')
         do
-          # Get workflow run ID
-          JOB_ID=$(echo "${RUN}" | jq '.id')
 
-          # Check if workflow run has been completed
-          RUN_STATUS=$(echo "${RUN}" | jq '.status')
-          if [ "${RUN_STATUS}" != "\"completed\"" ]; then
-            continue
-          fi
+            # Get artifacts for current workflow run
+            ARTIFACTS=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/runs/${JOB_ID}/artifacts | jq '.artifacts')
 
-          # Get artifacts for current workflow run
-          ARTIFACTS=$(curl -sL $GITHUB_API_URL/repos/${{ inputs.workflow_source_repository }}/actions/runs/${JOB_ID}/artifacts | jq '.artifacts')
-
-          # Check if specified artifact exists in current workflow run
-          ARTIFACT_ID=$(echo "${ARTIFACTS}" | jq --arg artifact "${{ inputs.artifact_name }}" '.[] | select(.name == ${{ inputs.artifact_name }}) | .id')
-          if [ "${ARTIFACT_ID}" != "" ]; then
-            break
-          fi
+            # Check if specified artifact exists in current workflow run
+            ARTIFACT_ID=$(echo "${ARTIFACTS}" | jq --arg artifact "${{ inputs.artifact_name }}" '.[] | select(.name == "${{ inputs.artifact_name }}") | .id')
+            if [ "${ARTIFACT_ID}" != "" ]; then
+                echo "5. artifacts: ${ARTIFACT_ID}"
+                JOB_ID_RESULT="${ARTIFACT_ID}"
+                break
+            fi
 
         done
-        # Thanks to Chat GPT to help me with this bash API
 
-        echo "Job Id: ${JOB_ID}"
-        echo "${{ inputs.id_job_result }}=${JOB_ID}" >> $GITHUB_ENV
+        echo "Job Id: <${JOB_ID_RESULT}>"
+        if [ "${JOB_ID_RESULT}" == "" ]; then
+            exit 1
+        fi
+
+        echo "${{ inputs.id_job_result }}=${JOB_ID_RESULT}" >> $GITHUB_ENV
 
         echo "::endgroup::"
 

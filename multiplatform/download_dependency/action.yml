@@ -4,15 +4,15 @@ description: 'TODO'
 inputs:
 
   artifact_name:
-    description: 'Name of the artifact to upload the binary result'
+    description: 'Name of the artifact to download the binary result'
     required: true
 
   workflow_source:
-    description: 'Name of the artifact to upload the binary result'
+    description: 'Name of the workflow (yaml file) that generated the artifact'
     required: true
 
   workflow_source_repository:
-    description: 'Name of the artifact to upload the binary result'
+    description: 'User and name of the repository to download it from'
     required: false
     default: '$GITHUB_REPOSITORY'
 
@@ -21,7 +21,6 @@ inputs:
     required: false
     default: '${{ github.workspace }}install'
 
-  # Windows argument
   # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
   secret_token:
     description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
@@ -32,14 +31,7 @@ runs:
   using: composite
   steps:
 
-    - name: Get build eProsima dependencies Job Id
-      uses: jparisu/eProsima-CI/multiplatform/get_workflow_id@main
-      with:
-        workflow_source: '${{ inputs.workflow_source }}'
-        artifact_name: '${{ inputs.artifact_name }}'
-        workflow_source_repository: '${{ inputs.workflow_source_repository }}'
-        id_job_result: download_dependency_job_id
-        secret_token: ${{ inputs.secret_token }}
+    # It is not needed to look for the workflow id as this action do it itself
 
     - name: Download dependency
       uses: dawidd6/action-download-artifact@v2
@@ -47,5 +39,6 @@ runs:
         name: ${{ inputs.artifact_name }}
         workflow: ${{ inputs.workflow_source }}
         path: ${{ inputs.target_workspace }}
-        run_id: ${{ env.download_dependency_job_id }}
         repo: ${{ inputs.workflow_source_repository }}
+        github_token: ${{ inputs.secret_token }}
+        search_artifacts: true
