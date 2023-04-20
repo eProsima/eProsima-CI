@@ -31,11 +31,10 @@ inputs:
     required: false
     default: "master"
 
-  # This argument is passed to a grep function to make the filter, so use grep arguments
   file_extensions_grep_args:
     description: 'Extensions of the files to check as C++, as grep filter arguments.'
     required: false
-    default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp'"
+    default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp' -e '\\.cxx'"
 
   # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22.
   # And on Ubuntu 22 there is only 1 version available in apt.
@@ -57,7 +56,7 @@ runs:
     - name: Install apt packages
       uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
       with:
-        custom_packages: uncrustify
+        packages: uncrustify
 
     - name: Install Colcon
       uses: jparisu/eProsima-CI/ubuntu/install_colcon@main
@@ -83,16 +82,11 @@ runs:
       id: GetGitDifference
       uses: jparisu/eProsima-CI/ubuntu/get_git_diff_files@main
       with:
-        result_env_var:
-          MODIFIED_FILES
-        head_ref:
-          origin/${GITHUB_HEAD_REF}
-        base_ref:
-          origin/${GITHUB_BASE_REF}
-        grep_args:
-          ${{ inputs.file_extensions_grep_args }}
-        workspace:
-          src
+        result_env_var: MODIFIED_FILES
+        head_ref: origin/${GITHUB_HEAD_REF}
+        base_ref: origin/${GITHUB_BASE_REF}
+        grep_args: ${{ inputs.file_extensions_grep_args }}
+        workspace: src
 
     - name: Check difference is not empty
       run: |

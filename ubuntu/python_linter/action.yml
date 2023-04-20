@@ -1,4 +1,4 @@
-# Execute Uncrustify job from the same repo that calls this action.
+# Execute flake8 Python linter job from the same repo that calls this action.
 #
 # Runs on:
 # - Ubuntu 20.04
@@ -24,7 +24,6 @@ inputs:
     required: false
     default: "master"
 
-  # This argument is passed to a grep function to make the filter, so use grep arguments
   file_extensions_grep_args:
     description: 'Extensions of the files to check as C++, as grep filter arguments.'
     required: false
