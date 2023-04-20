@@ -46,7 +46,7 @@ runs:
     - name: Install Flake8
       uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
       with:
-        custom_packages: flake8==5.0.4 flake8-quotes
+        packages: flake8==5.0.4 flake8-quotes
 
     - name: Fetch python linter config file
       run: |

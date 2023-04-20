@@ -8,11 +8,11 @@ runs:
     - name: Install docs requirements with apt
       uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
       with:
-        custom_packages: \
+        packages: \
           lcov
 
     - name: Install docs requirements with pip
       uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
       with:
-        custom_packages: \
+        packages: \
           gcovr==5.0
