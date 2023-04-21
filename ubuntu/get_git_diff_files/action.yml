@@ -39,15 +39,13 @@ runs:
 
         echo "::group::Get git modified files in ${{ inputs.workspace }}"
 
-        cd ${{ inputs.workspace }}
-        echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
-
         if [ "${{ inputs.add_deleted }}" == "true" ]; then
           export GIT_FLAGS_=""
         else
           export GIT_FLAGS_="--diff-filter=d"
         fi
 
+        cd ${{ inputs.workspace }}
         echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
 
         echo "::endgroup::"

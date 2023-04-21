@@ -5,6 +5,7 @@ runs:
   using: composite
   steps:
 
+    # TODO: check if both lcov and gcovr are needed
     - name: Install in ubuntu by apt
       uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
       with:
