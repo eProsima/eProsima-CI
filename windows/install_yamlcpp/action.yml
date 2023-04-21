@@ -3,7 +3,7 @@ description: Install and setup yaml-cpp for linking and building in Windows
 
 inputs:
   cmake_build_type:
-    description: 'Specifies the build type on single-configuration generators'
+    description: 'Specify the build type on single-configuration generators'
     required: true
     default: 'Release'
 

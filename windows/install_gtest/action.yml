@@ -2,10 +2,16 @@ name: install_gtest
 description: Install and setup GTest for linking and building in Windows
 
 inputs:
+
   cmake_build_type:
-    description: 'Specifies the build type on single-configuration generators'
+    description: 'Specify the build type on single-configuration generators'
     required: true
     default: 'Release'
+
+  gtest_version:
+    description: 'Specify GTest branch to download repository from github.com/google/googletest'
+    required: false
+    default: 'release-1.12.1'
 
 runs:
   using: composite
@@ -20,7 +26,7 @@ runs:
         cmake --find-package -DNAME=GTest -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;
         if ( $res -notlike '*GTest found.*')
         {
-          git clone --branch release-1.12.1 https://github.com/google/googletest.git gtest;
+          git clone --branch ${{ inputs.gtest_version }} https://github.com/google/googletest.git gtest;
           cmake -DCMAKE_INSTALL_PREFIX='C:\Program Files\gtest' -Dgtest_force_shared_crt=ON -DBUILD_GMOCK=ON `
             -B build\gtest -A x64 -T host=x64 gtest;
           cmake --build build\gtest --config ${{ inputs.cmake_build_type }} --target install

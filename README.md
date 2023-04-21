@@ -13,10 +13,10 @@ The main idea is to collect every repeated or generic step of any CI to have a s
     * Set the platform OS version in a environment variable.
 
   * `install_apt_packages`
-    * Install generic apt packages required by these actions and most eProsima projects.
+    * Install apt packages.
 
   * `install_python_packages`
-    * Install generic python packages required by these actions and most eProsima projects.
+    * Install python packages.
 
   * `install_colcon`
     * Install colcon and its dependencies depending on the platform.

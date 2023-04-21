@@ -1,5 +1,5 @@
 name: 'colcon_build'
-description: 'Import some repositories and their versions from a yaml file'
+description: 'TODO'
 
 inputs:
 
@@ -26,8 +26,7 @@ inputs:
   cmake_args_default:
     description: 'Default CMake arguments'
     required: false
-    default: ''
-    # TODO add werror flags
+    default: '/Werror'
 
   cmake_build_type:
     description: 'Set the cmake build type'

@@ -53,10 +53,8 @@ runs:
       with:
         workspace: src
 
-    - name: Install apt packages
-      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
-      with:
-        packages: uncrustify
+    - name: Install uncrustify
+      uses: jparisu/eProsima-CI/ubuntu/install_uncrustify@main
 
     - name: Install Colcon
       uses: jparisu/eProsima-CI/ubuntu/install_colcon@main
