@@ -51,6 +51,11 @@ jobs:
         with:
           path: src/eprosima-CI
 
+      - name: Install Fast DDS dependencies
+        uses: jparisu/eProsima-CI/multiplatform/install_fast_dependencies@main
+        with:
+          cmake_build_type: ${{ matrix.cmake_build_type }}
+
       - name: Get colcon.meta and .repos files to build fastdds
         uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@main
         with:

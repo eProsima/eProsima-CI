@@ -35,9 +35,6 @@ runs:
   using: composite
   steps:
 
-    - name: Install fast dependencies
-      uses: jparisu/eProsima-CI/multiplatform/install_fast_dependencies@main
-
     - name: Fetch repositories
       uses: jparisu/eProsima-CI/multiplatform/vcs_import@main
       with:

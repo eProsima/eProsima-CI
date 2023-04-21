@@ -56,6 +56,11 @@ jobs:
         with:
           path: src/eprosima-CI
 
+      - name: Install Fast DDS dependencies
+        uses: jparisu/eProsima-CI/multiplatform/install_fast_dependencies@main
+        with:
+          cmake_build_type: ${{ matrix.cmake_build_type }}
+
       - name: Install yaml cpp dependency
         uses: jparisu/eProsima-CI/multiplatform/install_yamlcpp@main
         with:
