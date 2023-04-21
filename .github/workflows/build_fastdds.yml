@@ -9,7 +9,7 @@ on:
     inputs:
 
       built_configuration_branch:
-        description: 'Branch or tag of eProsima-CI repository to get .repos and colcon.meta from that will be executed'
+        description: 'Branch or tag of eProsima-CI repository to get .repos and colcon.meta that will be applied'
         required: false
         default: 'main'
 
@@ -33,7 +33,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+
       matrix:
         cmake_build_type:
           - Release
@@ -44,6 +44,9 @@ jobs:
           - windows-2019
           - windows-2022
 
+      # Not cancel workflow if any matrix job fails
+      fail-fast: false
+
     steps:
 
       - name: Sync this repository
@@ -52,7 +55,7 @@ jobs:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: jparisu/eProsima-CI/multiplatform/install_fast_dependencies@main
+        uses: jparisu/eProsima-CI/multiplatform/install_fastdds_dependencies@main
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 

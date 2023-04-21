@@ -1,5 +1,5 @@
 name: 'vcs_import'
-description: 'Import some repositories and their versions from a yaml file'
+description: 'Import required repositories and their versions from a .repos file'
 
 inputs:
 
@@ -8,7 +8,7 @@ inputs:
     required: true
 
   destination_workspace:
-    description: 'Workspace to source where dependencies are'
+    description: 'Workspace where the repositories are downloaded'
     required: false
     default: '${{ github.workspace }}'
 

@@ -14,11 +14,11 @@ inputs:
     default: ''
 
   file_name:
-    description: 'Colcon meta to give cmake options to packages'
+    description: 'Colcon meta to set cmake options to packages'
     required: true
 
   file_result:
-    description: 'Name of the file result'
+    description: 'Name of the result file'
     required: false
     default: ''
 

@@ -1,4 +1,4 @@
-name: 'install_fast_dependencies'
+name: 'install_fastdds_dependencies'
 description: 'Install Fast DDS dependencies in ubuntu'
 
 inputs:

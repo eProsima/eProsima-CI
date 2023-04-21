@@ -17,7 +17,7 @@ inputs:
     default: ''
 
   workspace:
-    description: 'Workspace to source where dependencies are'
+    description: 'Workspace to generate artifact'
     required: false
     default: '${{ github.workspace }}/artifact'
 
@@ -27,7 +27,7 @@ inputs:
     default: ''
 
   cmake_build_type:
-    description: 'CMake configuration flag'
+    description: 'CMake build type configuration flag'
     required: false
     default: Release
 

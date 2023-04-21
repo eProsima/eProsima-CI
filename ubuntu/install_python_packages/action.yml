@@ -8,6 +8,11 @@ inputs:
     required: false
     default: ''
 
+  upgrade:
+    description: 'Upgrade already installed packages'
+    required: false
+    default: false
+
   requirements_file_name:
     description: 'If set, the file name of a requirements.txt file'
     required: false
@@ -22,15 +27,22 @@ runs:
 
         echo "::group::Install Python packages"
 
+        # Set upgrade flag
+        if [ "${{ inputs.upgrade }}" = "true" ]; then
+          export UPGRADE_FLAG="--upgrade"
+        else
+          export UPGRADE_FLAG=""
+        fi
+
         # Install python packages if any
         if [[ ! -z "${{ inputs.packages }}" ]] ; then
-          sudo pip3 install -U \
+          sudo pip3 install ${UPGRADE_FLAG} -U \
             ${{ inputs.packages }}
         fi
 
         # Install requirements file if any
         if [[ ! -z "${{ inputs.requirements_file_name }}" ]] ; then
-          sudo pip3 install -U \
+          sudo pip3 install ${UPGRADE_FLAG} -U \
             -r ${{ inputs.requirements_file_name }}
         fi
 
