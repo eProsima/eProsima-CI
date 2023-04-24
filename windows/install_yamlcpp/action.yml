@@ -2,10 +2,16 @@ name: install_yamlcpp
 description: Install and setup yaml-cpp for linking and building in Windows
 
 inputs:
+
   cmake_build_type:
-    description: 'Specify the build type on single-configuration generators'
+    description: Specify the build type on single-configuration generators
     required: true
-    default: 'Release'
+    default: Release
+
+  version:
+    description: 'Specify yamlcpp branch to download repository from https://github.com/jbeder/yaml-cpp'
+    required: false
+    default: 'yaml-cpp-0.7.0'
 
 runs:
   using: composite
@@ -20,7 +26,7 @@ runs:
         cmake --find-package -DNAME=yamlcpp -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;
         if ( $res -notlike '*yamlcpp found.*')
         {
-          git clone --branch yaml-cpp-0.7.0 https://github.com/jbeder/yaml-cpp yamlcpp;
+          git clone --branch ${{ inputs.version }} https://github.com/jbeder/yaml-cpp yamlcpp;
 
           # Remove test because it installs gtest
           Remove-Item 'yamlcpp\test' -Recurse

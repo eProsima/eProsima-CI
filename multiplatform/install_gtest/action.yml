@@ -4,15 +4,14 @@ description: Install and setup GTest
 inputs:
 
   cmake_build_type:
-    description: 'Specify the build type on single-configuration generators'
+    description: Specify the build type on single-configuration generators
     required: true
-    default: 'Release'
+    default: Release
 
-  gtest_version:
+  version:
     description: 'Specify GTest branch to download repository from github.com/google/googletest'
     required: false
     default: 'release-1.12.1'
-
 
 runs:
   using: composite
@@ -23,11 +22,11 @@ runs:
       if: runner.os == 'Linux'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
-        gtest_version: ${{ inputs.gtest_version }}
+        version: ${{ inputs.version }}
 
     - name: Run in windows
       uses: jparisu/eProsima-CI/windows/install_gtest@main
       if: runner.os == 'Windows'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
-        gtest_version: ${{ inputs.gtest_version }}
+        version: ${{ inputs.version }}

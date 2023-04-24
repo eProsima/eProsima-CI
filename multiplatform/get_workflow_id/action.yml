@@ -23,7 +23,7 @@ inputs:
     default: job_id
 
   job_status:
-    description: Workspace to source where dependencies are
+    description: Status of the finished workflow run to look for
     required: false
     default: completed
 
