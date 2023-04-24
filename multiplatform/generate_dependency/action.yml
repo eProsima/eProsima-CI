@@ -1,33 +1,33 @@
-name: 'generate_dependency'
-description: 'TODO'
+name: generate_dependency
+description: Build a project and upload its installed objects as an artifact
 
 inputs:
 
   vcs_repos_file:
-    description: '.repos file to import repositories'
+    description: .repos file to import repositories
     required: true
 
   artifact_name:
-    description: 'Name of the artifact to upload the binary result'
+    description: Name of the artifact to upload the binary result
     required: true
 
   colcon_meta_file:
-    description: 'Colcon meta to give cmake options to packages'
+    description: Colcon meta to give cmake options to packages
     required: false
     default: ''
 
   workspace:
-    description: 'Workspace to generate artifact'
+    description: Workspace to generate artifact
     required: false
-    default: '${{ github.workspace }}/artifact'
+    default: ${{ github.workspace }}/artifact
 
   workspace_dependencies:
-    description: 'Workspace to source where dependencies are'
+    description: Workspace to source where dependencies are
     required: false
     default: ''
 
   cmake_build_type:
-    description: 'CMake build type configuration flag'
+    description: CMake build type configuration flag
     required: false
     default: Release
 

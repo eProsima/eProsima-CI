@@ -1,0 +1,14 @@
+name: install_openssl
+description: Install Open SSL
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: jparisu/eProsima-CI/ubuntu/install_openssl@main
+      if: runner.os == 'Linux'
+
+    - name: Run in windows
+      uses: jparisu/eProsima-CI/windows/install_openssl@main
+      if: runner.os == 'Windows'

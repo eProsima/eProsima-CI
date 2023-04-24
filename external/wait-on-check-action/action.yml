@@ -1,0 +1,57 @@
+name: 'wait-on-check-action'
+description: 'https://github.com/lewagon/wait-on-check-action'
+
+inputs:
+
+  allowed-conclusions:
+    description: "Array of allowed conclusions"
+    required: false
+    default: success,skipped
+  check-name:
+    description: "A name of a check that has to pass"
+    required: false
+    default: ""
+  check-regexp:
+    description: "Filter checks to wait using Regexp"
+    required: false
+    default: ""
+  ref:
+    description: "A git ref to be checked: branch/tag/commit sha"
+    required: true
+  repo-token:
+    description: "A GitHub token for the repo"
+    required: false
+    default: ""
+  wait-interval:
+    description: "Seconds to wait between Checks API requests"
+    required: false
+    default: "10"
+  api-endpoint:
+    description: "Github API Endpoint to use."
+    required: false
+    default: ""
+  running-workflow-name:
+    description: "Name of the workflow to be ignored (the one who is waiting for the rest)"
+    required: false
+    default: ""
+  verbose:
+    description: "Print logs if true"
+    required: false
+    default: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: Wait for workflow run
+      uses: lewagon/wait-on-check-action@v1.3.1
+      with:
+        allowed-conclusions: ${{ inputs.allowed-conclusions }}
+        check-name: ${{ inputs.check-name }}
+        check-regexp: ${{ inputs.check-regexp }}
+        ref: ${{ inputs.ref }}
+        repo-token: ${{ inputs.repo-token }}
+        wait-interval: ${{ inputs.wait-interval }}
+        api-endpoint: ${{ inputs.api-endpoint }}
+        running-workflow-name: ${{ inputs.running-workflow-name }}
+        verbose: ${{ inputs.verbose }}

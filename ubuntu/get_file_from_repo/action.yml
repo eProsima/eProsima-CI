@@ -1,24 +1,24 @@
-name: 'get_file_from_repo'
-description: 'TODO'
+name: get_file_from_repo
+description: Download a file from a github repository
 
 inputs:
 
   source_repository_branch:
-    description: 'TODO'
+    description: Branch or reference of the repository to download files
     required: false
-    default: 'main'
+    default: main
 
   source_repository:
-    description: 'TODO'
+    description: Github repository to download files in format <user/repo_name>
     required: false
-    default: '$GITHUB_REPOSITORY'
+    default: ''
 
   file_name:
-    description: 'Colcon meta to set cmake options to packages'
+    description: Colcon meta to set cmake options to packages
     required: true
 
   file_result:
-    description: 'Name of the result file'
+    description: Name of the result file
     required: false
     default: ''
 

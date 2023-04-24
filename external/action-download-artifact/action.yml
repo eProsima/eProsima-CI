@@ -1,0 +1,98 @@
+name: 'action-download-artifact'
+description: 'https://github.com/dawidd6/action-download-artifact/blob/master/action.yml'
+
+inputs:
+
+  github_token:
+    description: GitHub token
+    required: false
+    default: ${{ github.token }}
+  workflow:
+    description: |
+      Workflow name.
+      If not specified, will be inferred from run_id (if run_id is specified), or will be the current workflow
+    required: false
+  workflow_conclusion:
+    description: |
+      Wanted status or conclusion to search for in recent runs
+      https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#list-workflow-runs
+    required: false
+    default: success
+  repo:
+    description: Repository name with owner (like actions/checkout)
+    required: false
+    default: ${{ github.repository }}
+  pr:
+    description: Pull request number
+    required: false
+  commit:
+    description: Commit hash
+    required: false
+  branch:
+    description: Branch name
+    required: false
+  event:
+    description: Event type
+    required: false
+  run_id:
+    description: Workflow run id
+    required: false
+  run_number:
+    description: Workflow run number
+    required: false
+  name:
+    description: Artifact name (download all artifacts if not specified)
+    required: false
+  name_is_regexp:
+    description: Treat artifact name as a regular expression and download only artifacts with matching names
+    required: false
+    default: false
+  path:
+    description: Where to unpack the artifact
+    required: false
+    default: "./"
+  check_artifacts:
+    description: Check workflow run whether it has an artifact
+    required: false
+    default: false
+  search_artifacts:
+    description: Search workflow runs for artifact with specified name
+    required: false
+    default: false
+  skip_unpack:
+    description: Choose to skip unpacking the downloaded artifact(s)
+    required: false
+    default: false
+  dry_run:
+    description: Check the existence of artifact(s) without downloading
+    required: false
+  if_no_artifact_found:
+    required: false
+    description: |
+      Choose how to exit the action if no artifact is found
+
+runs:
+  using: composite
+  steps:
+
+    - name: Download dependency
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token:         ${{ inputs.github_token }}
+        workflow:             ${{ inputs.workflow }}
+        workflow_conclusion:  ${{ inputs.workflow_conclusion }}
+        repo:                 ${{ inputs.repo }}
+        pr:                   ${{ inputs.pr }}
+        commit:               ${{ inputs.commit }}
+        branch:               ${{ inputs.branch }}
+        event:                ${{ inputs.event }}
+        run_id:               ${{ inputs.run_id }}
+        run_number:           ${{ inputs.run_number }}
+        name:                 ${{ inputs.name }}
+        name_is_regexp:       ${{ inputs.name_is_regexp }}
+        path:                 ${{ inputs.path }}
+        check_artifacts:      ${{ inputs.check_artifacts }}
+        search_artifacts:     ${{ inputs.search_artifacts }}
+        skip_unpack:          ${{ inputs.skip_unpack }}
+        dry_run:              ${{ inputs.dry_run }}
+        if_no_artifact_found: ${{ inputs.if_no_artifact_found }}
