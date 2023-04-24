@@ -23,7 +23,7 @@ inputs:
 
   # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
   secret_token:
-    description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
+    description: 'Secret token to authenticate the WebRequest so it does not get a rate limit error.'
     required: false
     default: ''
 
@@ -32,6 +32,7 @@ runs:
   steps:
 
     # It is not needed to look for the workflow id as this action do it itself
+    # However, looking for the id previously allows to call this action without secret_token
 
     - name: Download dependency
       uses: dawidd6/action-download-artifact@v2

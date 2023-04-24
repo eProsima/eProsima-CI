@@ -15,7 +15,7 @@ inputs:
   cmake_args:
     description: 'flags to colcon build execution'
     required: false
-    default: '-DBUILD_TESTS=ON -DTSAN_BUILD=ON -DCMAKE_BUILD_TYPE=Debug'
+    default: ''
 
   ctest_args:
     description: 'flags to colcon test execution'
@@ -36,12 +36,12 @@ runs:
   using: composite
   steps:
 
-    - name: Build
+    - name: Build and test
       uses: jparisu/eProsima-CI/multiplatform/colcon_build_test@main
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        cmake_args: ${{ inputs.cmake_args }}
+        cmake_args: '-DBUILD_TESTS=ON -DTSAN_BUILD=ON -DCMAKE_BUILD_TYPE=Debug ${{ inputs.cmake_args }}'
         ctest_args: ${{ inputs.ctest_args }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}

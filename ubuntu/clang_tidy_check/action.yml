@@ -4,7 +4,7 @@ description: 'Run clang tidy check.'
 inputs:
 
   build_directory:
-    description: 'Directory where builds are'
+    description: 'Binaries directory'
     required: false
     default: 'build'
 
@@ -51,5 +51,6 @@ runs:
         echo "::endgroup::"
 
       # It requires bash {0} otherwise grep not finding anything will make bash crash,
-      # when this is not the expected behavior (it actually remove set -e)
+      # when this is not the expected behavior
+      # (what this actually does is to remove -e, that is set by default from github actions bash call)
       shell: bash {0}

@@ -52,7 +52,6 @@ runs:
         colcon test `
           ${{ inputs.colcon_test_args_default }} `
           ${{ inputs.colcon_test_args }} `
-          --ctest-args `
-            ${{ inputs.ctest_args_default }} ${{ inputs.ctest_args }}
+          --ctest-args ${{ inputs.ctest_args_default }} ${{ inputs.ctest_args }}
 
         "::endgroup::"
