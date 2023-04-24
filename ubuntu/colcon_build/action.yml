@@ -50,7 +50,7 @@ runs:
     - name: Build workspace with colcon
       run: |
 
-        echo "::group::Compile colcon ${{ inputs.workspace }}"
+        echo "::group::Compile using colcon ${{ inputs.workspace }}"
 
         if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
           source ${{ inputs.workspace_dependencies }}/setup.bash

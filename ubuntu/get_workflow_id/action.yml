@@ -1,6 +1,5 @@
 name: 'get_workflow_id'
 description: 'TODO'
-  # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
 
 inputs:
 

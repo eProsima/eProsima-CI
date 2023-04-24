@@ -69,6 +69,9 @@ runs:
 
         cd ${{ inputs.workspace }}
 
+        # Microsoft.VisualStudio.DevShell.dll file in the Visual Studio installation directories,
+        # imports the associated PowerShell module,
+        # and launches the Visual Studio development shell with the specified options
         ls -Path @(${Env:ProgramFiles},${Env:ProgramFiles(x86)}) -Filter '*Visual Studio*' -Directory  -ErrorAction SilentlyContinue |
         ls -R -Filter 'Microsoft.VisualStudio.DevShell.dll' | select -First 1 -OutVariable pwshmodule ; `
           Import-Module $pwshmodule;Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
@@ -84,10 +87,7 @@ runs:
         cd ..
 
         if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
-          New-Item -ItemType File colcon.meta
-          $env:COLCON_BUILD_META_ = "colcon.meta"
-        } else {
-          $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
+          Remove-Item -Path "colcon.meta"
         }
 
         "::endgroup::"

@@ -13,7 +13,7 @@ inputs:
     default: ''
 
   cmake_args:
-    description: 'flags to colcon build execution'
+    description: 'flags to pass to colcon build execution'
     required: false
     default: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 

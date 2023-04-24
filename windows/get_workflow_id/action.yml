@@ -2,7 +2,6 @@
 # It should look recursively till a max depth in completed jobs for the artifact name asked
 name: 'get_workflow_id'
 description: 'TODO'
-  # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
 
 inputs:
 
