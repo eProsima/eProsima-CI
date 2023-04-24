@@ -61,7 +61,7 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: external/checkout@main
+        uses: jparisu/eProsima-CI/external/checkout@main
         with:
           path: src/eprosima-CI
 

@@ -34,7 +34,7 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: external/checkout@main
+      uses: jparisu/eProsima-CI/external/checkout@main
       with:
         path: src
 

@@ -33,7 +33,6 @@
 #
 
 name: build_dev_utils
-description: This Workflow builds an artifact with dev-utils and Fast DDS installed.
 
 on:
 
@@ -87,17 +86,17 @@ jobs:
     steps:
 
       - name: Wait for Fast DDS workflow run to finish
-        uses: external/wait-on-check-action@main
+        uses: jparisu/eProsima-CI/external/wait-on-check-action@main
         with:
           check-name: build_fastdds
-          ref: ${{ github.ref }}
+          ref: main
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           allowed-conclusions: success,skipped,cancelled,failure
           # each 30 seconds check if finished
           wait-interval: 30
 
       - name: Sync this repository
-        uses: external/checkout@main
+        uses: jparisu/eProsima-CI/external/checkout@main
         with:
           path: src/eprosima-CI
 

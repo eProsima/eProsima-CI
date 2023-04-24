@@ -30,7 +30,6 @@
 #
 
 name: build_fastdds
-description: This Workflow builds an artifact with Fast DDS installed.
 
 on:
 
@@ -82,7 +81,7 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: external/checkout@main
+        uses: jparisu/eProsima-CI/external/checkout@main
         with:
           path: src/eprosima-CI
 
