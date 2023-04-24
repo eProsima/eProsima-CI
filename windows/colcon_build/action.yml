@@ -1,45 +1,45 @@
-name: 'colcon_build'
+name: colcon_build
 description: Use colcon build command to build multiple packages
 
 inputs:
 
   colcon_meta_file:
-    description: 'colcon.meta file to set cmake options. If empty, it uses an empty file'
+    description: colcon.meta file to set cmake options. If empty, it uses an empty file
     required: false
     default: ''
 
   colcon_build_args:
-    description: 'args to pass to colcon build command (use arg cmake_args for CMake options)'
+    description: Arguments to pass to colcon build command (use cmake_args input for CMake options)
     required: false
     default: ''
 
   colcon_build_args_default:
-    description: 'Default args to pass to colcon build command (use arg cmake_args for CMake options)'
+    description: Default arguments to pass to colcon build command (use cmake_args input for CMake options)
     required: false
     default: '--event-handlers=console_direct+'
 
   cmake_args:
-    description: 'CMake arguments'
+    description: CMake arguments
     required: false
     default: ''
 
   cmake_args_default:
-    description: 'Default CMake arguments'
+    description: Default CMake arguments
     required: false
     default: '/Werror'
 
   cmake_build_type:
-    description: 'Set the cmake build type'
+    description: Set the cmake build type
     required: false
-    default: 'Release'
+    default: Release
 
   workspace:
-    description: 'Workspace to build'
+    description: Workspace to build
     required: false
-    default: '${{ github.workspace }}'
+    default: ${{ github.workspace }}
 
   workspace_dependencies:
-    description: 'Workspace to source where dependencies are'
+    description: Workspace to source where dependencies are
     required: false
     default: ''
 

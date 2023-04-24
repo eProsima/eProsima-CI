@@ -1,15 +1,15 @@
-name: 'install_gtest'
-description: 'Install and setup GTest for linking and building test application in Linux'
+name: install_gtest
+description: Install and setup GTest for linking and building test application in Linux
 
 inputs:
 
   cmake_build_type:
-    description: 'Unused'
+    description: Unused
     required: false
 
   # TODO accept different versions (not available using apt)
-  gtest_version:
-    description: 'Unused'
+  version:
+    description: Unused
     required: false
 
 runs:

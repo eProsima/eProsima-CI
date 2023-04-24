@@ -9,12 +9,12 @@ inputs:
     default: ''
 
   colcon_build_args:
-    description: args to pass to colcon build command (use arg cmake_args for CMake options)
+    description: Arguments to pass to colcon build command (use cmake_args input for CMake options)
     required: false
     default: ''
 
   colcon_build_args_default:
-    description: Default args to pass to colcon build command (use arg cmake_args for CMake options)
+    description: Default arguments to pass to colcon build command (use cmake_args input for CMake options)
     required: false
     default: '--event-handlers=console_direct+'
 

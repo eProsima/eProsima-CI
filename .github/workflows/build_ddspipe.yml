@@ -42,14 +42,14 @@ on:
     inputs:
 
       built_configuration_branch:
-        description: 'Branch or tag of eProsima-CI repository to get .repos and colcon.meta from that will be executed'
+        description: Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed
         required: false
-        default: 'main'
+        default: main
 
       artifacts_name_postfix:
-        description: 'Addition to artifacts name creation (use non default postfix when creating artifacts with specific arguments).'
+        description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
         required: false
-        default: '_manual'
+        default: _manual
 
   schedule:
 
@@ -57,8 +57,8 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  default_configuration_branch: 'main'
-  default_artifact_postfix: '_nightly'
+  default_configuration_branch: main
+  default_artifact_postfix: _nightly
   artifact_prefix: built_ddspipe
 
 jobs:

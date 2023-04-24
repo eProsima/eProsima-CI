@@ -44,7 +44,7 @@ on:
         default: main
 
       artifacts_name_postfix:
-        description: Addition to artifacts name creation (use non default postfix when creating artifacts with specific arguments).
+        description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
         required: false
         default: _manual
 
