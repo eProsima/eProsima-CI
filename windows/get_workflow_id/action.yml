@@ -1,7 +1,8 @@
 # TODO this action takes only into consideration the last complete job, and not the look deeper if the name does not match.
 # It should look recursively till a max depth in completed jobs for the artifact name asked
 name: 'get_workflow_id'
-description: 'TODO'
+description: Get the Id of the las workflow run that has successfully upload the artifact to look for
+  # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
 
 inputs:
 
@@ -43,8 +44,6 @@ runs:
     - name: Download using wget
       shell: pwsh
       run: |
-
-        # TODO look only for the run that has uploaded the artifact that is being looked up
 
         "::group::Get workflow id from ${{ inputs.workflow_source_repository }}"
 

@@ -1,36 +1,37 @@
-name: 'get_configurations_from_repo'
-description: 'TODO'
+name: get_configurations_from_repo
+description: Get .repos and colcon.meta files from other repository
 
 inputs:
 
   source_repository_branch:
-    description: 'TODO'
-    required: true
+    description: Branch or reference of the repository to download files
+    required: false
+    default: ${{ github.ref }}
 
   source_repository:
-    description: 'TODO'
+    description: Github repository to download files in format <user/repo_name>
     required: false
-    default: '${{ github.repository }}'
+    default: ${{ github.repository }}
 
   colcon_meta_file_result:
-    description: 'TODO'
+    description: Path and name of the result file to download the colcon.meta
     required: false
-    default: 'colcon.meta'
+    default: colcon.meta
 
   colcon_meta_file_path:
-    description: 'TODO'
+    description: Path and file where to find the colcon.meta file in external repository
     required: false
-    default: 'colcon.meta'
+    default: colcon.meta
 
   repos_file_result:
-    description: 'TODO'
+    description: Path and name of the result file to download the .repos
     required: false
-    default: 'dependencies.repos'
+    default: dependencies.repos
 
   repos_file_path:
-    description: 'TODO'
+    description: Path and file where to find the .repos file in external repository
     required: false
-    default: 'dependencies.repos'
+    default: dependencies.repos
 
 runs:
   using: composite

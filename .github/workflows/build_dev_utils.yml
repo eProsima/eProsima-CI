@@ -1,6 +1,39 @@
-# TODO
+# This Workflow builds an artifact with dev-utils and Fast DDS installed.
+# This is used by other workflows in this and other repositories to avoid compiling dependencies every time are needed.
+#
+# DESCRIPTION:
+#  First, this workflow downloads the last successful build of Fast DDS downloaded from build_fastdds workflow artifacts.
+#  This workflow takes a .repos file from "./.github/workflows/configurations/dev_utils/dependencies.repos"
+#  (in this same repository) and downloads the repositories included.
+#  Then uses the colcon.meta files in "./.github/workflows/configurations/metas/<os>/colcon.meta" to build projects.
+#  Finally it takes the install directory generated from colcon build and uploads it as an artifact.
+#  The result artifact also contains Fast DDS installed project.
+#  This is done for several OS and cmake built types:
+#    - ubuntu-22.04 | ubuntu-20.04 | windows-2019 | windows-2022
+#    - Debug | Release
+#
+# ARTIFACT RESULT:
+#  The artifact generated is called "built_dev_utils_<os>_<cmake_build_type><postfix>"
+#   <os> is "ubuntu-20.04", "ubuntu-22.04", "windows-2019", or "windows-2022"
+#   <cmake_build_type> is "Debug", or "Release"
+#   <postfix> is "_nightly" for schedule runs every night, or is set manually from user.
+#
+# SCHEDULE:
+#  This workflow runs every night at 00:00 using latest version of dev-utils (main).
+#  It waits till Fast DDS workflow has finished.
+#
+# MANUAL RUN:
+#  Running this workflow manually there are 2 arguments to set:
+#
+#   built_configuration_branch: set a branch to download dependencies.repos and colcon.meta files from
+#                               this repository [Default: main]
+#
+#   artifacts_name_postfix:     set the postfix name for the uploading artifact [Default: _manual]
+#                               Note: do not use "_nightly" in this argument, or other workflows may be affected
+#
 
 name: build_dev_utils
+description: This Workflow builds an artifact with dev-utils and Fast DDS installed.
 
 on:
 
@@ -20,17 +53,19 @@ on:
 
   schedule:
 
-    # Every night at 01:00
-    - cron: '0 1 * * *'
+    # Every night at 00:00
+    - cron: '0 0 * * *'
 
 env:
   default_configuration_branch: 'main'
   default_artifact_postfix: '_nightly'
+  artifact_prefix: built_dev_utils
 
 jobs:
 
   build_dev_utils:
 
+    name: build_dev_utils
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -51,8 +86,18 @@ jobs:
 
     steps:
 
+      - name: Wait for Fast DDS workflow run to finish
+        uses: external/wait-on-check-action@main
+        with:
+          check-name: build_fastdds
+          ref: ${{ github.ref }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          allowed-conclusions: success,skipped,cancelled,failure
+          # each 30 seconds check if finished
+          wait-interval: 30
+
       - name: Sync this repository
-        uses: actions/checkout@v3
+        uses: external/checkout@main
         with:
           path: src/eprosima-CI
 
@@ -83,7 +128,7 @@ jobs:
         uses: jparisu/eProsima-CI/multiplatform/generate_dependency@main
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          artifact_name: built_dev_utils_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          artifact_name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}
           workspace_dependencies: install

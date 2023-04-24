@@ -34,7 +34,7 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: actions/checkout@v3
+      uses: external/checkout@main
       with:
         path: src
 
