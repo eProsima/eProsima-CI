@@ -53,7 +53,8 @@ on:
   schedule:
 
     # Every night at 00:00
-    - cron: '0 0 * * *'
+    # TODO change it so it waits for fastdds_build running at same time (00:00)
+    - cron: '0 1 * * *'
 
 env:
   default_configuration_branch: main
@@ -85,15 +86,16 @@ jobs:
 
     steps:
 
-      - name: Wait for Fast DDS workflow run to finish
-        uses: jparisu/eProsima-CI/external/wait-on-check-action@main
-        with:
-          check-name: build_fastdds
-          ref: main
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          allowed-conclusions: success,skipped,cancelled,failure
-          # each 30 seconds check if finished
-          wait-interval: 30
+      # TODO fix it
+      # - name: Wait for Fast DDS workflow run to finish
+      #   uses: jparisu/eProsima-CI/external/wait-on-check-action@main
+      #   with:
+      #     check-name: build_fastdds
+      #     ref: main
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     allowed-conclusions: success,skipped,cancelled,failure
+      #     # each 30 seconds check if finished
+      #     wait-interval: 30
 
       - name: Sync this repository
         uses: jparisu/eProsima-CI/external/checkout@main
