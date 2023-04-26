@@ -1,4 +1,4 @@
-name: 'install_fast_dependencies'
+name: 'install_fastdds_dependencies'
 description: 'Install Fast DDS dependencies in ubuntu'
 
 inputs:
@@ -12,6 +12,8 @@ runs:
 
     - name: Install vcs tools
       uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
+      with:
+        packages: 'vcstool setuptools'
 
     - name: Install colcon
       uses: jparisu/eProsima-CI/ubuntu/install_colcon@main

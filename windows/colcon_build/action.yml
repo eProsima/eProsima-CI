@@ -1,46 +1,45 @@
-name: 'colcon_build'
-description: 'Import some repositories and their versions from a yaml file'
+name: colcon_build
+description: Use colcon build command to build multiple packages
 
 inputs:
 
   colcon_meta_file:
-    description: 'colcon.meta file to set cmake options. If empty, it uses an empty file'
+    description: colcon.meta file to set cmake options. If empty, it uses an empty file
     required: false
     default: ''
 
   colcon_build_args:
-    description: 'args to pass to colcon build command (use arg cmake_args for CMake options)'
+    description: Arguments to pass to colcon build command (use cmake_args input for CMake options)
     required: false
     default: ''
 
   colcon_build_args_default:
-    description: 'Default args to pass to colcon build command (use arg cmake_args for CMake options)'
+    description: Default arguments to pass to colcon build command (use cmake_args input for CMake options)
     required: false
     default: '--event-handlers=console_direct+'
 
   cmake_args:
-    description: 'CMake arguments'
+    description: CMake arguments
     required: false
     default: ''
 
   cmake_args_default:
-    description: 'Default CMake arguments'
+    description: Default CMake arguments
     required: false
-    default: ''
-    # TODO add werror flags
+    default: '/Werror'
 
   cmake_build_type:
-    description: 'Set the cmake build type'
+    description: Set the cmake build type
     required: false
-    default: 'Release'
+    default: Release
 
   workspace:
-    description: 'Workspace to build'
+    description: Workspace to build
     required: false
-    default: '${{ github.workspace }}'
+    default: ${{ github.workspace }}
 
   workspace_dependencies:
-    description: 'Workspace to source where dependencies are'
+    description: Workspace to source where dependencies are
     required: false
     default: ''
 
@@ -70,6 +69,9 @@ runs:
 
         cd ${{ inputs.workspace }}
 
+        # Microsoft.VisualStudio.DevShell.dll file in the Visual Studio installation directories,
+        # imports the associated PowerShell module,
+        # and launches the Visual Studio development shell with the specified options
         ls -Path @(${Env:ProgramFiles},${Env:ProgramFiles(x86)}) -Filter '*Visual Studio*' -Directory  -ErrorAction SilentlyContinue |
         ls -R -Filter 'Microsoft.VisualStudio.DevShell.dll' | select -First 1 -OutVariable pwshmodule ; `
           Import-Module $pwshmodule;Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
@@ -85,10 +87,7 @@ runs:
         cd ..
 
         if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
-          New-Item -ItemType File colcon.meta
-          $env:COLCON_BUILD_META_ = "colcon.meta"
-        } else {
-          $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
+          Remove-Item -Path "colcon.meta"
         }
 
         "::endgroup::"

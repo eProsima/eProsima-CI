@@ -1,31 +1,31 @@
-name: 'get_workflow_id'
-description: 'TODO'
+name: get_workflow_id
+description: Get the Id of the las workflow run that has successfully upload the artifact to look for
   # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
 
 inputs:
 
   workflow_source:
-    description: 'Name of the workflow to look for'
+    description: Name of the workflow to look for
     required: true
 
   artifact_name:
-    description: 'Name of the artifact to look for'
+    description: Name of the artifact to look for
     required: true
 
   workflow_source_repository:
-    description: 'Name of the repository to look for the job id [this repository]'
+    description: Name of the repository to look for the job id [this repository]
     required: false
-    default: '$GITHUB_REPOSITORY'
+    default: $GITHUB_REPOSITORY
 
   id_job_result:
-    description: 'Name of the env variable to store the job id'
+    description: Name of the env variable to store the job id
     required: false
-    default: 'job_id'
+    default: job_id
 
   job_status:
-    description: 'Workspace to source where dependencies are'
+    description: Status of the finished workflow run to look for
     required: false
-    default: 'completed'
+    default: completed
 
   secret_token:
     description: 'Unused parameter'

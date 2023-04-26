@@ -1,5 +1,5 @@
 name: 'colcon_test'
-description: 'Import some repositories and their versions from a yaml file'
+description: 'Execute colcon test command with arguments given'
 
 inputs:
 

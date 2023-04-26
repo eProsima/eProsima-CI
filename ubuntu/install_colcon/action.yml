@@ -5,14 +5,8 @@ runs:
   using: composite
   steps:
 
-    - name: install_colcon
-      run: |
-
-        echo "::group::Install colcon"
-
-        sudo pip3 install --upgrade --user setuptools==58.3.0
-        sudo pip3 install -U colcon-common-extensions colcon-mixin
-
-        echo "::endgroup::"
-
-      shell: bash
+    - name: install colcon
+      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
+      with:
+        packages: 'setuptools==58.3.0 colcon-common-extensions colcon-mixin'
+        upgrade: true

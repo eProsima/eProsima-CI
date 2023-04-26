@@ -1,24 +1,24 @@
-name: 'get_file_from_repo'
-description: 'TODO'
+name: get_file_from_repo
+description: Download a file from a github repository
 
 inputs:
 
   source_repository_branch:
-    description: 'TODO'
+    description: Branch or reference of the repository to download files
     required: false
-    default: 'main'
+    default: main
 
   source_repository:
-    description: 'TODO'
+    description: Github repository to download files in format <user/repo_name>
     required: false
-    default: '$GITHUB_REPOSITORY'
+    default: ''
 
   file_name:
-    description: 'Colcon meta to give cmake options to packages'
+    description: Colcon meta to set cmake options to packages
     required: true
 
   file_result:
-    description: 'Name of the file result'
+    description: Name of the result file
     required: false
     default: ''
 
@@ -26,9 +26,11 @@ runs:
   using: composite
   steps:
 
-    - name: Get file using curl
+    - name: Get file
       shell: bash
       run: |
+
+        echo "::group::Get file using wget"
 
         if [[ -z "${{ inputs.file_result }}" ]]; then
           export FILE_RESULT_="${{ inputs.file_name }}"
@@ -45,7 +47,4 @@ runs:
         echo "File downloaded:"
         cat ${{ inputs.file_result }}
 
-# curl version
-# curl \
-  # -l https://raw.githubusercontent.com/${{ inputs.source_repository }}/${{ inputs.source_repository_branch }}/${{ inputs.file_name }} \
-  # -o ${{ inputs.file_result_path }}/${{ inputs.file_result }}
+        echo "::endgroup::"

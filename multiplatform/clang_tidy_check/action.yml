@@ -4,7 +4,7 @@ description: 'Run clang tidy check.'
 inputs:
 
   build_directory:
-    description: 'Directory where builds are'
+    description: 'Binaries directory'
     required: false
     default: 'build'
 

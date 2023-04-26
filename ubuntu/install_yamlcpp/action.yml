@@ -1,10 +1,16 @@
-name: 'install_yamlcpp'
-description: 'Install yaml cpp'
+name: install_yamlcpp
+description: Install yaml cpp
 
 inputs:
+
   # This parameter is to maintain parallelization with windows
   cmake_build_type:
-    description: 'Unused parameter'
+    description: Unused parameter
+    required: false
+
+  # This parameter is to maintain parallelization with windows
+  version:
+    description: Unused parameter
     required: false
 
 runs:

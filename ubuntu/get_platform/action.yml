@@ -1,4 +1,4 @@
-name: 'fgt_platform'
+name: 'get_platform'
 description: 'Set some env var with information about the platform where the action is executed'
 
 inputs:

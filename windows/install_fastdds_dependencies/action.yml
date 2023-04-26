@@ -1,9 +1,9 @@
-name: 'install_fast_dependencies'
+name: 'install_fastdds_dependencies'
 description: 'Install Fast DDS dependencies in ubuntu'
 
 inputs:
   cmake_build_type:
-    description: 'Specifies the build type on single-configuration generators'
+    description: 'Specify the build type on single-configuration generators'
     required: true
     default: 'Release'
 

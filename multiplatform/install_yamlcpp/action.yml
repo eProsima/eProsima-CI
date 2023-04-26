@@ -3,9 +3,14 @@ description: Install and setup yaml-cpp for linking and building in Windows
 
 inputs:
   cmake_build_type:
-    description: 'Specifies the build type on single-configuration generators'
+    description: Specify the build type on single-configuration generators
     required: true
-    default: 'Release'
+    default: Release
+
+  version:
+    description: 'Specify yamlcpp branch to download repository from https://github.com/jbeder/yaml-cpp'
+    required: false
+    default: 'yaml-cpp-0.7.0'
 
 runs:
   using: composite
@@ -16,9 +21,11 @@ runs:
       if: runner.os == 'Linux'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
+        version: ${{ inputs.version }}
 
     - name: Run in windows
       uses: jparisu/eProsima-CI/windows/install_yamlcpp@main
       if: runner.os == 'Windows'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
+        version: ${{ inputs.version }}

@@ -1,39 +1,39 @@
 # TODO this action takes only into consideration the last complete job, and not the look deeper if the name does not match.
 # It should look recursively till a max depth in completed jobs for the artifact name asked
-name: 'get_workflow_id'
-description: 'TODO'
+name: get_workflow_id
+description: Get the Id of the las workflow run that has successfully upload the artifact to look for
   # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
 
 inputs:
 
   workflow_source:
-    description: 'Name of the workflow to look for'
+    description: Name of the workflow to look for
     required: true
 
   artifact_name:
-    description: 'Name of the artifact to look for'
+    description: Name of the artifact to look for
     required: true
 
   workflow_source_repository:
-    description: 'Name of the repository to look for the job id [this repository]'
+    description: Name of the repository to look for the job id [this repository]
     required: false
-    default: '$GITHUB_REPOSITORY'
+    default: $GITHUB_REPOSITORY
 
   id_job_result:
-    description: 'Name of the env variable to store the job id'
+    description: Name of the env variable to store the job id
     required: false
-    default: 'job_id'
+    default: job_id
 
   job_status:
-    description: 'Workspace to source where dependencies are'
+    description: Status of the finished workflow run to look for
     required: false
-    default: 'completed'
+    default: completed
 
   # This must be passed as an argument because actions do not access to workflow secrets:
-  # Unrecognized named-value: 'secrets'. https://github.com/orgs/community/discussions/27054
+  # Unrecognized named-value: secrets. https://github.com/orgs/community/discussions/27054
   # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
   secret_token:
-    description: 'Secret token to authenticate the WebRequest so it not get a rate limit error.'
+    description: Secret token to authenticate the WebRequest so it not get a rate limit error.
     required: false
     default: ''
 
@@ -44,8 +44,6 @@ runs:
     - name: Download using wget
       shell: pwsh
       run: |
-
-        # TODO look only for the run that has uploaded the artifact that is being looked up
 
         "::group::Get workflow id from ${{ inputs.workflow_source_repository }}"
 

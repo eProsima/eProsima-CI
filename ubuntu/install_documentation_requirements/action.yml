@@ -1,5 +1,5 @@
 name: 'install_documentation_requirements'
-description: 'Install yaml cpp'
+description: 'Install sphinx requirements following eProsima use case'
 
 runs:
   using: composite

@@ -1,11 +1,22 @@
-name: 'install_gtest'
-description: 'Install and setup GTest for linking and building test application in Linux'
+name: install_gtest
+description: Install and setup GTest for linking and building test application in Linux
+
+inputs:
+
+  cmake_build_type:
+    description: Unused
+    required: false
+
+  # TODO accept different versions (not available using apt)
+  version:
+    description: Unused
+    required: false
 
 runs:
   using: composite
   steps:
 
-    - name: install_apt_packages
+    - name: install GTest and GMock
       run: |
 
         echo "::group::Install GTest and GMock"

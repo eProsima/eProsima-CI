@@ -1,26 +1,51 @@
-# TODO
+# Execute sphinx to generate and test documentation project.
+#
+# Runs on:
+# - Ubuntu 20.04
+# - Ubuntu 22.04
+#
+# NOTE: This action is only useful for documentation packages that uses cmake_utils.
+#
+# Steps:
+# - Checkout repository and fetch unshallow to be able to compare.
+# - Install packages required.
+# - Download dev_utils last artifact to have access to cmake_utils.
+# - Build documentation with colcon.
+# - Run tests with colcon.
+# - Upload documentation.
+#
+# Arguments:
+# - docs_subpackage_name : name of the documentation package to build and test
+# - specific_cmake_args : specific cmake args to build documentation package [-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON]
+# - secret_token : secret github token to avoid WebRequest rate limit error. Call it with ${{ github.GITHUB_TOKEN }}.
 
-name: 'sphinx_docs'
-description: TODO
+name: sphinx_docs
+description: Build and test documentation using sphinx
 
 inputs:
 
   docs_subpackage_name:
-    description: 'Name of colcon subpackage that contains the sphinx documentation'
+    description: Name of colcon subpackage that contains the sphinx documentation
     required: false
     default: ''
 
   specific_cmake_args:
-    description: 'Arguments for colcon build'
+    description: Arguments for colcon build
     required: false
     default: '-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
+
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: Secret token to authenticate the WebRequest so it not get a rate limit error.
+    required: false
+    default: ''
 
 runs:
   using: composite
   steps:
 
     - name: Sync repository
-      uses: actions/checkout@v3
+      uses: jparisu/eProsima-CI/external/checkout@main
       with:
         path: src
 
@@ -37,6 +62,7 @@ runs:
         workflow_source: build_dev_utils.yml
         workflow_source_repository: jparisu/eProsima-CI
         target_workspace: '${{ github.workspace }}/install'
+        secret_token: ${{ inputs.secret_token }}
 
     - name: Build documentation with colcon
       uses: jparisu/eProsima-CI/multiplatform/colcon_build@main

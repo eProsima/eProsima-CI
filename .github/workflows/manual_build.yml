@@ -1,0 +1,88 @@
+# This Workflow builds an artifact with repositories given.
+# This workflow helps to manually build any project that could be downloaded from a .repos file and has same dependencies as Fast DDS.
+#
+# DESCRIPTION:
+#  This workflow takes a .repos file from "./.github/workflows/configurations/fastdds/dependencies.repos"
+#  (in this same repository) and downloads the repositories included.
+#  Then uses the colcon.meta files in "./.github/workflows/configurations/metas/<os>/colcon.meta" to build projects.
+#  Finally it takes the install directory generated from colcon build and uploads it as an artifact.
+#  This is done for several OS and cmake built types:
+#    - ubuntu-22.04 | ubuntu-20.04 | windows-2019 | windows-2022
+#    - Debug | Release
+#
+# ARTIFACT RESULT:
+#  The artifact generated is called "<prefix>_<os>_<cmake_build_type><postfix>"
+#   <os> is "ubuntu-20.04", "ubuntu-22.04", "windows-2019", or "windows-2022"
+#   <cmake_build_type> is "Debug", or "Release"
+#
+
+name: manual_build
+description: This Workflow builds an artifact installing the given project.
+
+on:
+
+  workflow_dispatch:
+
+    inputs:
+
+      built_configuration_branch:
+        description: Branch or tag of eProsima-CI repository to get .repos and colcon.meta that will be applied
+        required: true
+
+      artifacts_name_prefix:
+        description: Prefix name of the artifact
+        required: true
+
+      artifacts_name_postfix:
+        description: Addition to artifacts name creation (use non default postfix when creating artifacts with specific arguments).
+        required: false
+        default: ''
+
+jobs:
+
+  build_fastdds:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+
+      matrix:
+        cmake_build_type:
+          - Release
+          - Debug
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+
+      # Not cancel workflow if any matrix job fails
+      fail-fast: false
+
+    steps:
+
+      - name: Sync this repository
+        uses: jparisu/eProsima-CI/external/checkout@main
+        with:
+          path: src/eprosima-CI
+
+      - name: Install Fast DDS dependencies
+        uses: jparisu/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        with:
+          cmake_build_type: ${{ matrix.cmake_build_type }}
+
+      - name: Get colcon.meta and .repos files to build fastdds
+        uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        with:
+          source_repository_branch: ${{ inputs.built_configuration_branch }}
+          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
+          repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
+          colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
+          repos_file_result: ${{ github.workspace }}/dependencies.repos
+
+      - name: Build Fast DDS and generate artifact
+        uses: jparisu/eProsima-CI/multiplatform/generate_dependency@main
+        with:
+          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
+          artifact_name: ${{ inputs.artifacts_name_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix }}
+          colcon_meta_file: ${{ github.workspace }}/colcon.meta
+          cmake_build_type: ${{ matrix.cmake_build_type }}
