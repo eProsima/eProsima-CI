@@ -1,10 +1,9 @@
 # This Workflow builds an artifact with dev-utils and Fast DDS installed.
-# This is used by other workflows in this and other repositories to avoid compiling dependencies every time are needed.
+# This is used by other workflows in this and other repositories to avoid compiling dependencies every time they are needed.
 #
 # DESCRIPTION:
 #  First, this workflow downloads the last successful build of Fast DDS downloaded from build_fastdds workflow artifacts.
-#  This workflow takes a .repos file from "./.github/workflows/configurations/dev_utils/dependencies.repos"
-#  (in this same repository) and downloads the repositories included.
+#  This workflow takes a .repos file from "./.github/workflows/configurations/dev_utils/dependencies.repos" (in this same repository) and downloads the repositories included.
 #  Then uses the colcon.meta files in "./.github/workflows/configurations/metas/<os>/colcon.meta" to build projects.
 #  Finally it takes the install directory generated from colcon build and uploads it as an artifact.
 #  The result artifact also contains Fast DDS installed project.
@@ -14,16 +13,16 @@
 #
 # ARTIFACT RESULT:
 #  The artifact generated is called "built_dev_utils_<os>_<cmake_build_type><postfix>"
-#   <os> is "ubuntu-20.04", "ubuntu-22.04", "windows-2019", or "windows-2022"
-#   <cmake_build_type> is "Debug", or "Release"
-#   <postfix> is "_nightly" for schedule runs every night, or is set manually from user.
+#    - <os> is "ubuntu-20.04", "ubuntu-22.04", "windows-2019", or "windows-2022"
+#    - <cmake_build_type> is "Debug", or "Release"
+#    - <postfix> is "_nightly" for schedule runs every night, or is set manually from user.
 #
 # SCHEDULE:
 #  This workflow runs every night at 00:00 using latest version of dev-utils (main).
 #  It waits till Fast DDS workflow has finished.
 #
 # MANUAL RUN:
-#  Running this workflow manually there are 2 arguments to set:
+#  Running this workflow manually, the following arguments might be set:
 #
 #   built_configuration_branch: set a branch to download dependencies.repos and colcon.meta files from
 #                               this repository [Default: main]

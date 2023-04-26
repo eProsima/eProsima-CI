@@ -79,7 +79,7 @@ start
 @enduml
 ```
 
-Thus: `multiplatform` actions should always follow one and only one of these designs:
+Thus, `multiplatform` actions should always follow one and only one of these designs:
 
 1. call other `multiplatform` actions
 2. call same action under both platforms
