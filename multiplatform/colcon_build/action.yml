@@ -72,4 +72,4 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}
         # cmake_args_default: ${{ inputs.cmake_args_default }}
-        # TODO find a way to use it for windows
+        # TODO (jparisu) find a way to use it for windows, as there is not a common Werror flag for both

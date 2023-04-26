@@ -16,3 +16,5 @@ runs:
           sphinxcontrib.spelling==7.2.1 \
           sphinxcontrib-imagehelper==1.1.1 \
           sphinx-tabs==3.2.0
+
+# TODO (jparisu) it would be nice if this action uses a common requirements.txt file, downloading it from somwhere (this repo, cpp-style... don't know)

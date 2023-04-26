@@ -3,31 +3,33 @@
 This is a github CI auxiliary repo that contains common github steps, actions, and workflows shared along multiple eProsima libraries and tools.
 The main idea is to collect every repeated or generic step of any CI to have a single more maintainable generic point.
 
----
-
 ## Index
 
-- [eProsima-CI](#eprosima-ci)
-  - [Index](#index)
-  - [User manual](#user-manual)
-  - [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
-  - [Actions Implemented](#actions-implemented)
-    - [Multiplatform](#multiplatform)
-    - [Ubuntu](#ubuntu)
-  - [Dependencies built](#dependencies-built)
-    - [Artifacts uploaded](#artifacts-uploaded)
-    - [Generate artifacts manually](#generate-artifacts-manually)
+- [User manual](#user-manual)
+- [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
+- [Actions Implemented](#actions-implemented)
+  - [Multiplatform](#multiplatform)
+  - [Ubuntu](#ubuntu)
+- [Dependencies built](#dependencies-built)
+  - [Artifacts uploaded](#artifacts-uploaded)
+  - [Generate artifacts manually](#generate-artifacts-manually)
 
 ---
 
 ## User manual
 
-In order to use this repository, we recommend you:
+In order to use this repository, the following recommendations are suggested:
 
-1. **Always use a fix version**. When using any of these actions, set it with a `@v<X>` version.
-2. Use `multiplatform` actions when possible. They automatically will redirect the action to the proper OS.
-3. If you want a long well preserved CI, use `@vX.Y` versioning, to be sure that CI will not change and break something in the future. However, this may be a problem because it will not be updated with improvements or external versions.
-4. Actions are documented in their own `<platform>/<action_name>/action.yml` files. Check them for description and argument definitions.
+1. **Always use a fix version**.
+   When using any of these actions, set it with a `@v<X>` version.
+2. Use `multiplatform` actions when possible.
+   They automatically will redirect the action to the proper OS.
+3. If planning a long well preserved CI, use `@vX.Y` versioning, to be sure that CI will not change and break something in the future.
+   However, this may be a problem because it will not be updated with improvements or external versions.
+4. Actions are documented in their own `<platform>/<action_name>/action.yml` files.
+   Check each file for description and argument definitions.
+
+For more information about versioning handle of this project, check following [file](.dev/versioning_guidelines.md).
 
 ---
 
@@ -42,7 +44,7 @@ In order to use this repository, we recommend you:
   - *Only on ubuntu*.
 
 - [sphinx_docs](ubuntu/sphinx_docs/action.yml)
-  - Build Sphinx documentation, test it and upload results.
+  - Build [Sphinx](<https://www.sphinx-doc.org/en/master/>) documentation, test it and upload results.
   - *Only on ubuntu*.
   - *Only for documentation projects based in `cmake_utils`*.
 
@@ -59,7 +61,7 @@ In order to use this repository, we recommend you:
   - Build a project using colcon and CLang flags and execute tests.
 
 - [clang_tidy_check](multiplatform/clang_tidy_check/action.yml)
-  - Execute clang-tidy-check over a built project to static analysis.
+  - Execute clang-tidy-check over a built project for static analysis.
 
 - [colcon_build](multiplatform/colcon_build/action.yml)
   - Execute `colcon build` command to build a project.
@@ -111,8 +113,12 @@ In order to use this repository, we recommend you:
 
 ### Ubuntu
 
+- [coverage_build_test_upload](ubuntu/coverage_build_test_upload/action.yml)
+  - Build a project using colcon and coverage flags, execute tests and upload results.
+
 - [get_git_diff_files](ubuntu/get_git_diff_files/action.yml)
-  - Get the files that differ from one github reference to another. Can grep result.
+  - Get the files that differ from one github reference to another.
+    The result can be parsed with `grep`.
 
 - [git_fetch_all](ubuntu/git_fetch_all/action.yml)
   - Get all branches of a specific repository.
@@ -131,11 +137,11 @@ In order to use this repository, we recommend you:
 ## Dependencies built
 
 There are several workflows implemented that build projects and upload them as artifacts.
-These are used for other projects to speed up the built process of the dependencies.
+These are used for other projects to speed up the build process of the dependencies.
 
 ### Artifacts uploaded
 
-So far, there are 3 workflows running to upload artifacts:
+So far, the following workflows are running to upload artifacts:
 
 - [Fast DDS](<https://github.com/eProsima/Fast-DDS>)
 - [dev-utils](<https://github.com/eProsima/dev-utils>)

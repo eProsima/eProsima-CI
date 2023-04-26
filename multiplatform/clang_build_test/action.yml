@@ -1,5 +1,5 @@
 name: 'clang_build_test'
-description: 'Compile code with colcon and using ASAN flags, and run colcon test.'
+description: 'Compile code with colcon and using CLang flags, and run colcon test.'
 
 inputs:
 

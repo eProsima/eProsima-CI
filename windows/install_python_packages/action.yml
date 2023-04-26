@@ -1,0 +1,49 @@
+name: 'install_python_packages'
+description: 'Install generic and required python packages with pip'
+
+inputs:
+
+  packages:
+    description: 'Custom packages to install using pip'
+    required: false
+    default: ''
+
+  upgrade:
+    description: 'Upgrade already installed packages'
+    required: false
+    default: false
+
+  requirements_file_name:
+    description: 'If set, the file name of a requirements.txt file'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_python_packages
+      shell: pwsh
+      run: |
+
+        "::group::Install Python packages"
+
+        # Set upgrade flag
+        if (${{ inputs.upgrade }} -eq "true") {
+          $UPGRADE_FLAG = "--upgrade"
+        } else {
+          $UPGRADE_FLAG = ""
+        }
+
+        # Install python packages if any
+        if (-not [string]::IsNullOrWhiteSpace(${{ inputs.packages }})) {
+          pip3 install ${{ inputs.packages }}
+        }
+
+        # Install requirements file if any
+        if (-not [string]::IsNullOrWhiteSpace(${{ inputs.requirements_file_name }})) {
+          pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG
+        }
+
+        # Thanks to Chat-GPT for the translation from bash
+        "::endgroup::"

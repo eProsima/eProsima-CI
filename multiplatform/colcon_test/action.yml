@@ -24,7 +24,7 @@ inputs:
     default: '--timeout 60'
 
   workspace:
-    description: 'Workspace where built is done'
+    description: 'Workspace where built has been done'
     required: false
     default: ''
 

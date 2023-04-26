@@ -4,14 +4,8 @@ runs:
   using: composite
   steps:
 
-    - name: Install colcon
-      shell: pwsh
-      run: |
-
-        "::group::Install colcon"
-
-        pip3 install vcstool
-        pip3 install setuptools==58.3.0
-        pip3 install colcon-common-extensions colcon-mixin
-
-        "::endgroup::"
+    - name: install colcon
+      uses: jparisu/eProsima-CI/windows/install_python_packages@main
+      with:
+        packages: 'vcstool setuptools==58.3.0 colcon-common-extensions colcon-mixin'
+        upgrade: true

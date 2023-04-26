@@ -36,7 +36,7 @@ inputs:
 
   # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
   secret_token:
-    description: Secret token to authenticate the WebRequest so it not get a rate limit error.
+    description: Secret token to authenticate the WebRequest so it does not get a rate limit error.
     required: false
     default: ''
 
