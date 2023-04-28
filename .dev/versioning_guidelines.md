@@ -14,7 +14,7 @@ Any change can be done in a mayor version change.
 
 ### Minor version
 
-Minor version should preserve old API, as actions names and locations and arguments anrevisionsd arguments names.
+Minor version should preserve old API, as actions names, locations, arguments and arguments names.
 It can add new actions or optional arguments
 It can change external action versions.
 

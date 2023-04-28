@@ -1,4 +1,4 @@
-name: generate_dependency
+name: generate_dependency_artifact
 description: Build a project and upload its installed objects as an artifact
 
 inputs:

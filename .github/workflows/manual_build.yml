@@ -80,7 +80,7 @@ jobs:
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
       - name: Build Fast DDS and generate artifact
-        uses: jparisu/eProsima-CI/multiplatform/generate_dependency@main
+        uses: jparisu/eProsima-CI/multiplatform/generate_dependency_artifact@main
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
           artifact_name: ${{ inputs.artifacts_name_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix }}

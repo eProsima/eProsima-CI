@@ -43,6 +43,7 @@ Currently the eProsima-CI repository is divided in three main folders:
 All generic actions must be implemented in `multiplatform` directory following the following design:
 (currently only the most used actions are implemented as this, but in the future all must follow this schema)
 
+<!-- TODO change this for mermaid or some extension available in github -->
 ```plantuml
 @startuml
 
@@ -58,6 +59,7 @@ start
 @enduml
 ```
 
+<!-- TODO change this for mermaid or some extension available in github -->
 ```plantuml
 @startuml
 
@@ -91,6 +93,7 @@ For instance, a different `shell` action that must be different regarding the OS
 `get_platform` action and regarding the solution, call each `shell` action under such directory.
 Check [install_uncrustify](../ubuntu/install_uncrustify/action.yml) as an example.
 
+<!-- TODO change this for mermaid or some extension available in github -->
 ```plantuml
 @startuml
 

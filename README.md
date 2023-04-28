@@ -46,7 +46,7 @@ For more information about versioning handle of this project, check following [f
 - [sphinx_docs](ubuntu/sphinx_docs/action.yml)
   - Build [Sphinx](<https://www.sphinx-doc.org/en/master/>) documentation, test it and upload results.
   - *Only on ubuntu*.
-  - *Only for documentation projects based in `cmake_utils`*.
+  - *Only for documentation projects based in [cmake_utils](https://github.com/eProsima/dev-utils)*.
 
 ---
 
@@ -78,7 +78,7 @@ For more information about versioning handle of this project, check following [f
 - [download_dependency](multiplatform/download_dependency/action.yml)
   - Download an artifact previously generated from a workflow run.
 
-- [generate_dependency](multiplatform/generate_dependency/action.yml)
+- [generate_dependency_artifact](multiplatform/generate_dependency_artifact/action.yml)
   - Build a project and upload the installed objects as an artifact.
 
 - [get_configurations_from_repo](multiplatform/get_configurations_from_repo/action.yml)
@@ -134,7 +134,7 @@ For more information about versioning handle of this project, check following [f
 
 ---
 
-## Dependencies built
+## Workflows
 
 There are several workflows implemented that build projects and upload them as artifacts.
 These are used for other projects to speed up the build process of the dependencies.
@@ -194,7 +194,29 @@ In order to use one of these artifacts, use the following action as a step:
     secret_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-### Generate artifacts manually
+#### Generate artifacts manually
 
-Artifacts could be executed manually with different dependencies and/or different CMake arguments.
-In order to do so there are 2 possibilities:
+The artifacts can be customized so the artifacts generated follow specific configurations.
+These configurations are set in a `.repos` and `colcon.meta` files in a new branch in eProsima-CI.
+In order to change the dependencies required to build within an artifact,
+set [dependencies.repos](.github/workflows/configurations/<artifact>/dependencies.repos) with the new repositories to download and build.
+In order to change CMake options when building the artifact, set files in files in `.github/workflows/configurations/metas`.
+Run the `manual_build` workflow with these arguments:
+
+- `built_configuration_branch`: Branch created with `.repos` and `colcon.meta` files.
+- `artifacts_name_postfix`: Postfix of the name of the artifact used to download and link, and also postfix of the name of the generated artifact.
+
+> :warning: Do not generate custom artifacts with postfix `_nightly`, as this is the main name other repos will use.
+
+## Custom artifact generation
+
+The workflow [manual_build](.github/workflows/manual_build.yml) supports to create any artifact giving a `.repos` and `colcon.meta` files.
+In order to run this workflow, create a branch in this repository,
+set [dependencies.repos](.github/workflows/configurations/manual/dependencies.repos) file with the repositories needed to build the project and set `colcon.meta` files in `.github/workflows/configurations/metas`.
+Then, run the `manual_build` workflow with these arguments:
+
+- `built_configuration_branch`: Branch created with `.repos` and `colcon.meta` files.
+- `artifacts_name_prefix`: Prefix of the name of the artifact to generate.
+- `artifacts_name_postfix`: Postfix of the name of the artifact to generate.
+
+The result artifacts will be called `<artifacts_name_prefix>_<os>_<cmake_build_type><artifacts_name_postfix>`.
