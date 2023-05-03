@@ -1,0 +1,41 @@
+name: install_yamlcpp
+description: Install and setup yaml-cpp for linking and building in Windows
+
+inputs:
+
+  cmake_build_type:
+    description: Specify the build type on single-configuration generators
+    required: true
+    default: Release
+
+  version:
+    description: 'Specify yamlcpp branch to download repository from https://github.com/jbeder/yaml-cpp'
+    required: false
+    default: 'yaml-cpp-0.7.0'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install yamlcpp
+      shell: pwsh
+      run: |
+
+        "::group::Install yamlcpp"
+
+        cmake --find-package -DNAME=yamlcpp -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST | Tee-Object -Variable res;
+        if ( $res -notlike '*yamlcpp found.*')
+        {
+          git clone --branch ${{ inputs.version }} https://github.com/jbeder/yaml-cpp yamlcpp;
+
+          # Remove test because it installs gtest
+          Remove-Item 'yamlcpp\test' -Recurse
+
+          cmake -DCMAKE_INSTALL_PREFIX='C:\Program Files\yamlcpp' -DYAML_CPP_BUILD_TESTS=OFF -B build\yamlcpp yamlcpp
+          cmake --build build\yamlcpp --config ${{ inputs.cmake_build_type }} --target install
+          New-Item -ItemType File yamlcpp/COLCON_IGNORE
+        }
+
+        echo "C:\Program Files\yamlcpp" >> ${{ github.path }}
+
+        "::endgroup::"

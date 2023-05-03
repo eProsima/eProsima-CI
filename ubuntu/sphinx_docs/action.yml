@@ -1,0 +1,83 @@
+# Execute sphinx to generate and test documentation project.
+#
+# Runs on:
+# - Ubuntu 20.04
+# - Ubuntu 22.04
+#
+# NOTE: This action is only useful for documentation packages that uses cmake_utils.
+#
+# Steps:
+# - Checkout repository and fetch unshallow to be able to compare.
+# - Install packages required.
+# - Download dev_utils last artifact to have access to cmake_utils.
+# - Build documentation with colcon.
+# - Run tests with colcon.
+# - Upload documentation.
+#
+# Arguments:
+# - docs_subpackage_name : name of the documentation package to build and test
+# - specific_cmake_args : specific cmake args to build documentation package [-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON]
+# - secret_token : secret github token to avoid WebRequest rate limit error. Call it with ${{ github.GITHUB_TOKEN }}.
+
+name: sphinx_docs
+description: Build and test documentation using sphinx
+
+inputs:
+
+  docs_subpackage_name:
+    description: Name of colcon subpackage that contains the sphinx documentation
+    required: false
+    default: ''
+
+  specific_cmake_args:
+    description: Arguments for colcon build
+    required: false
+    default: '-DBUILD_DOCS=ON -DBUILD_DOCS_TESTS=ON'
+
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: Secret token to authenticate the WebRequest so it does not get a rate limit error.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Sync repository
+      uses: eProsima/eProsima-CI/external/checkout@main
+      with:
+        path: src
+
+    - name: Install docs dependencies
+      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@main
+
+    - name: Install Colcon
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+
+    - name: Download cmake_utils artifact
+      uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+      with:
+        artifact_name: built_dev_utils_ubuntu-22.04_Release_nightly
+        workflow_source: build_dev_utils.yml
+        workflow_source_repository: eProsima/eProsima-CI
+        target_workspace: '${{ github.workspace }}/install'
+        secret_token: ${{ inputs.secret_token }}
+
+    - name: Build documentation with colcon
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      with:
+        colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
+        cmake_args: '${{ inputs.specific_cmake_args }}'
+        workspace_dependencies: '${{ github.workspace }}/install'
+
+    - name: Run colcon test of documentation
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      with:
+        colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
+
+    - name: Upload documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: Documentation HTML ${{ inputs.docs_subpackage_name }}
+        path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/

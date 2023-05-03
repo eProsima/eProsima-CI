@@ -34,7 +34,7 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: actions/checkout@v3
+      uses: eProsima/eProsima-CI/external/checkout@main
       with:
         path: src
 
@@ -46,7 +46,7 @@ runs:
     - name: Install Flake8
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:
-        custom_packages: flake8==5.0.4 flake8-quotes
+        packages: flake8==5.0.4 flake8-quotes
 
     - name: Fetch python linter config file
       run: |

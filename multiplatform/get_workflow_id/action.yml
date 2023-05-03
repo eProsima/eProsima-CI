@@ -1,0 +1,61 @@
+name: get_workflow_id
+description: Get the Id of the las workflow run that has successfully upload the artifact to look for
+  # This action is not used anymore as dawidd6/action-download-artifact already look for the workflow id
+
+inputs:
+
+  workflow_source:
+    description: Name of the workflow to look for
+    required: true
+
+  artifact_name:
+    description: Name of the artifact to look for
+    required: true
+
+  workflow_source_repository:
+    description: Name of the repository to look for the job id [this repository]
+    required: false
+    default: $GITHUB_REPOSITORY
+
+  id_job_result:
+    description: Name of the env variable to store the job id
+    required: false
+    default: job_id
+
+  job_status:
+    description: Status of the finished workflow run to look for
+    required: false
+    default: completed
+
+  # Windows argument
+  # Pass argument {{ secrets.GITHUB_TOKEN }} from workflow
+  secret_token:
+    description: Secret token to authenticate the WebRequest so it does not get a rate limit error
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/get_workflow_id@main
+      if: runner.os == 'Linux'
+      with:
+        workflow_source: ${{ inputs.workflow_source }}
+        artifact_name: '${{ inputs.artifact_name }}'
+        workflow_source_repository: ${{ inputs.workflow_source_repository }}
+        id_job_result: ${{ inputs.id_job_result }}
+        job_status: ${{ inputs.job_status }}
+        secret_token: ${{ inputs.secret_token }}
+
+    - name: Install in windows
+      uses: eProsima/eProsima-CI/windows/get_workflow_id@main
+      if: runner.os == 'Windows'
+      with:
+        workflow_source: ${{ inputs.workflow_source }}
+        artifact_name: '${{ inputs.artifact_name }}'
+        workflow_source_repository: ${{ inputs.workflow_source_repository }}
+        id_job_result: ${{ inputs.id_job_result }}
+        job_status: ${{ inputs.job_status }}
+        secret_token: ${{ inputs.secret_token }}

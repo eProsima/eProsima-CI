@@ -1,0 +1,83 @@
+name: 'coverage_build_test_upload'
+description: 'Compile code with colcon and using coverage flags, run colcon test, generate coverage report and upload it to codecov'
+
+inputs:
+
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
+  codecov_token:
+    description: 'token of codecov (use codecov environment and use <secrets.CODECOV_TOKEN> as argument)'
+    required: true
+
+  codecov_fix_file_path:
+    description: 'path to codecov yml fixes file'
+    required: true
+
+  codecov_result_file_path:
+    description: 'path to codecov xml result file'
+    required: false
+    default: ${{ github.workspace }}/coverage.xml
+
+  colcon_meta_file:
+    description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
+    required: false
+    default: ''
+
+  cmake_args:
+    description: 'Cmake args for colcon build'
+    required: false
+    default: ''
+
+  ctest_args:
+    description: 'flags passed to colcon test execution'
+    required: false
+    default: '--label-exclude "xfail"'
+
+  exclude_tags:
+    description: 'arguments to exclude files or directories for gcovr'
+    required: false
+    default: ''
+
+  workspace:
+    description: 'Workspace to build'
+    required: false
+    default: '${{ github.workspace }}'
+
+  workspace_dependencies:
+    description: 'Workspace to source where dependencies are'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Build
+      uses: eProsima/eProsima-CI/ubuntu/install_gcov@main
+
+    - name: Build
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@main
+      with:
+        packages_names: ${{ inputs.packages_names }}
+        colcon_meta_file: ${{ inputs.colcon_meta_file }}
+        cmake_args: '-DCODE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug ${{ inputs.cmake_args }}'
+        ctest_args: ${{ inputs.ctest_args }}
+        workspace: ${{ inputs.workspace }}
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}
+
+    - name: Generate report
+      uses: eProsima/eProsima-CI/ubuntu/generate_coverage_report@main
+      with:
+        packages_names: ${{ inputs.packages_names }}
+        result_file_name: ${{ inputs.codecov_result_file_path }}
+        fix_file_path: ${{ inputs.codecov_fix_file_path }}
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ inputs.codecov_token }}
+        files: ${{ inputs.codecov_result_file_path }}
+        root_dir: ${{ inputs.workspace_dependencies }}
+        fail_ci_if_error: true

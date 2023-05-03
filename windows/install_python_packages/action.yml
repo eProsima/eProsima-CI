@@ -23,29 +23,27 @@ runs:
   steps:
 
     - name: install_python_packages
+      shell: pwsh
       run: |
 
-        echo "::group::Install Python packages"
+        "::group::Install Python packages"
 
         # Set upgrade flag
-        if [ "${{ inputs.upgrade }}" = "true" ]; then
-          export UPGRADE_FLAG="--upgrade"
-        else
-          export UPGRADE_FLAG=""
-        fi
+        if (${{ inputs.upgrade }} -eq "true") {
+          $UPGRADE_FLAG = "--upgrade"
+        } else {
+          $UPGRADE_FLAG = ""
+        }
 
         # Install python packages if any
-        if [[ ! -z "${{ inputs.packages }}" ]] ; then
-          sudo pip3 install ${UPGRADE_FLAG} -U \
-            ${{ inputs.packages }}
-        fi
+        if (-not [string]::IsNullOrWhiteSpace(${{ inputs.packages }})) {
+          pip3 install ${{ inputs.packages }}
+        }
 
         # Install requirements file if any
-        if [[ ! -z "${{ inputs.requirements_file_name }}" ]] ; then
-          sudo pip3 install ${UPGRADE_FLAG} -U \
-            -r ${{ inputs.requirements_file_name }}
-        fi
+        if (-not [string]::IsNullOrWhiteSpace(${{ inputs.requirements_file_name }})) {
+          pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG
+        }
 
-        echo "::endgroup::"
-
-      shell: bash
+        # Thanks to Chat-GPT for the translation from bash
+        "::endgroup::"

@@ -1,0 +1,93 @@
+name: colcon_build
+description: Use colcon build command to build multiple packages
+
+inputs:
+
+  colcon_meta_file:
+    description: colcon.meta file to set cmake options. If empty, it uses an empty file
+    required: false
+    default: ''
+
+  colcon_build_args:
+    description: Arguments to pass to colcon build command (use cmake_args input for CMake options)
+    required: false
+    default: ''
+
+  colcon_build_args_default:
+    description: Default arguments to pass to colcon build command (use cmake_args input for CMake options)
+    required: false
+    default: '--event-handlers=console_direct+'
+
+  cmake_args:
+    description: CMake arguments
+    required: false
+    default: ''
+
+  cmake_args_default:
+    description: Default CMake arguments
+    required: false
+    default: '/Werror'
+
+  cmake_build_type:
+    description: Set the cmake build type
+    required: false
+    default: Release
+
+  workspace:
+    description: Workspace to build
+    required: false
+    default: ${{ github.workspace }}
+
+  workspace_dependencies:
+    description: Workspace to source where dependencies are
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Build workspace with colcon
+      shell: pwsh
+      run: |
+
+        "::group::Build using colcon"
+
+        if (! [string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
+          ${{ inputs.workspace_dependencies }}/setup.ps1
+        }
+
+        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+          New-Item -ItemType File colcon.meta
+          $env:COLCON_BUILD_META_ = "colcon.meta"
+        } else {
+          $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
+        }
+
+        echo "Using colcon.meta file <$env:COLCON_BUILD_META_>"
+        cat $env:COLCON_BUILD_META_
+
+        cd ${{ inputs.workspace }}
+
+        # Microsoft.VisualStudio.DevShell.dll file in the Visual Studio installation directories,
+        # imports the associated PowerShell module,
+        # and launches the Visual Studio development shell with the specified options
+        ls -Path @(${Env:ProgramFiles},${Env:ProgramFiles(x86)}) -Filter '*Visual Studio*' -Directory  -ErrorAction SilentlyContinue |
+        ls -R -Filter 'Microsoft.VisualStudio.DevShell.dll' | select -First 1 -OutVariable pwshmodule ; `
+          Import-Module $pwshmodule;Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
+          -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
+
+        colcon build `
+          --metas $env:COLCON_BUILD_META_ `
+          ${{ inputs.colcon_build_args_default }} `
+          ${{ inputs.colcon_build_args }} `
+          --cmake-args `
+            -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} ${{ inputs.cmake_args_default }} ${{ inputs.cmake_args }}
+
+        cd ..
+
+        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+          Remove-Item -Path "colcon.meta"
+        }
+
+        "::endgroup::"

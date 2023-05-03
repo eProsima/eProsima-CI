@@ -5,7 +5,8 @@ runs:
   using: composite
   steps:
 
-    - name: Install colcon
+    - name: install colcon
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:
-        packages: vcstool setuptools colcon-common-extensions colcon-mixin
+        packages: 'setuptools==58.3.0 colcon-common-extensions colcon-mixin'
+        upgrade: true

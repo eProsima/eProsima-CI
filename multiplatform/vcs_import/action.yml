@@ -1,0 +1,31 @@
+name: 'vcs_import'
+description: 'Import required repositories and their versions from a .repos file'
+
+inputs:
+
+  vcs_repos_file:
+    description: '.repos file to import repositories'
+    required: true
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/vcs_import@main
+      if: runner.os == 'Linux'
+      with:
+        vcs_repos_file: ${{ inputs.vcs_repos_file }}
+        destination_workspace: ${{ inputs.destination_workspace }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/vcs_import@main
+      if: runner.os == 'Windows'
+      with:
+        vcs_repos_file: ${{ inputs.vcs_repos_file }}
+        destination_workspace: ${{ inputs.destination_workspace }}

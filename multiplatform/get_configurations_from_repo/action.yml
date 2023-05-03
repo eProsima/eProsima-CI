@@ -1,0 +1,54 @@
+name: get_configurations_from_repo
+description: Get .repos and colcon.meta files from other repository
+
+inputs:
+
+  source_repository_branch:
+    description: Branch or reference of the repository to download files
+    required: false
+    default: ${{ github.ref }}
+
+  source_repository:
+    description: Github repository to download files in format <user/repo_name>
+    required: false
+    default: ${{ github.repository }}
+
+  colcon_meta_file_result:
+    description: Path and name of the result file to download the colcon.meta
+    required: false
+    default: colcon.meta
+
+  colcon_meta_file_path:
+    description: Path and file where to find the colcon.meta file in external repository
+    required: false
+    default: colcon.meta
+
+  repos_file_result:
+    description: Path and name of the result file to download the .repos
+    required: false
+    default: dependencies.repos
+
+  repos_file_path:
+    description: Path and file where to find the .repos file in external repository
+    required: false
+    default: dependencies.repos
+
+runs:
+  using: composite
+  steps:
+
+    - name: Get colcon.meta file
+      uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@main
+      with:
+        source_repository_branch: ${{ inputs.source_repository_branch }}
+        source_repository: ${{ inputs.source_repository }}
+        file_name: ${{ inputs.colcon_meta_file_path }}
+        file_result: ${{ inputs.colcon_meta_file_result }}
+
+    - name: Get dependencies.repos file
+      uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@main
+      with:
+        source_repository_branch: ${{ inputs.source_repository_branch }}
+        source_repository: ${{ inputs.source_repository }}
+        file_name: ${{ inputs.repos_file_path }}
+        file_result: ${{ inputs.repos_file_result }}

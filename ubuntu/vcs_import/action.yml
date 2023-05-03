@@ -1,0 +1,33 @@
+name: 'vcs_import'
+description: 'Import required repositories and their versions from a .repos file'
+
+inputs:
+
+  vcs_repos_file:
+    description: '.repos file to import repositories'
+    required: true
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: vcs_import
+      run: |
+
+        echo "::group::Import repositories from ${{ inputs.vcs_repos_file }}"
+
+        echo "Downloading following dependencies:"
+        cat ${{ inputs.vcs_repos_file }}
+
+        mkdir -p ${{ inputs.destination_workspace }}
+
+        vcs import ${{ inputs.destination_workspace }} < ${{ inputs.vcs_repos_file }}
+
+        echo "::endgroup::"
+
+      shell: bash

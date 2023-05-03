@@ -1,0 +1,24 @@
+name: 'install_fastdds_dependencies'
+description: 'Install Fast DDS system dependencies'
+
+inputs:
+  cmake_build_type:
+    description: 'Specify the build type on single-configuration generators'
+    required: true
+    default: 'Release'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/install_fastdds_dependencies@main
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+      if: runner.os == 'Linux'
+
+    - name: Install in windows
+      uses: eProsima/eProsima-CI/windows/install_fastdds_dependencies@main
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+      if: runner.os == 'Windows'

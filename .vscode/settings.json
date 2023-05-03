@@ -1,0 +1,9 @@
+{
+    "markdown.extension.toc.omittedFromToc":
+    {
+        // Or an absolute path for standalone files.
+        "/home/eprosima/repositories/forks/eProsima-CI/README.md": [
+            "# eProsima-CI",
+        ]
+    }
+}

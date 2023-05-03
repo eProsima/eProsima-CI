@@ -1,0 +1,45 @@
+name: get_file_from_repo
+description: Download a file from a github repository
+
+inputs:
+
+  source_repository_branch:
+    description: Branch or reference of the repository to download files
+    required: false
+    default: main
+
+  source_repository:
+    description: Github repository to download files in format <user/repo_name>
+    required: false
+    default: ''
+
+  file_name:
+    description: Colcon meta to set cmake options to packages
+    required: true
+
+  file_result:
+    description: Name of the result file
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/get_file_from_repo@main
+      if: runner.os == 'Linux'
+      with:
+        source_repository_branch: ${{ inputs.source_repository_branch }}
+        source_repository: ${{ inputs.source_repository }}
+        file_name: ${{ inputs.file_name }}
+        file_result: ${{ inputs.file_result }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/get_file_from_repo@main
+      if: runner.os == 'Windows'
+      with:
+        source_repository_branch: ${{ inputs.source_repository_branch }}
+        source_repository: ${{ inputs.source_repository }}
+        file_name: ${{ inputs.file_name }}
+        file_result: ${{ inputs.file_result }}
