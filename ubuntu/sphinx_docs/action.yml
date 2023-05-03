@@ -45,18 +45,18 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@main
+      uses: eProsima/eProsima-CI/external/checkout@v0.2.0
       with:
         path: src
 
     - name: Install docs dependencies
-      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@main
+      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@v0.2.0
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@v0.2.0
 
     - name: Download cmake_utils artifact
-      uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+      uses: eProsima/eProsima-CI/multiplatform/download_dependency@v0.2.0
       with:
         artifact_name: built_dev_utils_ubuntu-22.04_Release_nightly
         workflow_source: build_dev_utils.yml
@@ -65,14 +65,14 @@ runs:
         secret_token: ${{ inputs.secret_token }}
 
     - name: Build documentation with colcon
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@v0.2.0
       with:
         colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
         cmake_args: '${{ inputs.specific_cmake_args }}'
         workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Run colcon test of documentation
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@v0.2.0
       with:
         colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
 
