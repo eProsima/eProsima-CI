@@ -5,14 +5,17 @@ The main idea is to collect every repeated or generic step of any CI to have a s
 
 ## Index
 
-- [User manual](#user-manual)
-- [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
-- [Actions Implemented](#actions-implemented)
-  - [Multiplatform](#multiplatform)
-  - [Ubuntu](#ubuntu)
-- [Dependencies built](#dependencies-built)
-  - [Artifacts uploaded](#artifacts-uploaded)
-  - [Generate artifacts manually](#generate-artifacts-manually)
+- [eProsima-CI](#eprosima-ci)
+  - [Index](#index)
+  - [User manual](#user-manual)
+  - [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
+  - [Actions Implemented](#actions-implemented)
+    - [Multiplatform](#multiplatform)
+    - [Ubuntu](#ubuntu)
+  - [Workflows](#workflows)
+    - [Artifacts uploaded](#artifacts-uploaded)
+      - [Generate artifacts manually](#generate-artifacts-manually)
+  - [Custom artifact generation](#custom-artifact-generation)
 
 ---
 
@@ -183,7 +186,7 @@ In order to use one of these artifacts, use the following action as a step:
 
 ```yml
 - name: Get fastdds artifact
-  uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+  uses: eProsima/eProsima-CI/multiplatform/download_dependency@v0.2.0
   with:
     artifact_name: built_fastdds_ubuntu-20.04_Debug_nightly
     workflow_source: build_fastdds.yml

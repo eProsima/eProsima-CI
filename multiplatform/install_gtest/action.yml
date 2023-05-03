@@ -18,14 +18,14 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@v0.2.0
       if: runner.os == 'Linux'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
         version: ${{ inputs.version }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@v0.2.0
       if: runner.os == 'Windows'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
