@@ -183,7 +183,7 @@ In order to use one of these artifacts, use the following action as a step:
 
 ```yml
 - name: Get fastdds artifact
-  uses: jparisu/eProsima-CI/multiplatform/download_dependency@main
+  uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
   with:
     artifact_name: built_fastdds_ubuntu-20.04_Debug_nightly
     workflow_source: build_fastdds.yml

@@ -36,13 +36,13 @@ runs:
   steps:
 
     - name: Fetch repositories
-      uses: jparisu/eProsima-CI/multiplatform/vcs_import@main
+      uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.workspace }}/src
 
     - name: Build workspace
-      uses: jparisu/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}

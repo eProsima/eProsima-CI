@@ -36,7 +36,7 @@ runs:
     # However, looking for the id previously allows to call this action without secret_token
 
     - name: Download dependency
-      uses: jparisu/eProsima-CI/external/action-download-artifact@main
+      uses: eProsima/eProsima-CI/external/action-download-artifact@main
       with:
         name: ${{ inputs.artifact_name }}
         workflow: ${{ inputs.workflow_source }}

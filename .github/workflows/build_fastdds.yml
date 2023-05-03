@@ -80,17 +80,17 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: jparisu/eProsima-CI/external/checkout@main
+        uses: eProsima/eProsima-CI/external/checkout@main
         with:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: jparisu/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Get colcon.meta and .repos files to build fastdds
-        uses: jparisu/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
         with:
           source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
@@ -99,7 +99,7 @@ jobs:
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
       - name: Build Fast DDS and generate artifact
-        uses: jparisu/eProsima-CI/multiplatform/generate_dependency_artifact@main
+        uses: eProsima/eProsima-CI/multiplatform/generate_dependency_artifact@main
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
           artifact_name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}

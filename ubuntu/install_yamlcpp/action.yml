@@ -18,6 +18,6 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: jparisu/eProsima-CI/ubuntu/install_apt_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
       with:
         packages: libyaml-cpp-dev

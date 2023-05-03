@@ -44,7 +44,7 @@ runs:
 
         # First, get the JSON with all workflow run
         JOB_ID_RESULT=""
-        RUNS=$(curl -sL https://api.github.com/repos/jparisu/eProsima-CI/actions/workflows/build_fastdds.yml/runs)
+        RUNS=$(curl -sL https://api.github.com/repos/eProsima/eProsima-CI/actions/workflows/build_fastdds.yml/runs)
 
         # Loop in descending order each workflow run
         for JOB_ID in $(echo "${RUNS}" | jq '.workflow_runs[] | select(.status == "${{ inputs.job_status }}") | .id')

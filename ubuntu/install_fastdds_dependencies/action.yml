@@ -11,21 +11,21 @@ runs:
   steps:
 
     - name: Install vcs tools
-      uses: jparisu/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:
         packages: 'vcstool setuptools'
 
     - name: Install colcon
-      uses: jparisu/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
 
     - name: Install GTest
-      uses: jparisu/eProsima-CI/ubuntu/install_gtest@main
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
 
     - name: Install asio
-      uses: jparisu/eProsima-CI/ubuntu/install_asio@main
+      uses: eProsima/eProsima-CI/ubuntu/install_asio@main
 
     - name: Install Tiny XML
-      uses: jparisu/eProsima-CI/ubuntu/install_tinyxml@main
+      uses: eProsima/eProsima-CI/ubuntu/install_tinyxml@main
 
     - name: Install Open SSL
-      uses: jparisu/eProsima-CI/ubuntu/install_openssl@main
+      uses: eProsima/eProsima-CI/ubuntu/install_openssl@main
