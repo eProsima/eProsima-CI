@@ -5,17 +5,15 @@ The main idea is to collect every repeated or generic step of any CI to have a s
 
 ## Index
 
-- [eProsima-CI](#eprosima-ci)
-  - [Index](#index)
-  - [User manual](#user-manual)
-  - [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
-  - [Actions Implemented](#actions-implemented)
-    - [Multiplatform](#multiplatform)
-    - [Ubuntu](#ubuntu)
-  - [Workflows](#workflows)
-    - [Artifacts uploaded](#artifacts-uploaded)
-      - [Generate artifacts manually](#generate-artifacts-manually)
-  - [Custom artifact generation](#custom-artifact-generation)
+- [User manual](#user-manual)
+- [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
+- [Actions Implemented](#actions-implemented)
+  - [Multiplatform](#multiplatform)
+  - [Ubuntu](#ubuntu)
+- [Workflows](#workflows)
+  - [Artifacts uploaded](#artifacts-uploaded)
+    - [Generate artifacts manually](#generate-artifacts-manually)
+- [Custom artifact generation](#custom-artifact-generation)
 
 ---
 
