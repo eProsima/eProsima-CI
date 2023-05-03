@@ -52,15 +52,13 @@ runs:
       with:
         workspace: src
 
-<<<<<<<< HEAD:ubuntu-22.04/uncrustify/action.yml
     - name: Install apt packages
       uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
       with:
         packages: uncrustify
-========
+
     - name: Install uncrustify
       uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
->>>>>>>> main:ubuntu/uncrustify/action.yml
 
     - name: Install Colcon
       uses: eProsima/eProsima-CI/ubuntu/install_colcon@main

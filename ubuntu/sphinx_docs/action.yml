@@ -60,7 +60,7 @@ runs:
       with:
         artifact_name: built_dev_utils_ubuntu-22.04_Release_nightly
         workflow_source: build_dev_utils.yml
-        workflow_source_repository: jparisu/eProsima-CI
+        workflow_source_repository: eProsima/eProsima-CI
         target_workspace: '${{ github.workspace }}/install'
         secret_token: ${{ inputs.secret_token }}
 
