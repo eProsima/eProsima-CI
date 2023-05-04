@@ -45,18 +45,18 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@main
+      uses: eProsima/eProsima-CI/external/checkout@feature/some-fixes
       with:
         path: src
 
     - name: Install docs dependencies
-      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@main
+      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@feature/some-fixes
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/some-fixes
 
     - name: Download cmake_utils artifact
-      uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+      uses: eProsima/eProsima-CI/multiplatform/download_dependency@feature/some-fixes
       with:
         artifact_name: built_dev_utils_ubuntu-22.04_Release_nightly
         workflow_source: build_dev_utils.yml
@@ -65,19 +65,19 @@ runs:
         secret_token: ${{ inputs.secret_token }}
 
     - name: Build documentation with colcon
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@feature/some-fixes
       with:
         colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
         cmake_args: '${{ inputs.specific_cmake_args }}'
         workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Run colcon test of documentation
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@feature/some-fixes
       with:
         colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
 
     - name: Upload documentation
-      uses: actions/upload-artifact@v3
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/some-fixes
       with:
         name: Documentation HTML ${{ inputs.docs_subpackage_name }}
         path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/

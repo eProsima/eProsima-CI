@@ -38,7 +38,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@feature/some-fixes
       if: runner.os == 'Linux'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
@@ -49,7 +49,7 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@main
+      uses: eProsima/eProsima-CI/windows/colcon_test@feature/some-fixes
       if: runner.os == 'Windows'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
