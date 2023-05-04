@@ -62,7 +62,7 @@ runs:
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        cmake_args: '-DCODE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug ${{ inputs.cmake_args }}'
+        cmake_args: '-DBUILD_TESTS=ON -DCODE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug ${{ inputs.cmake_args }}'
         ctest_args: ${{ inputs.ctest_args }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}

@@ -104,9 +104,6 @@ inputs:
   version:
     description: 'Specify which version of the Codecov Uploader should be used. Defaults to `latest`'
     required: false
-  working-directory:
-    description: 'Directory in which to execute codecov.sh'
-    required: false
   xcode:
     description: 'Run with xcode support'
     required: false
@@ -158,7 +155,6 @@ runs:
         url: ${{ inputs.url }}
         verbose: ${{ inputs.verbose }}
         version: ${{ inputs.version }}
-        working: ${{ inputs.working }}-directory
         xcode: ${{ inputs.xcode }}
         xcode_archive_path: ${{ inputs.xcode_archive_path }}
         xtra_args: ${{ inputs.xtra_args }}
