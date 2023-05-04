@@ -75,7 +75,7 @@ runs:
         fix_file_path: ${{ inputs.codecov_fix_file_path }}
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: eProsima/eProsima-CI/external/codecov-action@feature/some-fixes
       with:
         token: ${{ inputs.codecov_token }}
         files: ${{ inputs.codecov_result_file_path }}
