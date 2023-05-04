@@ -102,6 +102,9 @@ For more information about versioning handle of this project, check following [f
 - [install_openssl](multiplatform/install_openssl/action.yml)
   - Instal `Open SSL` C++ library.
 
+- [install_python_packages](ubuntu/install_python_packages/action.yml)
+  - Install python packages.
+
 - [install_yamlcpp](multiplatform/install_yamlcpp/action.yml)
   - Instal `yaml-cpp` C++ library.
 
@@ -125,9 +128,6 @@ For more information about versioning handle of this project, check following [f
 
 - [install_apt_packages](ubuntu/install_apt_packages/action.yml)
   - Install apt packages.
-
-- [install_python_packages](ubuntu/install_python_packages/action.yml)
-  - Install python packages.
 
 - [set_platform](ubuntu/set_platform/action.yml)
   - Set the platform OS version in a environment variable.
@@ -183,7 +183,7 @@ In order to use one of these artifacts, use the following action as a step:
 
 ```yml
 - name: Get fastdds artifact
-  uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+  uses: eProsima/eProsima-CI/multiplatform/download_dependency@feature/some-fixes
   with:
     artifact_name: built_fastdds_ubuntu-20.04_Debug_nightly
     workflow_source: build_fastdds.yml

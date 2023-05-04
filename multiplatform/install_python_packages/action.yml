@@ -1,0 +1,39 @@
+name: install_python_packages
+description: Install generic and required python packages with pip
+
+inputs:
+
+  packages:
+    description: 'Custom packages to install using pip'
+    required: false
+    default: ''
+
+  upgrade:
+    description: Upgrade already installed packages
+    required: false
+    default: false
+
+  requirements_file_name:
+    description: If set, the file name of a requirements.txt file
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0.2.0
+      if: runner.os == 'Linux'
+      with:
+        packages: ${{ inputs.packages }}
+        upgrade: ${{ inputs.upgrade }}
+        requirements_file_name: ${{ inputs.requirements_file_name }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/install_python_packages@v0.2.0
+      if: runner.os == 'Windows'
+      with:
+        packages: ${{ inputs.packages }}
+        upgrade: ${{ inputs.upgrade }}
+        requirements_file_name: ${{ inputs.requirements_file_name }}
