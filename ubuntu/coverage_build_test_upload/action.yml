@@ -62,10 +62,11 @@ runs:
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        cmake_args: '-DBUILD_TESTS=ON -DCODE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug ${{ inputs.cmake_args }}'
+        cmake_args: '-DBUILD_TESTS=ON -DCODE_COVERAGE=ON ${{ inputs.cmake_args }}'
         ctest_args: ${{ inputs.ctest_args }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
+        cmake_build_type: Debug
 
     - name: Generate report
       uses: eProsima/eProsima-CI/ubuntu/generate_coverage_report@feature/some-fixes
@@ -73,11 +74,12 @@ runs:
         packages_names: ${{ inputs.packages_names }}
         result_file_name: ${{ inputs.codecov_result_file_path }}
         fix_file_path: ${{ inputs.codecov_fix_file_path }}
+        source_code_directory: ${{ github.workspace }}/src
 
     - name: Upload coverage to Codecov
       uses: eProsima/eProsima-CI/external/codecov-action@feature/some-fixes
       with:
         token: ${{ inputs.codecov_token }}
         files: ${{ inputs.codecov_result_file_path }}
-        root_dir: ${{ inputs.workspace_dependencies }}
         fail_ci_if_error: true
+        root_dir: ${{ github.workspace }}/src
