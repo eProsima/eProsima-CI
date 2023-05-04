@@ -47,7 +47,7 @@ runs:
     # However, looking for the id previously allows to call this action without secret_token
 
     - name: Download dependency
-      uses: eProsima/eProsima-CI/external/action-download-artifact@feature/some-fixes
+      uses: eProsima/eProsima-CI/external/action-download-artifact@main
       with:
         name: ${{ inputs.artifact_name }}
         workflow: ${{ inputs.workflow_source }}
