@@ -114,6 +114,7 @@ jobs:
           target_workspace: install
           workflow_source_repository: ${{ github.repository }}
           secret_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_conclusion: completed
 
       - name: Get colcon.meta and .repos files to build artifact
         uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@feature/some-fixes

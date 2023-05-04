@@ -63,6 +63,7 @@ runs:
         workflow_source_repository: eProsima/eProsima-CI
         target_workspace: '${{ github.workspace }}/install'
         secret_token: ${{ inputs.secret_token }}
+        workflow_conclusion: completed
 
     - name: Build documentation with colcon
       uses: eProsima/eProsima-CI/multiplatform/colcon_build@feature/some-fixes

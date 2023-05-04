@@ -192,6 +192,7 @@ In order to use one of these artifacts, use the following action as a step:
     target_workspace: ${{ github.workspace }}/install
     # If inside an action, this value must be generated in workflow and passed as argument
     secret_token: ${{ secrets.GITHUB_TOKEN }}
+    workflow_conclusion: completed
 ```
 
 #### Generate artifacts manually

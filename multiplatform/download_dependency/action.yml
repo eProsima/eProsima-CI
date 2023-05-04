@@ -56,3 +56,4 @@ runs:
         github_token: ${{ inputs.secret_token }}
         search_artifacts: true
         workflow_conclusion: ${{ inputs.workflow_conclusion }}
+        if_no_artifact_found: fail
