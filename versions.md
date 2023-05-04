@@ -5,6 +5,14 @@ The *Forthcoming* section includes those features added in `main` branch that ar
 
 - [v0.2.0](#v0.2.0)
 
+## Forthcoming
+
+This release includes the following **bug-fixes**:
+
+- Fix codecov action
+- Fix windows `install_python_packages` action
+- Let find artifacts of just completed workflows, and not only for success ones.
+
 ## v0.2.0
 
 First project release.
