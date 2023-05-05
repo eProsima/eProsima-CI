@@ -11,7 +11,7 @@ This release includes the following **bug-fixes**:
 
 - Fix codecov action
 - Fix windows `install_python_packages` action
-- Let find artifacts of just completed workflows, and not only for success ones.
+- Find artifacts of just completed workflows, and not only for successful ones.
 
 ## v0.2.0
 
