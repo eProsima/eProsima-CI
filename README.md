@@ -102,6 +102,9 @@ For more information about versioning handle of this project, check following [f
 - [install_openssl](multiplatform/install_openssl/action.yml)
   - Instal `Open SSL` C++ library.
 
+- [install_python_packages](ubuntu/install_python_packages/action.yml)
+  - Install python packages.
+
 - [install_yamlcpp](multiplatform/install_yamlcpp/action.yml)
   - Instal `yaml-cpp` C++ library.
 
@@ -125,9 +128,6 @@ For more information about versioning handle of this project, check following [f
 
 - [install_apt_packages](ubuntu/install_apt_packages/action.yml)
   - Install apt packages.
-
-- [install_python_packages](ubuntu/install_python_packages/action.yml)
-  - Install python packages.
 
 - [set_platform](ubuntu/set_platform/action.yml)
   - Set the platform OS version in a environment variable.
@@ -192,6 +192,7 @@ In order to use one of these artifacts, use the following action as a step:
     target_workspace: ${{ github.workspace }}/install
     # If inside an action, this value must be generated in workflow and passed as argument
     secret_token: ${{ secrets.GITHUB_TOKEN }}
+    workflow_conclusion: completed
 ```
 
 #### Generate artifacts manually

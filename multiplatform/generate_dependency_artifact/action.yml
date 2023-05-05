@@ -50,7 +50,7 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Upload binaries
-      uses: actions/upload-artifact@v3
+      uses: eProsima/eProsima-CI/external/upload-artifact@main
       with:
         name: ${{ inputs.artifact_name }}
         path: ${{ inputs.workspace }}/install

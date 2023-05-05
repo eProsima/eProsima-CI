@@ -63,6 +63,7 @@ runs:
         workflow_source_repository: eProsima/eProsima-CI
         target_workspace: '${{ github.workspace }}/install'
         secret_token: ${{ inputs.secret_token }}
+        workflow_conclusion: completed
 
     - name: Build documentation with colcon
       uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
@@ -77,7 +78,7 @@ runs:
         colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
 
     - name: Upload documentation
-      uses: actions/upload-artifact@v3
+      uses: eProsima/eProsima-CI/external/upload-artifact@main
       with:
         name: Documentation HTML ${{ inputs.docs_subpackage_name }}
         path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/

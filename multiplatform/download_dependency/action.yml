@@ -17,6 +17,17 @@ inputs:
     required: false
     default: $GITHUB_REPOSITORY
 
+  # Optional, the status or conclusion of a completed workflow to search for
+  # Can be one of a workflow conclusion:
+  #   "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
+  # Or a workflow status:
+  #   "completed", "in_progress", "queued"
+  # Use the empty string ("") to ignore status or conclusion in the search
+  workflow_conclusion:
+    description: User and name of the repository to download it from
+    required: false
+    default: success
+
   target_workspace:
     description: Workspace to source where dependencies are
     required: false
@@ -44,3 +55,5 @@ runs:
         repo: ${{ inputs.workflow_source_repository }}
         github_token: ${{ inputs.secret_token }}
         search_artifacts: true
+        workflow_conclusion: ${{ inputs.workflow_conclusion }}
+        if_no_artifact_found: fail
