@@ -1,0 +1,16 @@
+name: pr_test
+description: Check Pull Request
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+
+  dummy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Do nothing yet
+        shell: bash
+        run: |
+          echo "ToDo"
