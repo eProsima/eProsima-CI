@@ -10,12 +10,12 @@ inputs:
   head-ref:
     description: Git reference to compare file
     required: false
-    default: ${GITHUB_HEAD_REF}
+    default: origin/${GITHUB_HEAD_REF}
 
   base-ref:
     description: Git reference to compare against
     required: false
-    default: ${GITHUB_BASE_REF}
+    default: origin/${GITHUB_BASE_REF}
 
   diff-args:
     description: Additional arguments to pass to the git diff command
@@ -43,13 +43,12 @@ runs:
       shell: bash
       run: |
 
-        echo "::group::Get git modifications of file ${{ inputs.file-path }}""
+        echo "::group::Get git modifications of file ${{ inputs.file-path }}"
 
-        if git diff --name-only "${{ inputs.base-ref }}" "${{ inputs.head-ref }}" ${{ inputs.diff-args }} | grep -q "${{ inputs.file-path }}"; then
+        git diff "${{ inputs.base-ref }}" "${{ inputs.head-ref }}" ${{ inputs.diff-args }} -- "${{ inputs.file-path }}" > "${{ inputs.result-file }}"
 
-          git diff "${{ inputs.base-ref }}" "${{ inputs.head-ref }}" ${{ inputs.diff-args }} "${{ inputs.file-path }}" > "${{ inputs.result-file }}"
+        if [ -s "${{ inputs.result-file }}" ]; then
 
-          echo "::set-output name=diff-file-result::$(cat ${{ inputs.result-file }})"
           echo "::set-output name=have-changes::true"
 
         else
@@ -57,5 +56,7 @@ runs:
           echo "::set-output name=have-changes::false"
 
         fi
+
+        echo "::set-output name=diff-file-result::$(cat "${{ inputs.result-file }}")"
 
         echo "::endgroup::"
