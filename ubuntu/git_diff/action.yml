@@ -25,7 +25,7 @@ inputs:
   result-file:
     description: Additional arguments to pass to the git diff command
     required: false
-    default: '${{ github.workspace }}/git.diff'
+    default: ${{ github.workspace }}/git.diff
 
 outputs:
 
@@ -49,14 +49,17 @@ runs:
 
         if [ -s "${{ inputs.result-file }}" ]; then
 
-          echo "::set-output name=have-changes::true"
+          # echo "::set-output name=have-changes::true"
+          echo "{ have-changes }={ true }" >> $GITHUB_OUTPUT
 
         else
 
-          echo "::set-output name=have-changes::false"
+          # echo "::set-output name=have-changes::false"
+          echo "{ have-changes }={ false }" >> $GITHUB_OUTPUT
 
         fi
 
-        echo "::set-output name=diff-file-result::$(cat "${{ inputs.result-file }}")"
+        # echo "::set-output name=diff-file-result::$(cat "${{ inputs.result-file }}")"
+        echo "{ diff-file-result }={ $(cat "${{ inputs.result-file }}") }" >> $GITHUB_OUTPUT
 
         echo "::endgroup::"

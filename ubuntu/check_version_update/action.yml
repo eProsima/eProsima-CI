@@ -39,8 +39,12 @@ runs:
         file-path: ${{ github.workspace }}/${{ inputs.version-file-path }}
 
     - name: Check if file change
-      if: ${{ steps.git-diff.outputs.have-changes == 'false' }}
       shell: bash
       run: |
-        echo "Version file ${{ inputs.version-file-path }} has not been updated."
-        exit 1
+
+        if [[ "${{ steps.git-diff.outputs.have-changes }}" == 'false' ]]; then
+          echo "Version file ${{ inputs.version-file-path }} has not been updated."
+          exit 1
+        else
+          echo "Version file Updated. HURRAY!"
+        fi
