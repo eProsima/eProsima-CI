@@ -71,7 +71,7 @@ runs:
   using: composite
   steps:
 
-    - name: Download dependency
+    - name: Checkout repository
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repository }}

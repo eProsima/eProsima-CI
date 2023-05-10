@@ -1,0 +1,25 @@
+name: 'Mirror Branch'
+description: 'https://github.com/google/mirror-branch-action'
+
+inputs:
+
+  github-token:
+    description: 'This should be `secrets.GITHUB_TOKEN`.'
+    required: true
+  source:
+    description: 'Name of the source branch'
+    required: true
+  dest:
+    description: 'Name of the destination branch'
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: Mirror branch
+      uses: google/mirror-branch-action@v1.0
+      with:
+        github-token: ${{ inputs.github-token }}
+        source: ${{ inputs.source }}
+        dest: ${{ inputs.dest }}

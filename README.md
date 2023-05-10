@@ -13,6 +13,7 @@ The main idea is to collect every repeated or generic step of any CI to have a s
 - [Dependencies built](#dependencies-built)
   - [Artifacts uploaded](#artifacts-uploaded)
   - [Generate artifacts manually](#generate-artifacts-manually)
+- [External Actions](#external-actions)
 
 ---
 
@@ -221,3 +222,19 @@ Then, run the `manual_build` workflow with these arguments:
 - `artifacts_name_postfix`: Postfix of the name of the artifact to generate.
 
 The result artifacts will be called `<artifacts_name_prefix>_<os>_<cmake_build_type><artifacts_name_postfix>`.
+
+## External Actions
+
+This repository also includes a wrapper around the external actions being used by eProsima CI workflows.
+Thus, the maintainability and upgrading of these actions is performed in a single step.
+Find below the external actions listed:
+
+| External Action | Description | LICENSE |
+|---|---|---|
+| [action-download-artifact](external/action-download-artifact/action.yml) | Download and extract an artifact | MIT license |
+| [checkout](external/checkout/action.yml) | Checkout repository | MIT license |
+| [codecov-action](external/codecov-action/action.yml) | Upload coverage report to codecov.io | MIT license |
+| [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
+| [mirror-branch-action](external/mirror-branch-action/action.yml) | Mirror branch within the same repository | Apache-2.0 license |
+| [upload-artifact](external/upload-artifact/action.yml) | Upload build artifact | MIT license |
+| [wait-on-check-action](external/wait-on-check-action/action.yml) | Wait on certain check | MIT license |
