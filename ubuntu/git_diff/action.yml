@@ -1,0 +1,61 @@
+name: git_diff
+description: Check whether a file in a repository has changed and return diff file
+
+inputs:
+
+  file-path:
+    description: The path to the file to check for changes
+    required: true
+
+  head-ref:
+    description: Git reference to compare file
+    required: false
+    default: ${GITHUB_HEAD_REF}
+
+  base-ref:
+    description: Git reference to compare against
+    required: false
+    default: ${GITHUB_BASE_REF}
+
+  diff-args:
+    description: Additional arguments to pass to the git diff command
+    required: false
+    default: ''
+
+  result-file:
+    description: Additional arguments to pass to the git diff command
+    required: false
+    default: '${{ github.workspace }}/git.diff'
+
+outputs:
+
+  diff-file-result:
+    description: The path to the file containing the diff, if changes were detected
+
+  have-changes:
+    description: Whether there have been changes in such file
+
+runs:
+  using: composite
+  steps:
+
+    - name: get_git_diff_files
+      shell: bash
+      run: |
+
+        echo "::group::Get git modifications of file ${{ inputs.file-path }}""
+
+        if git diff --name-only "${{ inputs.base-ref }}" "${{ inputs.head-ref }}" ${{ inputs.diff-args }} | grep -q "${{ inputs.file-path }}"; then
+
+          git diff "${{ inputs.base-ref }}" "${{ inputs.head-ref }}" ${{ inputs.diff-args }} "${{ inputs.file-path }}" > "${{ inputs.result-file }}"
+
+          echo "::set-output name=diff-file-result::$(cat ${{ inputs.result-file }})"
+          echo "::set-output name=have-changes::true"
+
+        else
+
+          echo "::set-output name=have-changes::false"
+
+        fi
+
+        echo "::endgroup::"

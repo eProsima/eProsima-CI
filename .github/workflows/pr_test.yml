@@ -7,10 +7,8 @@ on:
 
 jobs:
 
-  dummy:
+  version-update:
     runs-on: ubuntu-22.04
     steps:
-      - name: Do nothing yet
-        shell: bash
-        run: |
-          echo "ToDo"
+      - name: Check wether the versions.md file have been updated
+        uses: eProsima/eProsima-CI/ubuntu/check_version_update@main
