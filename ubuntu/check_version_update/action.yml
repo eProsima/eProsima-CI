@@ -42,9 +42,11 @@ runs:
       shell: bash
       run: |
 
-        if [[ "${{ steps.git-diff.outputs.have-changes }}" == 'false' ]]; then
-          echo "Version file ${{ inputs.version-file-path }} has not been updated."
+        if [[ "${{ steps.git-diff.outputs.have-changes }}" != "true" ]]; then
+          echo "Version file ${{ inputs.version-file-path }} has not been updated"
+          echo "T.T"
           exit 1
         else
-          echo "Version file Updated. HURRAY!"
+          echo "Version file ${{ inputs.version-file-path }} updated."
+          echo "HURRAY! ^.^"
         fi
