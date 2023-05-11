@@ -67,3 +67,64 @@ jobs:
 
       - name: Debug
         run: echo "Shared resources changed -> ${{ matrix.file }}"
+
+  test-external-pr:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
+        with:
+          path: ${{ github.workspace }}
+          repository: eProsima/Fast-DDS-spy
+
+      - name: Add file
+        run: echo "some text" > ${{ github.workspace }}/test_file.txt
+
+      - name: Try to create Pull Request
+        id: open-pr
+        uses: eProsima/eProsima-CI/external/create-pull-request@feature/shared_resources
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ github.workspace }}
+          commit-message: "Auto generated commit"
+          branch: eprosima-ci/test-branch
+          base: main
+
+      - name: Debug
+        run: |
+
+          echo "pull-request-number -> ${{ steps.open-pr.outputs.pull-request-number }}"
+          echo "pull-request-url -> ${{ steps.open-pr.outputs.pull-request-url }}"
+          echo "pull-request-operation -> ${{ steps.open-pr.outputs.pull-request-operation }}"
+          echo "pull-request-head-sha -> ${{ steps.open-pr.outputs.pull-request-head-sha }}"
+
+  test-internal-pr:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
+        with:
+          path: ${{ github.workspace }}
+
+      - name: Add file
+        run: echo "some text" > ${{ github.workspace }}/test_file.txt
+
+      - name: Try to create Pull Request
+        id: open-pr
+        uses: eProsima/eProsima-CI/external/create-pull-request@feature/shared_resources
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ github.workspace }}
+          commit-message: "Auto generated commit"
+          branch: eprosima-ci/test-branch
+          base: main
+
+      - name: Debug
+        run: |
+
+          echo "pull-request-number -> ${{ steps.open-pr.outputs.pull-request-number }}"
+          echo "pull-request-url -> ${{ steps.open-pr.outputs.pull-request-url }}"
+          echo "pull-request-operation -> ${{ steps.open-pr.outputs.pull-request-operation }}"
+          echo "pull-request-head-sha -> ${{ steps.open-pr.outputs.pull-request-head-sha }}"

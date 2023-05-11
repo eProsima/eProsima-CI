@@ -78,16 +78,16 @@ outputs:
 
   pull-request-number:
     description: 'The pull request number'
-    pull-request-number: ${{ steps.run.outputs.pull-request-number }}
+    value: ${{ steps.run.outputs.pull-request-number }}
   pull-request-url:
     description: 'The URL of the pull request.'
-    pull-request-url: ${{ steps.run.outputs.pull-request-url }}
+    value: ${{ steps.run.outputs.pull-request-url }}
   pull-request-operation:
     description: 'The pull request operation performed by the action, `created`, `updated` or `closed`.'
-    pull-request-operation: ${{ steps.run.outputs.pull-request-operation }}
+    value: ${{ steps.run.outputs.pull-request-operation }}
   pull-request-head-sha:
     description: 'The commit SHA of the pull request branch.'
-    pull-request-head-sha: ${{ steps.run.outputs.pull-request-head-sha }}
+    value: ${{ steps.run.outputs.pull-request-head-sha }}
 
 runs:
   using: composite
