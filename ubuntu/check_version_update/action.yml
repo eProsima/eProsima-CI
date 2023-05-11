@@ -40,11 +40,12 @@ runs:
 
     - name: Check if file change
       shell: bash
+      needs: git-diff
       run: |
 
         cat $GITHUB_OUTPUT
 
-        if [[ "${{ steps.git-diff.outputs.have-changes }}" != "true" ]]; then
+        if [[ "${{ needs.git-diff.outputs.have-changes }}" != "true" ]]; then
           echo "Version file ${{ inputs.version-file-path }} has not been updated"
           echo "T.T"
           exit 1
