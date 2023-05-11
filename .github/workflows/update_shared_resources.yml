@@ -1,0 +1,38 @@
+name: update_shared_resources
+
+on:
+  push:
+
+jobs:
+
+  resources-changed:
+    runs-on: ubuntu-22.04
+    outputs:
+      resources-changed:
+        value: ${{ steps.resources-changed.outputs.files-changed }}
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
+        with:
+          path: ${{ github.workspace }}
+
+      - name: Get list of existing shared resources files that have changed
+        id: resources-changed
+        uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@feature/shared_resources
+        with:
+          workspace: ${{ github.workspace }}/shared_resources
+          base_ref: HEAD^1
+
+      - name: Debug
+        run: echo "Shared resources changed -> ${{ steps.resources-changed.outputs.files-changed }}"
+
+  update-shared-resources:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Get list of existing shared resources files
+        uses: eProsima/eProsima-CI/ubuntu/check_version_update@feature/shared_resources
+
+      - name: Check if this PR modifies any shared resources
+        uses: eProsima/eProsima-CI/ubuntu/check_version_update@feature/shared_resources

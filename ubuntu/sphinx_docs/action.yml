@@ -45,18 +45,18 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@main
+      uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
       with:
         path: src
 
     - name: Install docs dependencies
-      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@main
+      uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@feature/shared_resources
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/shared_resources
 
     - name: Download cmake_utils artifact
-      uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+      uses: eProsima/eProsima-CI/multiplatform/download_dependency@feature/shared_resources
       with:
         artifact_name: built_dev_utils_ubuntu-22.04_Release_nightly
         workflow_source: build_dev_utils.yml
@@ -66,19 +66,19 @@ runs:
         workflow_conclusion: completed
 
     - name: Build documentation with colcon
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@feature/shared_resources
       with:
         colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
         cmake_args: '${{ inputs.specific_cmake_args }}'
         workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Run colcon test of documentation
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@feature/shared_resources
       with:
         colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
 
     - name: Upload documentation
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/shared_resources
       with:
         name: Documentation HTML ${{ inputs.docs_subpackage_name }}
         path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/
