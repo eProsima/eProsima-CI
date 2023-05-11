@@ -60,8 +60,6 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/git_diff@feature/versions-update
       with:
         file-path: ${{ github.workspace }}/${{ inputs.version-file-path }}
-      outputs:
-        have-changes: ${{ steps.diff2.outputs.have-changes }}
 
     - name: get_git_diff_files
       id: diff1

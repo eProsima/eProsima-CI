@@ -1,0 +1,14 @@
+name: action_with_output
+
+outputs:
+  out:
+    description: 'Some output'
+    value: ${{ steps.run.outputs.out }}
+
+runs:
+  using: composite
+  steps:
+    - name: action with output step
+      id: run
+      shell: bash
+      run: echo "out=true" >> $GITHUB_OUTPUT

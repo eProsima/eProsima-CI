@@ -66,3 +66,56 @@ jobs:
             echo "Version file ${{ inputs.version-file-path }} updated."
             echo "HURRAY! ^.^"
           fi
+
+
+  testing2:
+    runs-on: ubuntu-22.04
+    outputs:
+      out1: ${{ steps.action1.outputs.out }}
+      out2: ${{ steps.action2.outputs.out }}
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/versions-update
+        with:
+          path: src
+
+      - name: Run some action with output
+        id: action1
+        uses: ./src/.github/actions/action_with_output
+
+      - name: Run some shell with output
+        id: action2
+        shell: bash
+        run: echo "out=true" >> $GITHUB_OUTPUT
+
+      - name: Get output 1
+        shell: bash
+        run: echo "OUTPUT ${{ steps.action1.outputs.out }}"
+
+      - name: Get output 2
+        if: ${{ steps.action1.outputs.out }} == true
+        shell: bash
+        run: echo "OUTPUT true"
+
+      - name: Get output 3
+        if: ${{ steps.action1.outputs.out }} != true
+        shell: bash
+        run: echo "OUTPUT diff true"
+
+      - name: Get output 4
+        shell: bash
+        run: echo "OUTPUT ${{ steps.action2.outputs.out }}"
+
+  testing3:
+    runs-on: ubuntu-22.04
+    needs: [testing2]
+    steps:
+
+      - name: Get output from other job
+        shell: bash
+        run: echo "OUTPUT ${{ steps.testing2.outputs.out1 }}"
+
+      - name: Get output from other job
+        shell: bash
+        run: echo "OUTPUT ${{ steps.testing2.outputs.out2 }}"
