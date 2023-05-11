@@ -4,37 +4,50 @@ description: 'Get names of files that are different between git branches'
 inputs:
 
   result_env_var:
-    description: 'Environment Variable name for result'
+    description: Environment Variable name for result
     required: true
 
   head_ref:
-    description: 'Reference to Git Head to compare with'
+    description: Reference to Git Head to compare with
     required: true
 
   base_ref:
-    description: 'Reference to Git current'
+    description: Reference to Git current
     required: true
 
   grep_args:
-    description: 'Arguments to filter the result'
+    description: Arguments to filter the result
     required: false
     default: ''
 
   workspace:
-    description: 'Workspace where the git project is'
+    description: Workspace where the git project is
     required: false
     default: '/.'
 
   add_deleted:
-    description: 'Wether to add in list result those files that have been removed'
+    description: Wether to add in list result those files that have been removed
     required: false
     default: false
+
+  separator:
+    description: Separator for file names
+    required: false
+    default: ' '
+
+outputs:
+
+  files-changed:
+    description: 'line with name of files modified concatenated with ":"'
+    value: ${{ steps.run.outputs.files-changed }}
 
 runs:
   using: composite
   steps:
 
     - name: get_git_diff_files
+      id: run
+      shell: bash
       run: |
 
         echo "::group::Get git modified files in ${{ inputs.workspace }}"
@@ -45,9 +58,19 @@ runs:
           export GIT_FLAGS_="--diff-filter=d"
         fi
 
-        cd ${{ inputs.workspace }}
-        echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
+        if [[ -z "${{ inputs.grep_args }}" ]]; then
+
+          export RESULT_=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} ${{ inputs.workspace }} | tr '\n' '${{ inputs.separator }}' | sed 's/.$//')
+
+        else
+
+          export RESULT_=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} ${{ inputs.workspace }} | grep ${{ inputs.grep_args }} | tr '\n' '${{ inputs.separator }}' | sed 's/.$//')
+
+        fi
+
+        echo "Files changed -> ${RESULT_}"
+
+        echo "${{ inputs.result_env_var }}=${RESULT_}" >> $GITHUB_ENV
+        echo "files-changed=${RESULT_}" >> $GITHUB_OUTPUT
 
         echo "::endgroup::"
-
-      shell: bash

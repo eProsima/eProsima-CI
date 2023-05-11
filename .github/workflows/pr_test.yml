@@ -1,5 +1,4 @@
 name: pr_test
-description: Check Pull Request
 
 on:
   workflow_dispatch:
@@ -7,10 +6,125 @@ on:
 
 jobs:
 
-  dummy:
+  version-update:
     runs-on: ubuntu-22.04
     steps:
-      - name: Do nothing yet
-        shell: bash
+
+      - name: Check wether the versions.md file have been updated
+        uses: eProsima/eProsima-CI/ubuntu/check_version_update@feature/shared_resources
+
+
+# TODO remove all these testing actions
+  resources-changed:
+    runs-on: ubuntu-22.04
+    outputs:
+      resources-changed: ${{ steps.resources-changed.outputs.files-changed }}
+      resources-changed-json: ${{ steps.json.outputs.files-changed-json }}
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
+        with:
+          path: ${{ github.workspace }}
+          fetch-depth: 0
+
+      - name: Fetch all branches and tags
+        uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/shared_resources
+        with:
+          workspace: ${{ github.workspace }}
+
+      - name: Get list of existing shared resources files that have changed
+        id: resources-changed
+        uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@feature/shared_resources
+        with:
+          workspace: ${{ github.workspace }}/shared_resources
+          head_ref: origin/${GITHUB_HEAD_REF}
+          base_ref: ${{ github.event.pull_request.base.sha }}
+          # head_ref: ${{ github.event.base_ref }}
+          # base_ref: ${{ github.event.before }}
+          result_env_var: SHARED_RESOURCES_CHANGED
+          separator: ';'
+
+      - name: Debug
+        run: echo "Shared resources changed -> ${{ steps.resources-changed.outputs.files-changed }}"
+
+      - name: Convert output to json
+        id: json
         run: |
-          echo "ToDo"
+          echo "[${{ steps.resources-changed.outputs.files-changed }}]" | tr ';' ',' >> _file.txt
+
+          cat _file.txt
+          echo "files-changed-json=$(cat _file.txt)" >> $GITHUB_OUTPUT
+
+  update-shared-resources:
+    runs-on: ubuntu-22.04
+    needs: [resources-changed]
+    strategy:
+      matrix:
+        file: ${{ fromJSON(needs.resources-changed.outputs.resources-changed-json) }}
+
+    steps:
+
+      - name: Debug
+        run: echo "Shared resources changed -> ${{ matrix.file }}"
+
+  test-external-pr:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
+        with:
+          path: ${{ github.workspace }}
+          repository: eProsima/Fast-DDS-spy
+
+      - name: Add file
+        run: echo "some text" > ${{ github.workspace }}/test_file.txt
+
+      - name: Try to create Pull Request
+        id: open-pr
+        uses: eProsima/eProsima-CI/external/create-pull-request@feature/shared_resources
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ github.workspace }}
+          commit-message: "Auto generated commit"
+          branch: eprosima-ci/test-branch
+          base: main
+
+      - name: Debug
+        run: |
+
+          echo "pull-request-number -> ${{ steps.open-pr.outputs.pull-request-number }}"
+          echo "pull-request-url -> ${{ steps.open-pr.outputs.pull-request-url }}"
+          echo "pull-request-operation -> ${{ steps.open-pr.outputs.pull-request-operation }}"
+          echo "pull-request-head-sha -> ${{ steps.open-pr.outputs.pull-request-head-sha }}"
+
+  test-internal-pr:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Sync repository
+        uses: eProsima/eProsima-CI/external/checkout@feature/shared_resources
+        with:
+          path: ${{ github.workspace }}
+
+      - name: Add file
+        run: echo "some text" > ${{ github.workspace }}/test_file.txt
+
+      - name: Try to create Pull Request
+        id: open-pr
+        uses: eProsima/eProsima-CI/external/create-pull-request@feature/shared_resources
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ github.workspace }}
+          commit-message: "Auto generated commit"
+          branch: eprosima-ci/test-branch
+          base: main
+
+      - name: Debug
+        run: |
+
+          echo "pull-request-number -> ${{ steps.open-pr.outputs.pull-request-number }}"
+          echo "pull-request-url -> ${{ steps.open-pr.outputs.pull-request-url }}"
+          echo "pull-request-operation -> ${{ steps.open-pr.outputs.pull-request-operation }}"
+          echo "pull-request-head-sha -> ${{ steps.open-pr.outputs.pull-request-head-sha }}"

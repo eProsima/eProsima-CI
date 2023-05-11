@@ -12,12 +12,12 @@ runs:
   steps:
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@feature/shared_resources
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@feature/shared_resources
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Install Open SSL
-      uses: eProsima/eProsima-CI/windows/install_openssl@main
+      uses: eProsima/eProsima-CI/windows/install_openssl@feature/shared_resources
