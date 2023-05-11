@@ -29,10 +29,6 @@ inputs:
 
 outputs:
 
-  diff-file-result:
-    description: The path to the file containing the diff, if changes were detected
-    value: ${{ steps.run.outputs.diff-file-result }}
-
   have-changes:
     description: Whether there have been changes in such file
     value: ${{ steps.run.outputs.have-changes }}
@@ -64,7 +60,5 @@ runs:
           echo "File has not changes"
 
         fi
-
-        echo "diff-file-result=$(cat "${{ inputs.result-file }}")" >> $GITHUB_OUTPUT
 
         echo "::endgroup::"
