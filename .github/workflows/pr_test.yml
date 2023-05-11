@@ -27,11 +27,30 @@ jobs:
         with:
           workspace: ${{ github.workspace }}
 
+      - name: Test outputs
+        id: test1
+        shell: bash
+        run: |
+
+          echo "$GITHUB_OUTPUT"
+          cat $GITHUB_OUTPUT
+          echo "test1-output=false" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+
+      - name: Test outputs reception
+        shell: bash
+        run: |
+
+          echo "$GITHUB_OUTPUT"
+          cat $GITHUB_OUTPUT
+          echo "${{ steps.test1.outputs.test1-output }}"
+
       - name: Get diff file of version file
         id: diff
         uses: eProsima/eProsima-CI/ubuntu/git_diff@feature/versions-update
         with:
           file-path: ${{ github.workspace }}/${{ inputs.version-file-path }}
+
 
       - name: Check if file change
         shell: bash
