@@ -33,19 +33,18 @@ runs:
         workspace: ${{ github.workspace }}
 
     - name: Get diff file of version file
-      id: git-diff
+      id: diff
       uses: eProsima/eProsima-CI/ubuntu/git_diff@feature/versions-update
       with:
         file-path: ${{ github.workspace }}/${{ inputs.version-file-path }}
 
     - name: Check if file change
       shell: bash
-      needs: git-diff
       run: |
 
         cat $GITHUB_OUTPUT
 
-        if [[ "${{ needs.git-diff.outputs.have-changes }}" != "true" ]]; then
+        if [[ "${{ steps.diff.outputs.have-changes }}" != "true" ]]; then
           echo "Version file ${{ inputs.version-file-path }} has not been updated"
           echo "T.T"
           exit 1
