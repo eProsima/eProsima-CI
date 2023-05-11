@@ -6,6 +6,16 @@ The *Forthcoming* section includes those features added in `main` branch that ar
 - [v0.3.0](#v0.3.0)
 - [v0.2.0](#v0.2.0)
 
+## Forthcoming
+
+This release includes the following **CI features**:
+
+- Add a check for every PR that checks if `versions.md` file have been updated with new PRs.
+
+This release includes the following **features**:
+
+- `check_version_update` action to check if version documentation file have been updated.
+
 ## v0.3.0
 
 This release includes the following **bug-fixes**:

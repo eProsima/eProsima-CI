@@ -8,11 +8,12 @@ The main idea is to collect every repeated or generic step of any CI to have a s
 - [User manual](#user-manual)
 - [Out-of-the-box Actions Implemented](#out-of-the-box-actions-implemented)
 - [Actions Implemented](#actions-implemented)
-  - [Multiplatform](#multiplatform)
-  - [Ubuntu](#ubuntu)
-- [Dependencies built](#dependencies-built)
-  - [Artifacts uploaded](#artifacts-uploaded)
+- [Multiplatform](#multiplatform)
+- [Ubuntu](#ubuntu)
+- [Workflows](#workflows)
+- [Artifacts uploaded](#artifacts-uploaded)
   - [Generate artifacts manually](#generate-artifacts-manually)
+- [Custom artifact generation](#custom-artifact-generation)
 - [External Actions](#external-actions)
 
 ---
@@ -48,6 +49,10 @@ For more information about versioning handle of this project, check following [f
   - Build [Sphinx](<https://www.sphinx-doc.org/en/master/>) documentation, test it and upload results.
   - *Only on ubuntu*.
   - *Only for documentation projects based in [cmake_utils](https://github.com/eProsima/dev-utils)*.
+
+- [check_version_update](ubuntu/check_version_update/action.yml)
+  - Check that the document containing version changes have changed.
+  - *Only on ubuntu*.
 
 ---
 
@@ -123,6 +128,10 @@ For more information about versioning handle of this project, check following [f
 - [get_git_diff_files](ubuntu/get_git_diff_files/action.yml)
   - Get the files that differ from one github reference to another.
     The result can be parsed with `grep`.
+
+- [git_diff](ubuntu/git_diff/action.yml)
+  - Get the diff file of a file contained in a git repository.
+    It returns true or false whether the file has changes.
 
 - [git_fetch_all](ubuntu/git_fetch_all/action.yml)
   - Get all branches of a specific repository.
