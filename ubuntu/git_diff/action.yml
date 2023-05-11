@@ -31,16 +31,18 @@ outputs:
 
   diff-file-result:
     description: The path to the file containing the diff, if changes were detected
+    value: ${{ steps.run.outputs.diff-file-result }}
 
   have-changes:
     description: Whether there have been changes in such file
+    value: ${{ steps.run.outputs.have-changes }}
 
 runs:
   using: composite
   steps:
 
     - name: get_git_diff_files
-      id: diff3
+      id: run
       shell: bash
       run: |
 
@@ -54,13 +56,11 @@ runs:
         if [ -s "${{ inputs.result-file }}" ]; then
 
           echo "have-changes=true" >> $GITHUB_OUTPUT
-          echo "have-change=true" >> $GITHUB_OUTPUT
           echo "File has changes"
 
         else
 
           echo "have-changes=false" >> $GITHUB_OUTPUT
-          echo "have-change=false" >> $GITHUB_OUTPUT
           echo "File has not changes"
 
         fi

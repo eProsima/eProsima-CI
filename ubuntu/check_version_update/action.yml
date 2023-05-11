@@ -32,85 +32,17 @@ runs:
       with:
         workspace: ${{ github.workspace }}
 
-    - name: Test outputs
-      shell: bash
-      id: test1
-      run: |
-
-        echo "::group::Test"
-
-        echo "$GITHUB_OUTPUT"
-        cat $GITHUB_OUTPUT
-        echo "test1-output=false" >> $GITHUB_OUTPUT
-        cat $GITHUB_OUTPUT
-
-        echo "::endgroup::"
-
-
-    - name: Test outputs reception
-      shell: bash
-      run: |
-
-        echo "$GITHUB_OUTPUT"
-        cat $GITHUB_OUTPUT
-        echo "${{ steps.test1.outputs.test1-output }}"
-
     - name: Get diff file of version file
-      id: diff2
+      id: git-diff
       uses: eProsima/eProsima-CI/ubuntu/git_diff@feature/versions-update
       with:
         file-path: ${{ github.workspace }}/${{ inputs.version-file-path }}
-
-    - name: get_git_diff_files
-      id: diff1
-      shell: bash
-      run: |
-
-        echo "::group::Get git modifications of file ${{ inputs.file-path }}"
-
-        echo "have-changes=false" >> $GITHUB_OUTPUT
-
-        echo "diff-file-result=" >> $GITHUB_OUTPUT
-
-        echo "::endgroup::"
 
     - name: Check if file change
       shell: bash
       run: |
 
-        if [[ "${{ steps.git_diff.outputs.have-changes }}" != "true" ]]; then
-          echo "Version file ${{ inputs.version-file-path }} has not been updated"
-          echo "T.T"
-        else
-          echo "Version file ${{ inputs.version-file-path }} updated."
-          echo "HURRAY! ^.^"
-        fi
-
-        if [[ "${{ steps.diff3.outputs.have-changes }}" != "true" ]]; then
-          echo "Version file ${{ inputs.version-file-path }} has not been updated"
-          echo "T.T"
-        else
-          echo "Version file ${{ inputs.version-file-path }} updated."
-          echo "HURRAY! ^.^"
-        fi
-
-        if [[ "${{ steps.diff2.outputs.have-changes }}" != "true" ]]; then
-          echo "Version file ${{ inputs.version-file-path }} has not been updated"
-          echo "T.T"
-        else
-          echo "Version file ${{ inputs.version-file-path }} updated."
-          echo "HURRAY! ^.^"
-        fi
-
-        if [[ "${{ steps.diff2.outputs.have-change }}" != "true" ]]; then
-          echo "Version file ${{ inputs.version-file-path }} has not been updated"
-          echo "T.T"
-        else
-          echo "Version file ${{ inputs.version-file-path }} updated."
-          echo "HURRAY! ^.^"
-        fi
-
-        if [[ "${{ steps.diff1.outputs.have-changes }}" != "true" ]]; then
+        if [[ "${{ steps.git-diff.outputs.have-changes }}" != "true" ]]; then
           echo "Version file ${{ inputs.version-file-path }} has not been updated"
           echo "T.T"
           exit 1
