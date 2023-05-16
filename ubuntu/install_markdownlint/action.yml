@@ -1,0 +1,16 @@
+name: install_markdownlint
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_markdownlint
+      run: |
+
+        echo "::group::Install Markdown packages"
+
+        sudo gem install mdl
+
+        echo "::endgroup::"
+
+      shell: bash
