@@ -23,18 +23,18 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@feature/versions-update
+      uses: eProsima/eProsima-CI/external/checkout@feature/markdown-linter
       with:
         path: ${{ github.workspace }}
 
     - name: Fetch all branches and tags
-      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/versions-update
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@feature/markdown-linter
       with:
         workspace: ${{ github.workspace }}
 
     - name: Get diff file of version file
       id: git-diff
-      uses: eProsima/eProsima-CI/ubuntu/git_diff@feature/versions-update
+      uses: eProsima/eProsima-CI/ubuntu/git_diff@feature/markdown-linter
       with:
         file-path: ${{ github.workspace }}/${{ inputs.version-file-path }}
 

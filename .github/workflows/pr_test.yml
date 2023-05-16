@@ -11,4 +11,15 @@ jobs:
     steps:
 
       - name: Check wether the versions.md file have been updated
-        uses: eProsima/eProsima-CI/ubuntu/check_version_update@feature/versions-update
+        uses: eProsima/eProsima-CI/ubuntu/check_version_update@feature/markdown-linter
+
+  markdown-linter:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Linter all markdown files
+        uses: eProsima/eProsima-CI/ubuntu/markdown_linter@feature/markdown-linter
+        with:
+          # TODO modify this when PR is merged
+          # linter_configuration_version: feature/markdown-linter
+          linter_configuration_version: master
