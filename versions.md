@@ -33,9 +33,9 @@ This release includes the following **features**:
 - General purpose actions
 - Multiplatform support
 - Artifacts generation workflows for projects:
-   - Fast DDS
-   - dev-utils
-   - DDS Pipe
+  - Fast DDS
+  - dev-utils
+  - DDS Pipe
 
 This release includes the following **documentation**:
 
