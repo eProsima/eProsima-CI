@@ -8,12 +8,12 @@
 # - Checkout repository and fetch unshallow to be able to compare
 # - Install packages required
 # - Get the file names of those files that has changed between base and head branch
-# - Execute makrdownlint over those files (only .md and README ones).
+# - Execute markdownlint over those files (only .md and README ones).
 #
 # Arguments:
 # - linter_configuration_version : branch of cpp-style repo to get configuration from [master]
-# - markdownlint_version : branch of markdownlint/markdownlint repo to download tool [v0.12.0]
 # - file_grep_args : grep filer for file extensions [-e '\\.md' -e 'README']
+# - markdownlint_args : arguments for markdownlint []
 
 name: markdown_linter
 description: MarkDown Linter action to check Python modified files.
@@ -21,14 +21,19 @@ description: MarkDown Linter action to check Python modified files.
 inputs:
 
   linter_configuration_version:
-    description: 'Branch of eProsima/cpp-style'
+    description: Branch of eProsima/cpp-style
     required: false
     default: master
 
   file_grep_args:
-    description: 'Extensions of the files to check as markdown, as grep filter arguments.'
+    description: Extensions of the files to check as markdown, as grep filter arguments
     required: false
     default: "-e '\\.md' -e 'README'"
+
+  markdownlint_args:
+    description: Arguments for markdownlint
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -99,10 +104,10 @@ runs:
         echo "################################################################################################"
         echo "################################### MARKDOWN LINTER RESULTS ####################################"
 
-        mdl ${MODIFIED_FILES}
+        mdl ${{ inputs.markdownlint_args }} ${MODIFIED_FILES}
 
         # When bug is fixed, uncomment this
-        # mdl --config ../markdownlint_linter.rb ${MODIFIED_FILES}
+        # mdl --config ../markdownlint_linter.rb ${{ inputs.markdownlint_args }} ${MODIFIED_FILES}
 
         echo "############################### MARKDOWN LINTER CHECK SUCCESSFUL ###############################"
         echo "################################################################################################"
