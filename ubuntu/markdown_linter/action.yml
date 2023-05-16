@@ -81,6 +81,17 @@ runs:
         echo "Files to check: ${MODIFIED_FILES}"
       shell: bash
 
+    # TODO remove
+    # This file is required due to a bug in markdownlint that do not allow to use a config file
+    - name: Add config path file
+      run: |
+        cd src
+        echo "style '../markdownlint_linter.rb'" > .mdlrc
+        ls
+        cat .mdlrc
+        cat ../markdownlint_linter.rb
+      shell: bash
+
     - name: Check style
       run: |
         cd src
@@ -88,7 +99,10 @@ runs:
         echo "################################################################################################"
         echo "################################### MARKDOWN LINTER RESULTS ####################################"
 
-        mdl --config markdownlint_linter.rb ${MODIFIED_FILES}
+        mdl ${MODIFIED_FILES}
+
+        # When bug is fixed, uncomment this
+        # mdl --config ../markdownlint_linter.rb ${MODIFIED_FILES}
 
         echo "############################### MARKDOWN LINTER CHECK SUCCESSFUL ###############################"
         echo "################################################################################################"
