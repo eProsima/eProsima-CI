@@ -21,5 +21,5 @@ jobs:
         uses: eProsima/eProsima-CI/ubuntu/markdown_linter@feature/markdown-linter
         with:
           # TODO modify this when PR is merged
-          # linter_configuration_version: feature/markdown-linter
-          linter_configuration_version: master
+          linter_configuration_version: feature/markdown-linter
+          # linter_configuration_version: master
