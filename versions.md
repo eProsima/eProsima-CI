@@ -3,12 +3,9 @@
 This file includes the released versions of **eProsima-CI** along with their contributions to the project.
 The *Forthcoming* section includes those features added in `main` branch that are not yet in a stable release.
 
-- [Forthcoming](#forthcoming)
 - [v0.4.0](#v0.4.0)
 - [v0.3.0](#v0.3.0)
 - [v0.2.0](#v0.2.0)
-
-## Forthcoming
 
 ## v0.4.0
 
