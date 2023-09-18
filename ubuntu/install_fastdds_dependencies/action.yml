@@ -11,21 +11,21 @@ runs:
   steps:
 
     - name: Install vcs tools
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0.4.0
       with:
         packages: 'vcstool setuptools'
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@v0.4.0
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@v0.4.0
 
     - name: Install asio
-      uses: eProsima/eProsima-CI/ubuntu/install_asio@main
+      uses: eProsima/eProsima-CI/ubuntu/install_asio@v0.4.0
 
     - name: Install Tiny XML
-      uses: eProsima/eProsima-CI/ubuntu/install_tinyxml@main
+      uses: eProsima/eProsima-CI/ubuntu/install_tinyxml@v0.4.0
 
     - name: Install Open SSL
-      uses: eProsima/eProsima-CI/ubuntu/install_openssl@main
+      uses: eProsima/eProsima-CI/ubuntu/install_openssl@v0.4.0

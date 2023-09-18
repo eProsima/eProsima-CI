@@ -17,14 +17,14 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/vcs_import@main
+      uses: eProsima/eProsima-CI/ubuntu/vcs_import@v0.4.0
       if: runner.os == 'Linux'
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.destination_workspace }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/vcs_import@main
+      uses: eProsima/eProsima-CI/windows/vcs_import@v0.4.0
       if: runner.os == 'Windows'
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
