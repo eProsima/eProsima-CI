@@ -1,0 +1,47 @@
+name: fetch_fastdds_manual
+
+inputs:
+
+  foonathan_memory_vendor_branch:
+    description: Branch, tag or commit of eProsima/foonathan_memory_vendor repository. Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+    required: false
+    default: master
+
+  fastcdr_branch:
+    description: Branch, tag or commit of eProsima/Fast-CDR repository. Check available branches in https://github.com/eProsima/Fast-CDR.
+    required: false
+    default: master
+
+  fastdds_branch:
+    description: Branch, tag or commit of eProsima/Fast-DDS repository. Check available branches in https://github.com/eProsima/Fast-DDS.
+    required: false
+    default: master
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: fetch_fastdds_manual
+      run: |
+
+        echo "::group::Manually clone Fast DDS repositories"
+
+        echo "Downloading following dependencies:"
+        echo "  - Foonathan Memory Vendor: ${{ inputs.foonathan_memory_vendor_branch }}"
+        echo "  - Fast CDR: ${{ inputs.fastcdr_branch }}"
+        echo "  - Fast CDR: ${{ inputs.fastdds_branch }}"
+
+        mkdir -p ${{ inputs.destination_workspace }}
+        cd ${{ inputs.destination_workspace }}
+        git clone --branch ${{ inputs.foonathan_memory_vendor_branch }} https://github.com/eProsima/foonathan_memory_vendor.git
+        git clone --branch ${{ inputs.fastcdr_branch }} https://github.com/eProsima/Fast-CDR.git
+        git clone --branch ${{ inputs.fastdds_branch }} https://github.com/eProsima/Fast-DDS.git
+
+        echo "::endgroup::"
+
+      shell: bash

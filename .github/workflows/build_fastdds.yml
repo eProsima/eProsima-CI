@@ -36,15 +36,25 @@ on:
 
     inputs:
 
-      built_configuration_branch:
-        description: Branch or tag of eProsima-CI repository to get .repos and colcon.meta that will be applied
-        required: false
-        default: main
-
       artifacts_name_postfix:
         description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
         required: false
         default: _manual
+
+      foonathan_memory_vendor_branch:
+        description: Branch, tag or commit of eProsima/foonathan_memory_vendor repository. Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+        required: false
+        default: master
+
+      fastcdr_branch:
+        description: Branch, tag or commit of eProsima/Fast-CDR repository. Check available branches in https://github.com/eProsima/Fast-CDR.
+        required: false
+        default: master
+
+      fastdds_branch:
+        description: Branch, tag or commit of eProsima/Fast-DDS repository. Check available branches in https://github.com/eProsima/Fast-DDS.
+        required: false
+        default: master
 
   schedule:
 
@@ -55,6 +65,10 @@ env:
   default_configuration_branch: main
   default_artifact_postfix: _nightly
   artifact_prefix: built_fastdds
+  default_foonathan_memory_vendor_branch: master
+  default_fastcdr_branch: master
+  default_fastdds_branch: master
+
 
 jobs:
 
@@ -89,19 +103,31 @@ jobs:
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
-      - name: Get colcon.meta and .repos files to build fastdds
-        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+      - name: Get colcon.meta file to build Fast DDS
+        uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@main
         with:
-          source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
-          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
-          repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
-          colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
-          repos_file_result: ${{ github.workspace }}/dependencies.repos
+          source_repository_branch: ${{ env.default_configuration_branch }}
+          source_repository: ${{ github.repository }}
+          file_name: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
+          file_result: ${{ github.workspace }}/colcon.meta
 
-      - name: Build Fast DDS and generate artifact
-        uses: eProsima/eProsima-CI/multiplatform/generate_dependency_artifact@main
+      - name: Fetch Fast DDS repositories
+        uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@feature/manual_fastdds_build
         with:
-          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          artifact_name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }}
+          fastcdr_branch: ${{ inputs.fastcdr_branch || env.default_fastcdr_branch }}
+          fastdds_branch: ${{ inputs.fastdds_branch || env.default_fastdds_branch }}
+          destination_workspace: ${{ github.workspace }}/artifact/src
+
+      - name: Build workspace
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
+          workspace: ${{ github.workspace }}/artifact
           cmake_build_type: ${{ matrix.cmake_build_type }}
+
+      - name: Upload binaries
+        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        with:
+          name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: ${{ github.workspace }}/artifact/install
