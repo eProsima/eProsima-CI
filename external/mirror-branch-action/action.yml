@@ -18,7 +18,7 @@ runs:
   steps:
 
     - name: Mirror branch
-      uses: google/mirror-branch-action@v1.0
+      uses: google/mirror-branch-action@v2.0
       with:
         github-token: ${{ inputs.github-token }}
         source: ${{ inputs.source }}
