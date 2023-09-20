@@ -21,8 +21,7 @@
 # MANUAL RUN:
 #  Running this workflow manually, the following arguments might be set:
 #
-#   built_configuration_branch: set a branch to download dependencies.repos and colcon.meta files from
-#                               this repository [Default: main]
+#   built_configuration_branch: set a branch to download colcon.meta file from this repository [Default: main]
 #
 #   artifacts_name_postfix:     set the postfix name for the uploading artifact [Default: _manual]
 #                               Note: do not use "_nightly" in this argument, or other workflows may be affected
@@ -35,6 +34,22 @@ on:
   workflow_dispatch:
 
     inputs:
+
+      built_configuration_branch:
+        description: >
+          Branch or tag of eProsima-CI repository to get colcon.meta (and .repos if \"use_repos_file\" input set to
+          true) that will be applied.
+
+        required: false
+        default: main
+
+      use_repos_file:
+        description: >
+          Flag to use .repos file instead of manually set repository branches.
+          The .repos file will be downloaded from the eProsima-CI branch set in \"built_configuration_branch\".
+        required: false
+        type: boolean
+        default: true
 
       artifacts_name_postfix:
         description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
@@ -103,16 +118,25 @@ jobs:
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
-      - name: Get colcon.meta file to build Fast DDS
-        uses: eProsima/eProsima-CI/multiplatform/get_file_from_repo@main
+      - name: Get colcon.meta and .repos files to build fastdds
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
         with:
-          source_repository_branch: ${{ env.default_configuration_branch }}
-          source_repository: ${{ github.repository }}
-          file_name: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
-          file_result: ${{ github.workspace }}/colcon.meta
+          source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
+          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
+          repos_file_path: .github/workflows/configurations/fastdds/dependencies.repos
+          colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
+          repos_file_result: ${{ github.workspace }}/dependencies.repos
+
+      - name: Fetch Fast DDS repositories with vcs-tool
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        if: inputs.use_repos_file
+        with:
+          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
+          destination_workspace: ${{ github.workspace }}/artifact/src
 
       - name: Fetch Fast DDS repositories
         uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@feature/manual_fastdds_build
+        if: (!inputs.use_repos_file)
         with:
           foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }}
           fastcdr_branch: ${{ inputs.fastcdr_branch || env.default_fastcdr_branch }}

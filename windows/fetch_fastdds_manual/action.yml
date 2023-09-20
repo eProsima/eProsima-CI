@@ -33,15 +33,15 @@ runs:
         "::group::Manually clone Fast DDS repositories"
 
         Write-Host 'Downloading following dependencies:'
-        Write-Host '  - Foonathan Memory Vendor: $env:INPUTS_FOONATHAN_MEMORY_VENDOR_BRANCH'
-        Write-Host '  - Fast CDR: $env:INPUTS_FASTCDR_BRANCH'
-        Write-Host '  - Fast CDR: $env:INPUTS_FASTDDS_BRANCH'
+        Write-Host '  - Foonathan Memory Vendor: ${{ inputs.foonathan_memory_vendor_branch }}'
+        Write-Host '  - Fast CDR: ${{ inputs.fastcdr_branch }}'
+        Write-Host '  - Fast CDR: ${{ inputs.fastdds_branch }}'
 
         New-Item -ItemType Directory -Force -Path ${{ inputs.destination_workspace }}
         Set-Location -Path ${{ inputs.destination_workspace }}
 
-        git clone --branch ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }} https://github.com/eProsima/foonathan_memory_vendor.git
-        git clone --branch ${{ inputs.fastcdr_branch || env.default_fastcdr_branch }} https://github.com/eProsima/Fast-CDR.git
-        git clone --branch ${{ inputs.fastdds_branch || env.default_fastdds_branch }} https://github.com/eProsima/Fast-DDS.git
+        git clone --branch ${{ inputs.foonathan_memory_vendor_branch }} https://github.com/eProsima/foonathan_memory_vendor.git
+        git clone --branch ${{ inputs.fastcdr_branch }} https://github.com/eProsima/Fast-CDR.git
+        git clone --branch ${{ inputs.fastdds_branch }} https://github.com/eProsima/Fast-DDS.git
 
         "::endgroup::"
