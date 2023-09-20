@@ -37,7 +37,7 @@ on:
 
       built_configuration_branch:
         description: >
-          Branch or tag of eProsima-CI repository to get colcon.meta (and .repos if \"use_repos_file\" input set to
+          Branch or tag of eProsima-CI repository to get colcon.meta (and .repos if "use_repos_file" input set to
           true) that will be applied.
 
         required: false
@@ -46,7 +46,7 @@ on:
       use_repos_file:
         description: >
           Flag to use .repos file instead of manually set repository branches.
-          The .repos file will be downloaded from the eProsima-CI branch set in \"built_configuration_branch\".
+          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
         required: false
         type: boolean
         default: true
