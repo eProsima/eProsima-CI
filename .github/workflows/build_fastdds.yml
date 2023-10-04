@@ -21,10 +21,22 @@
 # MANUAL RUN:
 #  Running this workflow manually, the following arguments might be set:
 #
-#   built_configuration_branch: set a branch to download colcon.meta file from this repository [Default: main]
+#   built_configuration_branch:       set a branch to download colcon.meta file from this repository [Default: main]
 #
-#   artifacts_name_postfix:     set the postfix name for the uploading artifact [Default: _manual]
-#                               Note: do not use "_nightly" in this argument, or other workflows may be affected
+#   artifacts_name_postfix:           set the postfix name for the uploading artifact [Default: _manual]
+#                                     Note: do not use "_nightly" in this argument, or other workflows may be affected
+#
+#   use_repos_file:                   flag to use .repos file instead of manually set repository branches.
+#                                     The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+#
+#   foonathan_memory_vendor_branch:   branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+#                                     Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+#
+#   fastcdr_branch:                   branch, tag or commit of eProsima/Fast-CDR repository.
+#                                     Check available branches in https://github.com/eProsima/Fast-CDR.
+#
+#   fastdds_branch:                   branch, tag or commit of eProsima/Fast-DDS repository.
+#                                     Check available branches in https://github.com/eProsima/Fast-DDS.
 #
 
 name: build_fastdds
@@ -52,22 +64,30 @@ on:
         default: true
 
       artifacts_name_postfix:
-        description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
+        description: >
+          Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific
+          arguments).
         required: false
         default: _manual
 
       foonathan_memory_vendor_branch:
-        description: Branch, tag or commit of eProsima/foonathan_memory_vendor repository. Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+        description: >
+          Branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+          Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
         required: false
         default: master
 
       fastcdr_branch:
-        description: Branch, tag or commit of eProsima/Fast-CDR repository. Check available branches in https://github.com/eProsima/Fast-CDR.
+        description: >
+          Branch, tag or commit of eProsima/Fast-CDR repository.
+          Check available branches in https://github.com/eProsima/Fast-CDR.
         required: false
         default: master
 
       fastdds_branch:
-        description: Branch, tag or commit of eProsima/Fast-DDS repository. Check available branches in https://github.com/eProsima/Fast-DDS.
+        description: >
+          Branch, tag or commit of eProsima/Fast-DDS repository.
+          Check available branches in https://github.com/eProsima/Fast-DDS.
         required: false
         default: master
 

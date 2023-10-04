@@ -1,4 +1,5 @@
 name: fetch_fastdds_manual
+description: Download Fast DDS and its eProsima dependencies setting the specific version of each repository
 
 inputs:
 
@@ -34,7 +35,7 @@ runs:
         echo "Downloading following dependencies:"
         echo "  - Foonathan Memory Vendor: ${{ inputs.foonathan_memory_vendor_branch }}"
         echo "  - Fast CDR: ${{ inputs.fastcdr_branch }}"
-        echo "  - Fast CDR: ${{ inputs.fastdds_branch }}"
+        echo "  - Fast DDS: ${{ inputs.fastdds_branch }}"
 
         mkdir -p ${{ inputs.destination_workspace }}
         cd ${{ inputs.destination_workspace }}

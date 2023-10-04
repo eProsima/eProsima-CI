@@ -1,4 +1,5 @@
 name: fetch_fastdds_manual
+description: Download Fast DDS and its eProsima dependencies setting the specific version of each repository
 
 inputs:
 
@@ -35,7 +36,7 @@ runs:
         Write-Host 'Downloading following dependencies:'
         Write-Host '  - Foonathan Memory Vendor: ${{ inputs.foonathan_memory_vendor_branch }}'
         Write-Host '  - Fast CDR: ${{ inputs.fastcdr_branch }}'
-        Write-Host '  - Fast CDR: ${{ inputs.fastdds_branch }}'
+        Write-Host '  - Fast DDS: ${{ inputs.fastdds_branch }}'
 
         New-Item -ItemType Directory -Force -Path ${{ inputs.destination_workspace }}
         Set-Location -Path ${{ inputs.destination_workspace }}
