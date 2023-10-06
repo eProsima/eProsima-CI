@@ -3,6 +3,11 @@ description: 'Execute colcon test command with arguments given'
 
 inputs:
 
+  extra_path:
+    description: 'Directories to be added to the system PATH when running tests'
+    required: false
+    default: ''
+
   colcon_test_args:
     description: 'args to pass to colcon test command (use ctest_args to set ctest arguments)'
     required: false
@@ -56,5 +61,6 @@ runs:
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
         ctest_args: ${{ inputs.ctest_args }}
         ctest_args_default: ${{ inputs.ctest_args_default }}
+        extra_path: '${{ inputs.extra_path }}'
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
