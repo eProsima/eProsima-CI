@@ -43,7 +43,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@feature/extend-path
       if: runner.os == 'Linux'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
@@ -54,13 +54,13 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@main
+      uses: eProsima/eProsima-CI/windows/colcon_test@feature/extend-path
       if: runner.os == 'Windows'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
         ctest_args: ${{ inputs.ctest_args }}
         ctest_args_default: ${{ inputs.ctest_args_default }}
-        extra_path: '${{ inputs.extra_path }}'
+        extra_path: ${{ inputs.extra_path }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
