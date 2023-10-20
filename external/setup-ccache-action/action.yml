@@ -1,0 +1,94 @@
+name: 'setup-ccache-action'
+description: 'https://github.com/Chocobo1/setup-ccache-action'
+
+inputs:
+  # setup related
+  update_packager_index:
+    description: "By default, this action will update packager's indexes to avoid installation issues
+      (`apt`/`brew` on linux/macOS respectively). You can disable it to save some time however you are then
+      responsible for ensuring the packager's indexes are up-to-date *before* using this action"
+    default: "true"
+    required: false
+
+  install_ccache:
+    description: "By default, this action will install ccache with package manager.
+      You can omit installation if you've already installed ccache and it is accessible in the shell"
+    default: "true"
+    required: false
+
+  prepend_symlinks_to_path:
+    description: "By default, this action will prepend ccache's compiler symlinks directory to PATH so that
+      compiler invocations will be handled by ccache transparently.
+      https://ccache.dev/manual/latest.html#_run_modes"
+    default: "true"
+    required: false
+
+  windows_compile_environment:
+    description: "Specify which compiler environment you are going to use on Windows image.
+      Note that this field (a single value) is mandatory if you use this action on a Windows image.
+      Available options are: ['msvc', 'msys2']"
+    default: ""
+    required: false
+
+  api_token:
+    description: "Token for using GitHub API"
+    default: ${{ github.token }}
+    required: false
+
+  # store, restore cache
+  restore_cache:
+    description: "Whether to restore the cache at the start of this action"
+    default: "true"
+    required: false
+
+  store_cache:
+    description: "Whether to store the cache at the end of job execution"
+    default: "true"
+    required: false
+
+  remove_stale_cache:
+    description: "Whether to remove previous/stale cache entries after store cache completed.
+      This requires parameter `api_token` to be valid.
+      This requires `actions: write` permission.
+      Note that for GitHub Pull Requests, only `actions: read` permission will be given so this feature won't work reliably there."
+    default: "true"
+    required: false
+
+  # cache key related
+  override_cache_key:
+    description: "Override cache key which is used for storing/retrieving the cache. Accept a string.
+      Leave it empty to use the default value"
+    default: ""
+    required: false
+
+  override_cache_key_fallback:
+    description: "Override additional cache keys for retrieving the cache. Accept a list of strings.
+      Leave it empty to use the default value"
+    default: |
+    required: false
+
+  # ccache specific
+  ccache_options:
+    description: "Config settings for ccache. Accept a list of key=value pairs.
+      Ref: https://ccache.dev/manual/latest.html#_configuration_options"
+    default: |
+    required: false
+
+runs:
+  using: composite
+  steps:
+
+    - name: Setup CCache
+      uses: Chocobo1/setup-ccache-action@v1
+      with:
+        update_packager_index: ${{ inputs.update_packager_index }}
+        install_ccache: ${{ inputs.install_ccache }}
+        prepend_symlinks_to_path: ${{ inputs.prepend_symlinks_to_path }}
+        windows_compile_environment: ${{ inputs.windows_compile_environment }}
+        api_token: ${{ inputs.api_token }}
+        restore_cache: ${{ inputs.restore_cache }}
+        store_cache: ${{ inputs.store_cache }}
+        remove_stale_cache: ${{ inputs.remove_stale_cache }}
+        override_cache_key: ${{ inputs.override_cache_key }}
+        override_cache_key_fallback: ${{ inputs.override_cache_key_fallback }}
+        ccache_options: ${{ inputs.ccache_options }}
