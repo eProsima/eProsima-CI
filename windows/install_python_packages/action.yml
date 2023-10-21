@@ -36,12 +36,12 @@ runs:
         }
 
         # Install python packages if any
-        if (-not [string]::IsNullOrWhiteSpace("${{ inputs.packages }}")) {
+        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.packages }}" )) {
           pip3 install ${{ inputs.packages }}
         }
 
         # Install requirements file if any
-        if (-not [string]::IsNullOrWhiteSpace("${{ inputs.requirements_file_name }}")) {
+        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.requirements_file_name }} ")) {
           pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG
         }
 
