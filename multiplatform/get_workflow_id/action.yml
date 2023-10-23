@@ -39,7 +39,7 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/get_workflow_id@feature/ccache
+      uses: eProsima/eProsima-CI/ubuntu/get_workflow_id@main
       if: runner.os == 'Linux'
       with:
         workflow_source: ${{ inputs.workflow_source }}
@@ -50,7 +50,7 @@ runs:
         secret_token: ${{ inputs.secret_token }}
 
     - name: Install in windows
-      uses: eProsima/eProsima-CI/windows/get_workflow_id@feature/ccache
+      uses: eProsima/eProsima-CI/windows/get_workflow_id@main
       if: runner.os == 'Windows'
       with:
         workflow_source: ${{ inputs.workflow_source }}

@@ -27,7 +27,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/get_file_from_repo@feature/ccache
+      uses: eProsima/eProsima-CI/ubuntu/get_file_from_repo@main
       if: runner.os == 'Linux'
       with:
         source_repository_branch: ${{ inputs.source_repository_branch }}
@@ -36,7 +36,7 @@ runs:
         file_result: ${{ inputs.file_result }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/get_file_from_repo@feature/ccache
+      uses: eProsima/eProsima-CI/windows/get_file_from_repo@main
       if: runner.os == 'Windows'
       with:
         source_repository_branch: ${{ inputs.source_repository_branch }}

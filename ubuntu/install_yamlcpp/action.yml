@@ -18,6 +18,6 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/ccache
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
       with:
         packages: libyaml-cpp-dev
