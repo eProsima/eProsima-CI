@@ -42,7 +42,7 @@ runs:
   steps:
 
     - name: Build
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@v0.5.0
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
@@ -52,7 +52,7 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Test
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@v0.5.0
       with:
         workspace: ${{ inputs.workspace }}
         colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'

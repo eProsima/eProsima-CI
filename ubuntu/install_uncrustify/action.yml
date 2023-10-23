@@ -5,12 +5,12 @@ runs:
   steps:
 
     - name: Get ubuntu version
-      uses: eProsima/eProsima-CI/ubuntu/get_platform@main
+      uses: eProsima/eProsima-CI/ubuntu/get_platform@v0.5.0
 
     - name: Install uncrustify 20.04
-      uses: eProsima/eProsima-CI/ubuntu/20.04/install_uncrustify@main
+      uses: eProsima/eProsima-CI/ubuntu/20.04/install_uncrustify@v0.5.0
       if: contains( ${{ env.EPROSIMA_UBUNTU_VERSION }} , '20.04' )
 
     - name: Install uncrustify 22.04
-      uses: eProsima/eProsima-CI/ubuntu/22.04/install_uncrustify@main
+      uses: eProsima/eProsima-CI/ubuntu/22.04/install_uncrustify@v0.5.0
       if: contains( ${{ env.EPROSIMA_UBUNTU_VERSION }} , '22.04' )

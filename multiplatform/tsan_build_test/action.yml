@@ -37,7 +37,7 @@ runs:
   steps:
 
     - name: Build and test
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@v0.5.0
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
