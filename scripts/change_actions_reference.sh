@@ -22,4 +22,4 @@ new_ref=$2
 
 echo -e "Changing current reference ${yellow}@$current_ref${textreset} to ${yellow}@$new_ref${textreset}."
 
-git grep -lz "@$current_ref" -- :^external :^.github :^README.md | xargs -0 sed -i "/\/external\//!s+@$current_ref+@$new_ref+g"
+git grep -lz "@$current_ref" -- :^external :^.github :^README.md | xargs -0 sed -i "s+@$current_ref+@$new_ref+g"

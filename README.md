@@ -235,9 +235,9 @@ Find below the external actions listed:
 | [checkout](external/checkout/action.yml) | Checkout repository | MIT license |
 | [codecov-action](external/codecov-action/action.yml) | Upload coverage report to codecov.io | MIT license |
 | [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
-| [get-cmake](external/get-cmake/action.yml) | Installs your desired versions of CMake and Ninja | Mit license |
+| [get-cmake](external/get-cmake/action.yml) | Installs desired versions of CMake and Ninja | Mit license |
 | [mirror-branch-action](external/mirror-branch-action/action.yml) | Mirror branch within the same repository | Apache-2.0 license |
-| [setup-ccache-action](external/setup-ccache-action/action.yml) | Setup CCache in your workflow | MIT license |
+| [setup-ccache-action](external/setup-ccache-action/action.yml) | Setup CCache in a workflow | MIT license |
 | [setup-python](external/setup-python/action.yml) | Installs a version of Python or PyPy and (by default) adds it to the PATH | MIT license |
 | [upload-artifact](external/upload-artifact/action.yml) | Upload build artifact | MIT license |
 | [wait-on-check-action](external/wait-on-check-action/action.yml) | Wait on certain check | MIT license |
