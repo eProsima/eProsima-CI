@@ -155,7 +155,7 @@ jobs:
           destination_workspace: ${{ github.workspace }}/artifact/src
 
       - name: Fetch Fast DDS repositories
-        uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@feature/manual_fastdds_build
+        uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@main
         if: (!inputs.use_repos_file)
         with:
           foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }}
