@@ -1,0 +1,46 @@
+name: fetch_fastdds_manual
+description: Download Fast DDS and its eProsima dependencies setting the specific version of each repository
+
+inputs:
+
+  foonathan_memory_vendor_branch:
+    description: Branch, tag or commit of eProsima/foonathan_memory_vendor repository. Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+    required: false
+    default: master
+
+  fastcdr_branch:
+    description: Branch, tag or commit of eProsima/Fast-CDR repository. Check available branches in https://github.com/eProsima/Fast-CDR.
+    required: false
+    default: master
+
+  fastdds_branch:
+    description: Branch, tag or commit of eProsima/Fast-DDS repository. Check available branches in https://github.com/eProsima/Fast-DDS.
+    required: false
+    default: master
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/fetch_fastdds_manual@main
+      if: runner.os == 'Linux'
+      with:
+        foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
+        fastcdr_branch: ${{ inputs.fastcdr_branch }}
+        fastdds_branch: ${{ inputs.fastdds_branch }}
+        destination_workspace: ${{ inputs.destination_workspace }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/fetch_fastdds_manual@main
+      if: runner.os == 'Windows'
+      with:
+        foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
+        fastcdr_branch: ${{ inputs.fastcdr_branch }}
+        fastdds_branch: ${{ inputs.fastdds_branch }}
+        destination_workspace: ${{ inputs.destination_workspace }}
