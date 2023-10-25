@@ -30,6 +30,12 @@
 #   artifacts_name_postfix:     set the postfix name for the uploading artifact [Default: _manual]
 #                               Note: do not use "_nightly" in this argument, or other workflows may be affected
 #
+#   use_repos_file:             flag to use .repos file instead of manually set repository branches.
+#                               The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+#
+#   dev_utils_branch:           branch, tag or commit of eProsima/dev-utils repository.
+#                               Check available branches in https://github.com/eProsima/dev-utils.
+#
 
 name: build_dev_utils
 
@@ -40,14 +46,31 @@ on:
     inputs:
 
       built_configuration_branch:
-        description: Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed
+        description: >
+          Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed.
         required: false
         default: main
 
+      use_repos_file:
+        description: >
+          Flag to use .repos file instead of manually set repository branches.
+          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+        required: false
+        type: boolean
+        default: true
+
       artifacts_name_postfix:
-        description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
+        description: >
+          Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
         required: false
         default: _manual
+
+      dev_utils_branch:
+        description: >
+          Branch, tag or commit of eProsima/dev-utils repository.
+          Check available branches in https://github.com/eProsima/dev-utils.
+        required: false
+        default: master
 
   schedule:
 
@@ -125,12 +148,29 @@ jobs:
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
-      - name: Build and generate artifact
-        uses: eProsima/eProsima-CI/multiplatform/generate_dependency_artifact@main
+      - name: Fetch dev-utils repositories with vcs-tool
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        if: inputs.use_repos_file
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          artifact_name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          destination_workspace: ${{ github.workspace }}/artifact/src
+
+      - name: Fetch dev-utils repositories
+        uses: eProsima/eProsima-CI/multiplatform/fetch_devutils_manual@feature/manual-devutils-build
+        if: (!inputs.use_repos_file)
+        with:
+          dev_utils_branch: ${{ inputs.dev_utils_branch || env.default_dev_utils_branch }}
+          destination_workspace: ${{ github.workspace }}/artifact/src
+
+      - name: Build workspace
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
-          workspace: ${{ github.workspace }}
-          workspace_dependencies: install
+          workspace: ${{ github.workspace }}/artifact
           cmake_build_type: ${{ matrix.cmake_build_type }}
+
+      - name: Upload binaries
+        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        with:
+          name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: ${{ github.workspace }}/artifact/install
