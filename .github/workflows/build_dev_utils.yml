@@ -167,7 +167,15 @@ jobs:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Get Fast DDS artifact
+        uses: eProsima/eProsima-CI/external/download-artifact@feature/manual-devutils-build
+        if: inputs.build_fastdds
+        with:
+          name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: install
+
+      - name: Get Fast DDS artifact
         uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+        if: (!inputs.build_fastdds)
         with:
           artifact_name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           workflow_source: build_fastdds.yml
@@ -193,7 +201,7 @@ jobs:
           destination_workspace: ${{ github.workspace }}/artifact/src
 
       - name: Fetch dev-utils repositories
-        uses: eProsima/eProsima-CI/multiplatform/fetch_devutils_manual@feature/manual-devutils-build
+        uses: eProsima/eProsima-CI/multiplatform/fetch_dev_utils_manual@feature/manual-devutils-build
         if: (!inputs.use_repos_file)
         with:
           dev_utils_branch: ${{ inputs.dev_utils_branch || env.default_dev_utils_branch }}
