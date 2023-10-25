@@ -72,6 +72,38 @@ on:
         required: false
         default: master
 
+      build_fastdds:
+        description: >
+          Flag to re-build Fast DDS.
+          This will run build_fastdds workflow and wait for the results.
+        required: false
+        type: boolean
+        default: false
+
+      foonathan_memory_vendor_branch:
+        description: >
+          Branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+          Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+        required: false
+        type: string
+        default: master
+
+      fastcdr_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-CDR repository.
+          Check available branches in https://github.com/eProsima/Fast-CDR.
+        required: false
+        type: string
+        default: master
+
+      fastdds_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-DDS repository.
+          Check available branches in https://github.com/eProsima/Fast-DDS.
+        required: false
+        type: string
+        default: master
+
   schedule:
 
     # Every night at 00:00
@@ -82,12 +114,28 @@ env:
   default_configuration_branch: main
   default_artifact_postfix: _nightly
   artifact_prefix: built_dev_utils
+  default_dev_utils_branch: master
 
 jobs:
+
+  build_fastdds:
+
+    name: build_fastdds
+    uses: eProsima/eProsima-CI/.github/workflows/build_fastdds.yml@feature/manual-devutils-build
+    if: inputs.build_fastdds
+    with:
+      built_configuration_branch: ${{ inputs.built_configuration_branch }}
+      use_repos_file: ${{ inputs.use_repos_file }}
+      artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
+      foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
+      fastcdr_branch: ${{ inputs.fastcdr_branch }}
+      fastdds_branch: ${{ inputs.fastdds_branch }}
 
   build_dev_utils:
 
     name: build_dev_utils
+    if: ${{ always() }}
+    needs: build_fastdds
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -108,17 +156,6 @@ jobs:
 
     steps:
 
-      # TODO fix it
-      # - name: Wait for Fast DDS workflow run to finish
-      #   uses: eProsima/eProsima-CI/external/wait-on-check-action@main
-      #   with:
-      #     check-name: build_fastdds
-      #     ref: main
-      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
-      #     allowed-conclusions: success,skipped,cancelled,failure
-      #     # each 30 seconds check if finished
-      #     wait-interval: 30
-
       - name: Sync this repository
         uses: eProsima/eProsima-CI/external/checkout@main
         with:
@@ -129,7 +166,7 @@ jobs:
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
-      - name: Get fastdds artifact
+      - name: Get Fast DDS artifact
         uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
         with:
           artifact_name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
