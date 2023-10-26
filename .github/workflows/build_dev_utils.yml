@@ -24,17 +24,29 @@
 # MANUAL RUN:
 #  Running this workflow manually, the following arguments might be set:
 #
-#   built_configuration_branch: set a branch to download dependencies.repos and colcon.meta files from
-#                               this repository [Default: main]
+#   built_configuration_branch:       set a branch to download dependencies.repos and colcon.meta files from
+#                                     this repository [Default: main]
 #
-#   artifacts_name_postfix:     set the postfix name for the uploading artifact [Default: _manual]
-#                               Note: do not use "_nightly" in this argument, or other workflows may be affected
+#   artifacts_name_postfix:           set the postfix name for the uploading artifact [Default: _manual]
+#                                     Note: do not use "_nightly" in this argument, or other workflows may be affected
 #
-#   use_repos_file:             flag to use .repos file instead of manually set repository branches.
-#                               The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+#   use_repos_file:                   flag to use .repos file instead of manually set repository branches.
+#                                     The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
 #
-#   dev_utils_branch:           branch, tag or commit of eProsima/dev-utils repository.
-#                               Check available branches in https://github.com/eProsima/dev-utils.
+#   dev_utils_branch:                 branch, tag or commit of eProsima/dev-utils repository.
+#                                     Check available branches in https://github.com/eProsima/dev-utils.
+#
+#   build_fastdds:                    Flag to re-build Fast DDS.
+#                                     This will run build_fastdds workflow and wait for the results.
+#
+#   foonathan_memory_vendor_branch:   branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+#                                     Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+#
+#   fastcdr_branch:                   branch, tag or commit of eProsima/Fast-CDR repository.
+#                                     Check available branches in https://github.com/eProsima/Fast-CDR.
+#
+#   fastdds_branch:                   branch, tag or commit of eProsima/Fast-DDS repository.
+#                                     Check available branches in https://github.com/eProsima/Fast-DDS.
 #
 
 name: build_dev_utils
@@ -70,7 +82,7 @@ on:
           Branch, tag or commit of eProsima/dev-utils repository.
           Check available branches in https://github.com/eProsima/dev-utils.
         required: false
-        default: master
+        default: main
 
       build_fastdds:
         description: >
@@ -114,7 +126,7 @@ env:
   default_configuration_branch: main
   default_artifact_postfix: _nightly
   artifact_prefix: built_dev_utils
-  default_dev_utils_branch: master
+  default_dev_utils_branch: main
 
 jobs:
 
