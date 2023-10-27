@@ -185,6 +185,14 @@ jobs:
           name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
+      - name: (TEST) Inspect artifact
+        if: inputs.build_fastdds
+        run: ls install
+
+      - name: (TEST) Extract artifact
+        if: inputs.build_fastdds
+        run: zip -r install/built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}.zip install
+
       - name: Get Fast DDS artifact
         uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
         if: (!inputs.build_fastdds)
