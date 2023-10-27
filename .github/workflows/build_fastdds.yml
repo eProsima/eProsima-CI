@@ -43,7 +43,7 @@ name: build_fastdds
 
 on:
 
-  workflow_dispatch:
+  workflow_call:
 
     inputs:
 
@@ -53,6 +53,7 @@ on:
           true) that will be applied.
 
         required: false
+        type: string
         default: main
 
       use_repos_file:
@@ -68,6 +69,7 @@ on:
           Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific
           arguments).
         required: false
+        type: string
         default: _manual
 
       foonathan_memory_vendor_branch:
@@ -75,6 +77,7 @@ on:
           Branch, tag or commit of eProsima/foonathan_memory_vendor repository.
           Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
         required: false
+        type: string
         default: master
 
       fastcdr_branch:
@@ -82,6 +85,7 @@ on:
           Branch, tag or commit of eProsima/Fast-CDR repository.
           Check available branches in https://github.com/eProsima/Fast-CDR.
         required: false
+        type: string
         default: master
 
       fastdds_branch:
@@ -89,6 +93,60 @@ on:
           Branch, tag or commit of eProsima/Fast-DDS repository.
           Check available branches in https://github.com/eProsima/Fast-DDS.
         required: false
+        type: string
+        default: master
+
+  workflow_dispatch:
+
+    inputs:
+
+      built_configuration_branch:
+        description: >
+          Branch or tag of eProsima-CI repository to get colcon.meta (and .repos if "use_repos_file" input set to
+          true) that will be applied.
+
+        required: false
+        type: string
+        default: main
+
+      use_repos_file:
+        description: >
+          Flag to use .repos file instead of manually set repository branches.
+          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+        required: false
+        type: boolean
+        default: true
+
+      artifacts_name_postfix:
+        description: >
+          Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific
+          arguments).
+        required: false
+        type: string
+        default: _manual
+
+      foonathan_memory_vendor_branch:
+        description: >
+          Branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+          Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+        required: false
+        type: string
+        default: master
+
+      fastcdr_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-CDR repository.
+          Check available branches in https://github.com/eProsima/Fast-CDR.
+        required: false
+        type: string
+        default: master
+
+      fastdds_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-DDS repository.
+          Check available branches in https://github.com/eProsima/Fast-DDS.
+        required: false
+        type: string
         default: master
 
   schedule:

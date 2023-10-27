@@ -24,11 +24,29 @@
 # MANUAL RUN:
 #  Running this workflow manually, the following arguments might be set:
 #
-#   built_configuration_branch: set a branch to download dependencies.repos and colcon.meta files from
-#                               this repository [Default: main]
+#   built_configuration_branch:       set a branch to download dependencies.repos and colcon.meta files from
+#                                     this repository [Default: main]
 #
-#   artifacts_name_postfix:     set the postfix name for the uploading artifact [Default: _manual]
-#                               Note: do not use "_nightly" in this argument, or other workflows may be affected
+#   artifacts_name_postfix:           set the postfix name for the uploading artifact [Default: _manual]
+#                                     Note: do not use "_nightly" in this argument, or other workflows may be affected
+#
+#   use_repos_file:                   flag to use .repos file instead of manually set repository branches.
+#                                     The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+#
+#   dev_utils_branch:                 branch, tag or commit of eProsima/dev-utils repository.
+#                                     Check available branches in https://github.com/eProsima/dev-utils.
+#
+#   build_fastdds:                    Flag to re-build Fast DDS.
+#                                     This will run build_fastdds workflow and wait for the results.
+#
+#   foonathan_memory_vendor_branch:   branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+#                                     Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+#
+#   fastcdr_branch:                   branch, tag or commit of eProsima/Fast-CDR repository.
+#                                     Check available branches in https://github.com/eProsima/Fast-CDR.
+#
+#   fastdds_branch:                   branch, tag or commit of eProsima/Fast-DDS repository.
+#                                     Check available branches in https://github.com/eProsima/Fast-DDS.
 #
 
 name: build_dev_utils
@@ -40,14 +58,63 @@ on:
     inputs:
 
       built_configuration_branch:
-        description: Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed
+        description: >
+          Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed.
         required: false
         default: main
 
+      use_repos_file:
+        description: >
+          Flag to use .repos file instead of manually set repository branches.
+          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+        required: false
+        type: boolean
+        default: true
+
       artifacts_name_postfix:
-        description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
+        description: >
+          Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
         required: false
         default: _manual
+
+      dev_utils_branch:
+        description: >
+          Branch, tag or commit of eProsima/dev-utils repository.
+          Check available branches in https://github.com/eProsima/dev-utils.
+        required: false
+        default: main
+
+      build_fastdds:
+        description: >
+          Flag to re-build Fast DDS.
+          This will run build_fastdds workflow and wait for the results.
+        required: false
+        type: boolean
+        default: false
+
+      foonathan_memory_vendor_branch:
+        description: >
+          Branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+          Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+        required: false
+        type: string
+        default: master
+
+      fastcdr_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-CDR repository.
+          Check available branches in https://github.com/eProsima/Fast-CDR.
+        required: false
+        type: string
+        default: master
+
+      fastdds_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-DDS repository.
+          Check available branches in https://github.com/eProsima/Fast-DDS.
+        required: false
+        type: string
+        default: master
 
   schedule:
 
@@ -59,12 +126,28 @@ env:
   default_configuration_branch: main
   default_artifact_postfix: _nightly
   artifact_prefix: built_dev_utils
+  default_dev_utils_branch: main
 
 jobs:
+
+  build_fastdds:
+
+    name: build_fastdds
+    uses: eProsima/eProsima-CI/.github/workflows/build_fastdds.yml@main
+    if: inputs.build_fastdds
+    with:
+      built_configuration_branch: ${{ inputs.built_configuration_branch }}
+      use_repos_file: ${{ inputs.use_repos_file }}
+      artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
+      foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
+      fastcdr_branch: ${{ inputs.fastcdr_branch }}
+      fastdds_branch: ${{ inputs.fastdds_branch }}
 
   build_dev_utils:
 
     name: build_dev_utils
+    if: ${{ always() }}
+    needs: build_fastdds
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -85,17 +168,6 @@ jobs:
 
     steps:
 
-      # TODO fix it
-      # - name: Wait for Fast DDS workflow run to finish
-      #   uses: eProsima/eProsima-CI/external/wait-on-check-action@main
-      #   with:
-      #     check-name: build_fastdds
-      #     ref: main
-      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
-      #     allowed-conclusions: success,skipped,cancelled,failure
-      #     # each 30 seconds check if finished
-      #     wait-interval: 30
-
       - name: Sync this repository
         uses: eProsima/eProsima-CI/external/checkout@main
         with:
@@ -106,8 +178,16 @@ jobs:
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
-      - name: Get fastdds artifact
+      - name: Get Fast DDS artifact
+        uses: eProsima/eProsima-CI/external/download-artifact@main
+        if: inputs.build_fastdds
+        with:
+          name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: install
+
+      - name: Get Fast DDS artifact
         uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
+        if: (!inputs.build_fastdds)
         with:
           artifact_name: built_fastdds_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           workflow_source: build_fastdds.yml
@@ -125,12 +205,30 @@ jobs:
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
-      - name: Build and generate artifact
-        uses: eProsima/eProsima-CI/multiplatform/generate_dependency_artifact@main
+      - name: Fetch dev-utils repositories with vcs-tool
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        if: inputs.use_repos_file
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          artifact_name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          destination_workspace: ${{ github.workspace }}/src
+
+      - name: Fetch dev-utils repositories
+        uses: eProsima/eProsima-CI/multiplatform/fetch_dev_utils_manual@main
+        if: (!inputs.use_repos_file)
+        with:
+          dev_utils_branch: ${{ inputs.dev_utils_branch || env.default_dev_utils_branch }}
+          destination_workspace: ${{ github.workspace }}/src
+
+      - name: Build workspace
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}
           workspace_dependencies: install
           cmake_build_type: ${{ matrix.cmake_build_type }}
+
+      - name: Upload binaries
+        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        with:
+          name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: ${{ github.workspace }}/install

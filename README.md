@@ -82,6 +82,9 @@ For more information about versioning handle of this project, check following [f
 - [fetch_fastdds_manual](multiplatform/fetch_fastdds_manual/action.yml)
   - Download Fast DDS and its eProsima dependencies setting the specific version of each repository.
 
+- [fetch_dev_utils_manual](multiplatform/fetch_dev_utils_manual/action.yml)
+  - Download eProsima/dev-utils setting the specific version of each repository.
+
 - [generate_dependency_artifact](multiplatform/generate_dependency_artifact/action.yml)
   - Build a project and upload the installed objects as an artifact.
 
@@ -215,6 +218,9 @@ Run the `manual_build` workflow with these arguments:
 
 > :page_facing_up: Fast DDS manual build allows to specify Fast DDS and its eProsima dependencies version as inputs of the workflow.
   In order to use the manually set versions instead of the ones taken from the `.repos` file, just disable `use_repos_file` option.
+
+> :page_facing_up: eProsima/dev-utils build allows to specify the version as inputs of the workflow.
+  In order to use the manually set versions instead of the one taken from the `.repos` file, just disable `use_repos_file` option.
 
 ## Custom artifact generation
 

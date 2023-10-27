@@ -1,0 +1,34 @@
+name: fetch_dev_utils_manual
+description: Download eProsima/dev-utils setting the specific version of each repository
+
+inputs:
+
+  dev_utils_branch:
+    description: >
+      Branch, tag or commit of eProsima/dev-utils repository.
+      Check available branches in https://github.com/eProsima/dev-utils.
+    required: false
+    default: master
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/fetch_dev_utils_manual@main
+      if: runner.os == 'Linux'
+      with:
+        dev_utils_branch: ${{ inputs.dev_utils_branch }}
+        destination_workspace: ${{ inputs.destination_workspace }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/fetch_dev_utils_manual@main
+      if: runner.os == 'Windows'
+      with:
+        dev_utils_branch: ${{ inputs.dev_utils_branch }}
+        destination_workspace: ${{ inputs.destination_workspace }}
