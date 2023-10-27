@@ -23,7 +23,7 @@ runs:
       shell: pwsh
       run: |
 
-        "::group::Manually clone Fast DDS repositories"
+        "::group::Manually clone dev-utils repository"
 
         Write-Host 'Downloading following dependencies:'
         Write-Host '  - dev-utils: ${{ inputs.dev_utils_branch }}'
