@@ -1,0 +1,34 @@
+name: fetch_ddspipe_manual
+description: Download eProsima/DDS-Pipe setting the specific version of each repository
+
+inputs:
+
+  ddspipe_branch:
+    description: >
+      Branch, tag or commit of eProsima/DDS-Pipe repository.
+      Check available branches in https://github.com/eProsima/DDS-Pipe.
+    required: false
+    default: master
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/fetch_ddspipe_manual@feature/manual-ddspipe-build
+      if: runner.os == 'Linux'
+      with:
+        ddspipe_branch: ${{ inputs.ddspipe_branch }}
+        destination_workspace: ${{ inputs.destination_workspace }}
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/fetch_ddspipe_manual@feature/manual-ddspipe-build
+      if: runner.os == 'Windows'
+      with:
+        ddspipe_branch: ${{ inputs.ddspipe_branch }}
+        destination_workspace: ${{ inputs.destination_workspace }}

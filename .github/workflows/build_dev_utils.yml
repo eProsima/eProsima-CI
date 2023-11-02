@@ -53,6 +53,72 @@ name: build_dev_utils
 
 on:
 
+  workflow_call:
+
+    inputs:
+
+      built_configuration_branch:
+        description: >
+          Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed.
+        required: false
+        type: string
+        default: main
+
+      use_repos_file:
+        description: >
+          Flag to use .repos file instead of manually set repository branches.
+          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
+        required: false
+        type: boolean
+        default: true
+
+      artifacts_name_postfix:
+        description: >
+          Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
+        required: false
+        type: string
+        default: _manual
+
+      dev_utils_branch:
+        description: >
+          Branch, tag or commit of eProsima/dev-utils repository.
+          Check available branches in https://github.com/eProsima/dev-utils.
+        required: false
+        type: string
+        default: main
+
+      build_fastdds:
+        description: >
+          Flag to re-build Fast DDS.
+          This will run build_fastdds workflow and wait for the results.
+        required: false
+        type: boolean
+        default: false
+
+      foonathan_memory_vendor_branch:
+        description: >
+          Branch, tag or commit of eProsima/foonathan_memory_vendor repository.
+          Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
+        required: false
+        type: string
+        default: master
+
+      fastcdr_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-CDR repository.
+          Check available branches in https://github.com/eProsima/Fast-CDR.
+        required: false
+        type: string
+        default: master
+
+      fastdds_branch:
+        description: >
+          Branch, tag or commit of eProsima/Fast-DDS repository.
+          Check available branches in https://github.com/eProsima/Fast-DDS.
+        required: false
+        type: string
+        default: master
+
   workflow_dispatch:
 
     inputs:
