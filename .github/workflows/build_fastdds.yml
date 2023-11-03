@@ -159,8 +159,8 @@ env:
   default_artifact_postfix: _nightly
   artifact_prefix: built_fastdds
   default_foonathan_memory_vendor_branch: master
-  default_fastcdr_branch: master
-  default_fastdds_branch: master
+  default_fastcdr_branch: 1.1.x
+  default_fastdds_branch: 2.11.x
 
 
 jobs:
