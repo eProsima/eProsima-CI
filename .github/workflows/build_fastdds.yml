@@ -18,8 +18,8 @@
 # SCHEDULE:
 #  This workflow runs every night at 00:00 using latest version of Fast DDS (master).
 #
-# MANUAL RUN:
-#  Running this workflow manually, the following arguments might be set:
+# MANUAL RUN & WORKFLOW CALL:
+#  Running this workflow manually or from another workflow, the following arguments might be set:
 #
 #   built_configuration_branch:       set a branch to download colcon.meta file from this repository [Default: main]
 #

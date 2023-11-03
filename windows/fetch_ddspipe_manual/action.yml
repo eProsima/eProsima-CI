@@ -1,0 +1,36 @@
+name: fetch_ddspipe_manual
+description: Download eProsima/DDS-Pipe setting the specific version of each repository
+
+inputs:
+
+  ddspipe_branch:
+    description: >
+      Branch, tag or commit of eProsima/DDS-Pipe repository.
+      Check available branches in https://github.com/eProsima/DDS-Pipe.
+    required: false
+    default: master
+
+  destination_workspace:
+    description: 'Workspace where the repositories are downloaded'
+    required: false
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+
+    - name: fetch_ddspipe_manual
+      shell: pwsh
+      run: |
+
+        "::group::Manually clone DDS Pipe repository"
+
+        Write-Host 'Downloading following dependencies:'
+        Write-Host '  - DDS Pipe: ${{ inputs.ddspipe_branch }}'
+
+        New-Item -ItemType Directory -Force -Path ${{ inputs.destination_workspace }}
+        Set-Location -Path ${{ inputs.destination_workspace }}
+
+        git clone --branch ${{ inputs.ddspipe_branch }} https://github.com/eProsima/DDS-Pipe.git
+
+        "::endgroup::"
