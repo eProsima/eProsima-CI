@@ -79,11 +79,14 @@ For more information about versioning handle of this project, check following [f
 - [download_dependency](multiplatform/download_dependency/action.yml)
   - Download an artifact previously generated from a workflow run.
 
-- [fetch_fastdds_manual](multiplatform/fetch_fastdds_manual/action.yml)
-  - Download Fast DDS and its eProsima dependencies setting the specific version of each repository.
-
 - [fetch_dev_utils_manual](multiplatform/fetch_dev_utils_manual/action.yml)
   - Download eProsima/dev-utils setting the specific version of each repository.
+
+- [fetch_ddspipe_manual](multiplatform/fetch_ddspipe_manual/action.yml)
+  - Download eProsima/dev-utils setting the specific version of each repository.
+
+- [fetch_fastdds_manual](multiplatform/fetch_fastdds_manual/action.yml)
+  - Download Fast DDS and its eProsima dependencies setting the specific version of each repository.
 
 - [generate_dependency_artifact](multiplatform/generate_dependency_artifact/action.yml)
   - Build a project and upload the installed objects as an artifact.
