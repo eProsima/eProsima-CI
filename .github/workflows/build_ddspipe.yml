@@ -153,7 +153,7 @@ jobs:
   build_dev_utils:
 
     name: build_dev_utils
-    uses: eProsima/eProsima-CI/.github/workflows/build_dev_utils.yml@feature/manual-ddspipe-build
+    uses: eProsima/eProsima-CI/.github/workflows/build_dev_utils.yml@main
     if: inputs.build_dev_utils
     with:
       built_configuration_branch: ${{ inputs.built_configuration_branch }}
@@ -240,7 +240,7 @@ jobs:
           destination_workspace: ${{ github.workspace }}/src
 
       - name: Fetch DDS Pipe repositories
-        uses: eProsima/eProsima-CI/multiplatform/fetch_ddspipe_manual@feature/manual-ddspipe-build
+        uses: eProsima/eProsima-CI/multiplatform/fetch_ddspipe_manual@main
         if: (!inputs.use_repos_file)
         with:
           ddspipe_branch: ${{ inputs.ddspipe_branch || env.default_ddspipe_branch }}
