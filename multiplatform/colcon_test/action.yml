@@ -29,8 +29,7 @@ inputs:
 
   workspace:
     description: 'Workspace where built has been done'
-    required: false
-    default: ''
+    required: true
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
