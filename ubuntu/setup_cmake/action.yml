@@ -1,17 +1,17 @@
-name: Upgrade CMake
+name: Setup CMake
 
 inputs:
 
   cmake_version:
     description:  |
-      'Controls the version of CMake that is added to the path. This can be a fully specified verison 3.3.0,
-      partly specified 3.2, a wildcard version 3.2.x. By default it is empty which will give the latest CMake version
-      available on GitHub.
+      'Controls the version of CMake that is added to the path. This can be a fully specified version 3.3.0,
+      partly specified 3.2, a wildcard version 3.2.x. By default it is 3.22.x which is the latest version available in
+      Ubuntu 22.04.
 
       The version can also be specified to be latest which is equivalent to leaving it blank and will give the latest
       version.'
     required: false
-    default: 'EPROSIMA_UBUNTU_VERSION'
+    default: '3.22.x'
 
 runs:
   using: composite
