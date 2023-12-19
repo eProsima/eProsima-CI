@@ -11,7 +11,7 @@ runs:
   steps:
 
     - name: Setup CMake
-      uses: eProsima/eProsima-CI/ubuntu/setup_cmake@feature/fastdds-version
+      uses: eProsima/eProsima-CI/ubuntu/setup_cmake@main
 
     - name: Install vcs tools
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
