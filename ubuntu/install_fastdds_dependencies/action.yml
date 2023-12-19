@@ -10,6 +10,9 @@ runs:
   using: composite
   steps:
 
+    - name: Setup CMake
+      uses: eProsima/eProsima-CI/ubuntu/setup_cmake@feature/fastdds-version
+
     - name: Install vcs tools
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:

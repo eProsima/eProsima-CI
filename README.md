@@ -80,10 +80,10 @@ For more information about versioning handle of this project, check following [f
   - Download an artifact previously generated from a workflow run.
 
 - [fetch_dev_utils_manual](multiplatform/fetch_dev_utils_manual/action.yml)
-  - Download eProsima/dev-utils setting the specific version of each repository.
+  - Download eProsima/dev-utils setting the specific version of the repository.
 
 - [fetch_ddspipe_manual](multiplatform/fetch_ddspipe_manual/action.yml)
-  - Download eProsima/dev-utils setting the specific version of each repository.
+  - Download eProsima/DDS-Pipe setting the specific version of the repository.
 
 - [fetch_fastdds_manual](multiplatform/fetch_fastdds_manual/action.yml)
   - Download Fast DDS and its eProsima dependencies setting the specific version of each repository.
@@ -223,6 +223,9 @@ Run the `manual_build` workflow with these arguments:
   In order to use the manually set versions instead of the ones taken from the `.repos` file, just disable `use_repos_file` option.
 
 > :page_facing_up: eProsima/dev-utils build allows to specify the version as inputs of the workflow.
+  In order to use the manually set versions instead of the one taken from the `.repos` file, just disable `use_repos_file` option.
+
+> :page_facing_up: eProsima/DDS-Pipe build allows to specify the version as inputs of the workflow.
   In order to use the manually set versions instead of the one taken from the `.repos` file, just disable `use_repos_file` option.
 
 ## Custom artifact generation

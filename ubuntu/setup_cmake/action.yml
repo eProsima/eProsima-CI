@@ -1,0 +1,27 @@
+name: Upgrade CMake
+
+inputs:
+
+  cmake_version:
+    description:  |
+      'Controls the version of CMake that is added to the path. This can be a fully specified verison 3.3.0,
+      partly specified 3.2, a wildcard version 3.2.x. By default it is empty which will give the latest CMake version
+      available on GitHub.
+
+      The version can also be specified to be latest which is equivalent to leaving it blank and will give the latest
+      version.'
+    required: false
+    default: 'EPROSIMA_UBUNTU_VERSION'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Get ubuntu version
+      uses: eProsima/eProsima-CI/ubuntu/get_platform@main
+
+    - name: Upgrade CMake in Ubuntu 20.04
+      uses: jwlawson/actions-setup-cmake@v1.14
+      with:
+        cmake-version: '3.22.x'
+      if: contains( ${{ env.EPROSIMA_UBUNTU_VERSION }} , '20.04' )
