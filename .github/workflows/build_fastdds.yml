@@ -227,6 +227,7 @@ jobs:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}/artifact
           cmake_build_type: ${{ matrix.cmake_build_type }}
+          cmake_args_default: '-DCMAKE_CXX_FLAGS="-Wall"'
 
       - name: Upload binaries
         uses: eProsima/eProsima-CI/external/upload-artifact@main
