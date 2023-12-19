@@ -1,16 +1,12 @@
 name: Setup CMake
 
 inputs:
-
-  cmake_version:
-    description:  |
-      'Controls the version of CMake that is added to the path. This can be a fully specified version 3.3.0,
-      partly specified 3.2, a wildcard version 3.2.x. By default it is 3.22.x which is the latest version available in
-      Ubuntu 22.04.
-
-      The version can also be specified to be latest which is equivalent to leaving it blank and will give the latest
-      version.'
+  cmakeVersion:
     required: false
+    description: |
+      'Optional CMake version, expressed with the semantic version syntax, e.g. '~3.25.0' for the most recent 3.25.x,
+      `ˆ3.25.0` for the most recent 3.x version, or a specific version `3.25.2'. Or `latest` or `latestrc` for the
+      latest stable or release candidate version. If not specified the `latest` is installed."
     default: '3.22.x'
 
 runs:
@@ -21,7 +17,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/get_platform@main
 
     - name: Upgrade CMake in Ubuntu 20.04
-      uses: jwlawson/actions-setup-cmake@v1.14
+      uses: eProsima/eProsima-CI/extenal/get-cmake@main
       with:
         cmake-version: '3.22.x'
       if: contains( ${{ env.EPROSIMA_UBUNTU_VERSION }} , '20.04' )
