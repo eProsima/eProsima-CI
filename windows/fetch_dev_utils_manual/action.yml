@@ -8,7 +8,7 @@ inputs:
       Branch, tag or commit of eProsima/dev-utils repository.
       Check available branches in https://github.com/eProsima/dev-utils.
     required: false
-    default: master
+    default: main
 
   destination_workspace:
     description: 'Workspace where the repositories are downloaded'
