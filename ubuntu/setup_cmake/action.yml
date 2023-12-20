@@ -17,7 +17,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/get_platform@main
 
     - name: Upgrade CMake in Ubuntu 20.04
-      uses: eProsima/eProsima-CI/extenal/get-cmake@main
+      uses: eProsima/eProsima-CI/external/get-cmake@main
       with:
-        cmake-version: '3.22.x'
+        cmakeVersion: '3.22.x'
       if: contains( ${{ env.EPROSIMA_UBUNTU_VERSION }} , '20.04' )
