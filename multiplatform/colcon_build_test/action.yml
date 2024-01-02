@@ -55,6 +55,7 @@ runs:
       uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
       with:
         workspace: ${{ inputs.workspace }}
-        colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'
+        packages_names: ${{ inputs.packages_names }}
+        colcon_test_args: ${{ inputs.colcon_test_args }}
         ctest_args: ' ${{ inputs.ctest_args }}'
         workspace_dependencies: ${{ inputs.workspace_dependencies }}

@@ -23,6 +23,10 @@ inputs:
     required: false
     default: '--timeout 60'
 
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
   workspace:
     description: 'Workspace where built has been done'
     required: false
@@ -37,7 +41,7 @@ runs:
   using: composite
   steps:
 
-    - name: Build workspace with colcon
+    - name: Run tests with colcon
       run: |
 
         echo "::group::Test colcon ${{ inputs.workspace }}"
@@ -47,14 +51,30 @@ runs:
         fi
 
         cd ${{ inputs.workspace }}
-
-        colcon test \
-          ${{ inputs.colcon_test_args_default }} \
-          ${{ inputs.colcon_test_args }} \
-          --ctest-args \
-            ${{ inputs.ctest_args_default }} \
-            ${{ inputs.ctest_args }}
+        mkdir test_results
 
         echo "::endgroup::"
 
+        for package in ${{ inputs.packages_names }}; do
+          echo "::group::Testing ${package} ..."
+
+          colcon test \
+            ${{ inputs.colcon_test_args_default }} \
+            ${{ inputs.colcon_test_args }} \
+            --packages-select ${package}
+            --ctest-args \
+              ${{ inputs.ctest_args_default }} \
+              ${{ inputs.ctest_args }} \
+              --output-junit ./test_results/${package}_test_results.xml
+
+          echo "::endgroup::"
+        done
+
       shell: bash
+
+    - name: Upload results
+      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      if: success() || failure()
+      with:
+          name: test_results
+          path: ${{ inputs.workspace }}/test_results

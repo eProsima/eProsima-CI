@@ -23,6 +23,11 @@ inputs:
     required: false
     default: '--timeout 60'
 
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
+
   workspace:
     description: 'Workspace where built has been done'
     required: false
@@ -45,6 +50,7 @@ runs:
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
         ctest_args: ${{ inputs.ctest_args }}
         ctest_args_default: ${{ inputs.ctest_args_default }}
+        packages_names: ${{ inputs.packages_names }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
@@ -56,5 +62,6 @@ runs:
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
         ctest_args: ${{ inputs.ctest_args }}
         ctest_args_default: ${{ inputs.ctest_args_default }}
+        packages_names: ${{ inputs.packages_names }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
