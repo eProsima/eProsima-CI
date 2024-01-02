@@ -22,6 +22,11 @@ inputs:
     required: false
     default: ''
 
+  ctest_extra_path:
+    description: 'Directories to be added to the system PATH when running tests'
+    required: false
+    default: ''
+
   cmake_build_type:
     description: 'Set the cmake build type'
     required: false
@@ -52,9 +57,10 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Test
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@feature/extend-path
       with:
         workspace: ${{ inputs.workspace }}
         colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'
         ctest_args: ' ${{ inputs.ctest_args }}'
+        extra_path: ${{ inputs.ctest_extra_path }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
