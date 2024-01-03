@@ -45,7 +45,7 @@ runs:
       shell: pwsh
       run: |
 
-        "::group::Run tests using colcon"
+        Write-Host "::group::Run tests using colcon"
 
         if ([string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
           ${{ inputs.workspace_dependencies }}/setup.ps1
@@ -55,24 +55,37 @@ runs:
         $resultsPath = "${{ inputs.workspace }}\test_results"
         New-Item -ItemType Directory -Path $resultsPath
 
-        "::endgroup::"
+        Write-Host "::endgroup::"
 
-        $packages_names = ${{ inputs.packages_names }} -split '\s+'
+        $exitCode = 0
+        $packages_names = "${{ inputs.packages_names }}" -split '\s+'
 
         foreach ($package in $packages_names) {
-          "::group::Testing $package ..."
+          Write-Host "::group::Testing $package ..."
 
-          colcon test `
-            ${{ inputs.colcon_test_args_default }} `
-            ${{ inputs.colcon_test_args }} `
-            --packages-select $package `
-            --ctest-args `
-              ${{ inputs.ctest_args_default }} `
-              ${{ inputs.ctest_args }} `
-              --output-junit $resultsPath
+          $testCommand = @"
+            colcon test
+              ${{ inputs.colcon_test_args_default }}
+              ${{ inputs.colcon_test_args }}
+              --packages-select $package
+              --ctest-args
+                ${{ inputs.ctest_args_default }}
+                ${{ inputs.ctest_args }}
+                --output-junit $resultsPath
+        "@
 
-          "::endgroup::"
+          $testCommand = $testCommand -replace "[`r`n\t\s]+", " " -replace '^\s+', ''
+
+          Invoke-Expression $testCommand
+
+          if ($lastexitcode -ne 0) {
+            $exitCode = $lastexitcode
+          }
+
+          Write-Host "::endgroup::"
         }
+
+        Exit $exitCode
 
     - name: Upload results
       uses: eProsima/eProsima-CI/external/upload-artifact@main

@@ -65,7 +65,7 @@ runs:
             --ctest-args \
               ${{ inputs.ctest_args_default }} \
               ${{ inputs.ctest_args }} \
-              --output-junit ./test_results/${package}_test_results.xml
+              --output-junit ${{ inputs.workspace }}/test_results/${package}_test_results.xml
 
           echo "::endgroup::"
         done
