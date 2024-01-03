@@ -45,6 +45,8 @@ runs:
       shell: pwsh
       run: |
 
+        $ErrorActionPreference = 'Continue'
+
         Write-Host "::group::Run tests using colcon"
 
         if ([string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
@@ -85,6 +87,21 @@ runs:
           Write-Host "::endgroup::"
         }
 
+        Write-Host "Results directory: "
+        Get-ChildItem "$resultsPath"
+
+        Write-Host "Current workspace directory: "
+        Get-ChildItem "${{ inputs.workspace }}"
+
+        if (Test-Path -Path $resultsPath -PathType Container) {
+          Write-Host "The directory exists. --------------------------------------"
+        } else {
+          Write-Host "The directory does not exist. ------------------------------"
+        }
+
+        Write-Host "cmake version:"
+        cmake --version
+
         Exit $exitCode
 
     - name: Upload results
@@ -92,4 +109,4 @@ runs:
       if: success() || failure()
       with:
           name: test_results
-          path: ${{ inputs.workspace }}\test_results
+          path: "${{ inputs.workspace }}\\test_results"

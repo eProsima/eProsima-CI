@@ -43,7 +43,6 @@ runs:
 
     - name: Run tests with colcon
       run: |
-
         echo "::group::Test colcon ${{ inputs.workspace }}"
 
         if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
@@ -55,20 +54,31 @@ runs:
 
         echo "::endgroup::"
 
+        set +e
+        exit_code=0
+
         for package in ${{ inputs.packages_names }}; do
           echo "::group::Testing ${package} ..."
 
-          colcon test \
-            ${{ inputs.colcon_test_args_default }} \
-            ${{ inputs.colcon_test_args }} \
-            --packages-select ${package}
-            --ctest-args \
-              ${{ inputs.ctest_args_default }} \
-              ${{ inputs.ctest_args }} \
-              --output-junit ${{ inputs.workspace }}/test_results/${package}_test_results.xml
+            colcon test \
+              ${{ inputs.colcon_test_args_default }} \
+              ${{ inputs.colcon_test_args }} \
+              --packages-select ${package} \
+              --ctest-args \
+                ${{ inputs.ctest_args_default }} \
+                ${{ inputs.ctest_args }} \
+                --output-junit ${{ inputs.workspace }}/test_results/${package}_test_results.xml
+
+          last_exit_code=$?
+
+          if [ $last_exit_code -gt 0 ]; then
+            exit_code=$last_exit_code
+          fi
 
           echo "::endgroup::"
         done
+
+        exit $exit_code
 
       shell: bash
 
