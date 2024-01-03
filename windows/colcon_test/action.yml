@@ -37,11 +37,17 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
-    - name: Build workspace with colcon
+    - name: Run tests with colcon
+      id: test
       shell: pwsh
       run: |
 
@@ -56,6 +62,7 @@ runs:
         cd ${{ inputs.workspace }}
         $resultsPath = "${{ inputs.workspace }}\test_results"
         New-Item -ItemType Directory -Path $resultsPath
+        Add-Content -Path $env:GITHUB_OUTPUT -Value "ctest_results_path=$resultsPath"
 
         Write-Host "::endgroup::"
 

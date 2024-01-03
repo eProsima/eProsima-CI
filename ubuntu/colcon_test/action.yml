@@ -37,11 +37,17 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
     - name: Run tests with colcon
+      id: test
       run: |
         echo "::group::Test colcon ${{ inputs.workspace }}"
 
@@ -51,6 +57,7 @@ runs:
 
         cd ${{ inputs.workspace }}
         mkdir test_results
+        echo "ctest_results_path=${{ inputs.workspace }}/test_results" >> $GITHUB_OUTPUT
 
         echo "::endgroup::"
 

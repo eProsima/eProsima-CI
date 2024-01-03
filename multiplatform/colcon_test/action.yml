@@ -38,11 +38,17 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test_ubuntu.outputs.ctest_results_path || steps.test_windows.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
     - name: Run in ubuntu
+      id: test_ubuntu
       uses: eProsima/eProsima-CI/ubuntu/colcon_test@feature/test-results
       if: runner.os == 'Linux'
       with:
@@ -55,6 +61,7 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Run in windows
+      id: test_windows
       uses: eProsima/eProsima-CI/windows/colcon_test@feature/test-results
       if: runner.os == 'Windows'
       with:

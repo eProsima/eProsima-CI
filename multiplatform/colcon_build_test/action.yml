@@ -37,6 +37,11 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
@@ -52,6 +57,7 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Test
+      id: test
       uses: eProsima/eProsima-CI/multiplatform/colcon_test@feature/test-results
       with:
         workspace: ${{ inputs.workspace }}
