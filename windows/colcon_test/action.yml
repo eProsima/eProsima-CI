@@ -37,6 +37,13 @@ inputs:
     required: false
     default: ''
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format
+      Default: test_report_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
 outputs:
   ctest_results_path:
     description: "Path to test results"
@@ -60,7 +67,7 @@ runs:
         }
 
         cd ${{ inputs.workspace }}
-        $resultsPath = "${{ inputs.workspace }}\test_results"
+        $resultsPath = "${{ inputs.workspace }}\test_results\"
         New-Item -ItemType Directory -Path $resultsPath
         Add-Content -Path $env:GITHUB_OUTPUT -Value "ctest_results_path=$resultsPath"
 
@@ -80,7 +87,7 @@ runs:
               --ctest-args
                 ${{ inputs.ctest_args_default }}
                 ${{ inputs.ctest_args }}
-                --output-junit $resultsPath
+                --output-junit "$resultsPath\${package}_test_results.xml"
         "@
 
           $testCommand = $testCommand -replace "[`r`n\t\s]+", " " -replace '^\s+', ''
@@ -94,26 +101,11 @@ runs:
           Write-Host "::endgroup::"
         }
 
-        Write-Host "Results directory: "
-        Get-ChildItem "$resultsPath"
-
-        Write-Host "Current workspace directory: "
-        Get-ChildItem "${{ inputs.workspace }}"
-
-        if (Test-Path -Path $resultsPath -PathType Container) {
-          Write-Host "The directory exists. --------------------------------------"
-        } else {
-          Write-Host "The directory does not exist. ------------------------------"
-        }
-
-        Write-Host "cmake version:"
-        cmake --version
-
         Exit $exitCode
 
-    - name: Upload results
+    - name: Upload test report in JUnit format
       uses: eProsima/eProsima-CI/external/upload-artifact@main
       if: success() || failure()
       with:
-          name: test_results
+          name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
           path: "${{ inputs.workspace }}\\test_results"

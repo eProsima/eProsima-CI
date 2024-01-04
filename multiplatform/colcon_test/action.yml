@@ -27,7 +27,6 @@ inputs:
     description: 'Name of the colcon packages to build and test'
     required: true
 
-
   workspace:
     description: 'Workspace where built has been done'
     required: false

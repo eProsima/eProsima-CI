@@ -37,6 +37,13 @@ inputs:
     required: false
     default: ''
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format.
+      Default: test_report_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
 outputs:
   ctest_results_path:
     description: "Path to test results"
@@ -57,7 +64,7 @@ runs:
 
         cd ${{ inputs.workspace }}
         mkdir test_results
-        echo "ctest_results_path=${{ inputs.workspace }}/test_results" >> $GITHUB_OUTPUT
+        echo "ctest_results_path=${{ inputs.workspace }}/test_results/" >> $GITHUB_OUTPUT
 
         echo "::endgroup::"
 
@@ -89,9 +96,9 @@ runs:
 
       shell: bash
 
-    - name: Upload results
+    - name: Upload test report in JUnit format
       uses: eProsima/eProsima-CI/external/upload-artifact@main
       if: success() || failure()
       with:
-          name: test_results
+          name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
           path: ${{ inputs.workspace }}/test_results
