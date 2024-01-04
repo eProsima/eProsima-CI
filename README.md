@@ -250,6 +250,7 @@ Find below the external actions listed:
 | External Action | Description | LICENSE |
 |---|---|---|
 | [action-download-artifact](external/action-download-artifact/action.yml) | Download and extract an artifact | MIT license |
+| [test-reporter](external/test-reporter/action.yml) | Display test results directly in GitHub | MIT license |
 | [checkout](external/checkout/action.yml) | Checkout repository | MIT license |
 | [codecov-action](external/codecov-action/action.yml) | Upload coverage report to codecov.io | MIT license |
 | [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
