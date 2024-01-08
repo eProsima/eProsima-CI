@@ -1,0 +1,214 @@
+name: 'install_qt'
+description: 'https://raw.githubusercontent.com/jurplel/install-qt-action/master/README.md'
+
+inputs:
+
+  dir:
+    description: 'Directory prefix that Qt will be installed to'
+    required: true
+
+  version:
+    description: 'Desired Qt version to install'
+    required: false
+    default: '5.15.2'
+
+  target:
+    description: 'Build the target platform'
+    required: false
+
+  install-deps:
+    description: 'Whether or not to automatically install Qt dependencies on Linux through apt. Can be set to "nosudo"
+     to stop it from using sudo, for example on a docker container where the user already has sufficient privileges.'
+    required: false
+
+  modules:
+    description: 'String with whitespace delimited list of additional addon modules to install'
+    required: false
+
+  archives:
+    description: 'String with whitespace delimited list of Qt archives to install, with each entry separated by a space'
+    required: false
+
+  cache:
+    description: 'Whether to cache Qt automatically'
+    required: false
+
+  cache-key-prefix:
+    description: 'Prefix to be used for the cache key of the automatic cache'
+    required: false
+
+  setup-python:
+    description: 'Skip using setup-python to find/download a valid python version'
+    required: false
+
+  tools:
+    description: 'Qt "tools" to be installed. Specify the tool name and tool variant name separated by commas,
+     and separate multiple tools with spaces'
+    required: false
+
+  add-tools-to-path:
+    description: 'Tools path are included into PATH variable if set to true'
+    required: false
+
+  source:
+    description: 'Set this to true to install Qt source code. Incompatible with aqtinstall < 2.0.4'
+    required: false
+
+  src-archives:
+    description: 'String with whitespace delimited list of source archives to install, with each entry separated by
+     a space. Has no effect unless source is set to true'
+    required: false
+
+  documentation:
+    description: 'Set this to true to install Qt documentation files. Incompatible with aqtinstall < 2.0.4'
+    required: false
+
+  doc-archives:
+    description: 'String with whitespace delimited list of documentation archives to install, with each entry separated
+     by a space. Has no effect unless documentation is set to true'
+    required: false
+
+  doc-modules:
+    description: 'String with whitespace delimited list of documentation modules to install, with each entry separated
+     by a space. Has no effect unless documentation is set to true'
+    required: false
+
+  examples:
+    description: 'Set this to true to install Qt example code. Incompatible with aqtinstall < 2.0.4'
+    required: false
+
+  example-archives:
+    description: 'String with whitespace delimited list of example archives to install, with each entry separated by
+     a space. Has no effect unless examples is set to true'
+    required: false
+
+  example-modules:
+    description: 'String with whitespace delimited list of example modules to install, with each entry separated by
+     a space. Has no effect unless examples is set to true'
+    required: false
+
+  set-env:
+    description: 'Avoid setting environment variables. Has no effect on tools paths'
+    required: false
+
+  no-qt-binaries:
+    description: 'Skip installing Qt. This option is useful if you want to install tools, documentation, or examples'
+    required: false
+
+  tools-only:
+    description: 'Synonym for no-qt-binaries. It only exists to preserve backwards compatibility. If you set either
+     no-qt-binaries or tools-only to true, you will skip installation of Qt'
+    required: false
+
+  aqtversion:
+    description: 'Version of aqtinstall to use, given in the format used by pip, for example: ==0.7.1, >=0.7.1, ==0.7.*'
+    required: false
+
+  py7zrversion:
+    description: 'Version of py7zr in the same style as the aqtversion and intended to be used for the same purpose'
+    required: false
+
+  extra:
+    description: 'Append arguments to the end of the aqtinstall command'
+    required: false
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install Qt in ubuntu
+      uses: jurplel/install-qt-action@v3.3.0
+      if: runner.os == 'Linux'
+      with:
+        arch: 'gcc_64'
+        host: 'linux'
+        dir: ${{ inputs.dir }}
+        version: ${{ inputs.version }}
+        target: ${{ inputs.target }}
+        modules: ${{ inputs.modules }}
+        install-deps: ${{ inputs.install-deps }}
+        archives: ${{ inputs.archives }}
+        cache: ${{ inputs.cache }}
+        cache-key-prefix: ${{ inputs.cache-key-prefix }}
+        setup-python: ${{ inputs.setup-python }}
+        tools: ${{ inputs.tools }}
+        add-tools-to-path: ${{ inputs.add-tools-to-path }}
+        source: ${{ inputs.source }}
+        src-archives: ${{ inputs.src-archives }}
+        documentation: ${{ inputs.documentation }}
+        doc-archives: ${{ inputs.doc-archives }}
+        doc-modules: ${{ inputs.doc-modules }}
+        examples: ${{ inputs.examples }}
+        example-archives: ${{ inputs.example-archives }}
+        example-modules: ${{ inputs.example-modules }}
+        set-env: ${{ inputs.set-env }}
+        no-qt-binaries: ${{ inputs.no-qt-binaries }}
+        tools-only: ${{ inputs.tools-only }}
+        aqtversion: ${{ inputs.aqtversion }}
+        py7zrversion: ${{ inputs.py7zrversion }}
+        extra: ${{ inputs.extra }}
+
+    - name: Install Qt in windows
+      uses: jurplel/install-qt-action@v3.3.0
+      if: runner.os == 'Windows'
+      with:
+        arch: 'win64_msvc2019_64'
+        host: 'windows'
+        dir: ${{ inputs.dir }}
+        version: ${{ inputs.version }}
+        target: ${{ inputs.target }}
+        modules: ${{ inputs.modules }}
+        install-deps: ${{ inputs.install-deps }}
+        archives: ${{ inputs.archives }}
+        cache: ${{ inputs.cache }}
+        cache-key-prefix: ${{ inputs.cache-key-prefix }}
+        setup-python: ${{ inputs.setup-python }}
+        tools: ${{ inputs.tools }}
+        add-tools-to-path: ${{ inputs.add-tools-to-path }}
+        source: ${{ inputs.source }}
+        src-archives: ${{ inputs.src-archives }}
+        documentation: ${{ inputs.documentation }}
+        doc-archives: ${{ inputs.doc-archives }}
+        doc-modules: ${{ inputs.doc-modules }}
+        examples: ${{ inputs.examples }}
+        example-archives: ${{ inputs.example-archives }}
+        example-modules: ${{ inputs.example-modules }}
+        set-env: ${{ inputs.set-env }}
+        no-qt-binaries: ${{ inputs.no-qt-binaries }}
+        tools-only: ${{ inputs.tools-only }}
+        aqtversion: ${{ inputs.aqtversion }}
+        py7zrversion: ${{ inputs.py7zrversion }}
+        extra: ${{ inputs.extra }}
+
+    - name: Install Qt in mac
+      uses: jurplel/install-qt-action@v3.3.0
+      if: runner.os == 'Mac'
+      with:
+        arch: 'clang_64'
+        host: 'mac'
+        dir: ${{ inputs.dir }}
+        version: ${{ inputs.version }}
+        target: ${{ inputs.target }}
+        modules: ${{ inputs.modules }}
+        install-deps: ${{ inputs.install-deps }}
+        archives: ${{ inputs.archives }}
+        cache: ${{ inputs.cache }}
+        cache-key-prefix: ${{ inputs.cache-key-prefix }}
+        setup-python: ${{ inputs.setup-python }}
+        tools: ${{ inputs.tools }}
+        add-tools-to-path: ${{ inputs.add-tools-to-path }}
+        source: ${{ inputs.source }}
+        src-archives: ${{ inputs.src-archives }}
+        documentation: ${{ inputs.documentation }}
+        doc-archives: ${{ inputs.doc-archives }}
+        doc-modules: ${{ inputs.doc-modules }}
+        examples: ${{ inputs.examples }}
+        example-archives: ${{ inputs.example-archives }}
+        example-modules: ${{ inputs.example-modules }}
+        set-env: ${{ inputs.set-env }}
+        no-qt-binaries: ${{ inputs.no-qt-binaries }}
+        tools-only: ${{ inputs.tools-only }}
+        aqtversion: ${{ inputs.aqtversion }}
+        py7zrversion: ${{ inputs.py7zrversion }}
+        extra: ${{ inputs.extra }}
+
