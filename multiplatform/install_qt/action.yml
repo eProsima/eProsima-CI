@@ -15,102 +15,125 @@ inputs:
   target:
     description: 'Build the target platform'
     required: false
+    default: 'desktop'
 
   install-deps:
     description: 'Whether or not to automatically install Qt dependencies on Linux through apt. Can be set to "nosudo"
      to stop it from using sudo, for example on a docker container where the user already has sufficient privileges.'
     required: false
+    default: 'true'
 
   modules:
     description: 'String with whitespace delimited list of additional addon modules to install'
     required: false
+    default: ''
 
   archives:
     description: 'String with whitespace delimited list of Qt archives to install, with each entry separated by a space'
     required: false
+    default: ''
 
   cache:
     description: 'Whether to cache Qt automatically'
     required: false
+    default: 'false'
 
   cache-key-prefix:
     description: 'Prefix to be used for the cache key of the automatic cache'
     required: false
+    default: 'install_qt'
 
   setup-python:
     description: 'Skip using setup-python to find/download a valid python version'
     required: false
+    default: 'true'
 
   tools:
     description: 'Qt "tools" to be installed. Specify the tool name and tool variant name separated by commas,
      and separate multiple tools with spaces'
     required: false
+    default: ''
 
   add-tools-to-path:
     description: 'Tools path are included into PATH variable if set to true'
     required: false
+    default: 'true'
 
   source:
     description: 'Set this to true to install Qt source code. Incompatible with aqtinstall < 2.0.4'
     required: false
+    default: 'false'
 
   src-archives:
     description: 'String with whitespace delimited list of source archives to install, with each entry separated by
      a space. Has no effect unless source is set to true'
     required: false
+    default: ''
 
   documentation:
     description: 'Set this to true to install Qt documentation files. Incompatible with aqtinstall < 2.0.4'
     required: false
+    default: 'false'
 
   doc-archives:
     description: 'String with whitespace delimited list of documentation archives to install, with each entry separated
      by a space. Has no effect unless documentation is set to true'
     required: false
+    default: ''
 
   doc-modules:
     description: 'String with whitespace delimited list of documentation modules to install, with each entry separated
      by a space. Has no effect unless documentation is set to true'
     required: false
+    default: ''
 
   examples:
     description: 'Set this to true to install Qt example code. Incompatible with aqtinstall < 2.0.4'
     required: false
+    default: 'false'
 
   example-archives:
     description: 'String with whitespace delimited list of example archives to install, with each entry separated by
      a space. Has no effect unless examples is set to true'
     required: false
+    default: ''
 
   example-modules:
     description: 'String with whitespace delimited list of example modules to install, with each entry separated by
      a space. Has no effect unless examples is set to true'
     required: false
+    default: ''
 
   set-env:
     description: 'Avoid setting environment variables. Has no effect on tools paths'
     required: false
+    default: 'true'
 
   no-qt-binaries:
     description: 'Skip installing Qt. This option is useful if you want to install tools, documentation, or examples'
     required: false
+    default: 'false'
 
   tools-only:
     description: 'Synonym for no-qt-binaries. It only exists to preserve backwards compatibility. If you set either
      no-qt-binaries or tools-only to true, you will skip installation of Qt'
     required: false
+    default: 'false'
 
   aqtversion:
     description: 'Version of aqtinstall to use, given in the format used by pip, for example: ==0.7.1, >=0.7.1, ==0.7.*'
     required: false
+    default: '==3.1.*'
 
   py7zrversion:
     description: 'Version of py7zr in the same style as the aqtversion and intended to be used for the same purpose'
     required: false
+    default: '==0.20.*'
 
   extra:
     description: 'Append arguments to the end of the aqtinstall command'
     required: false
+    default: ''
 
 runs:
   using: composite
