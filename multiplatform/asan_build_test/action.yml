@@ -32,11 +32,17 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.build_and_test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
     - name: Build and test
+      id: build_and_test
       uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@main
       with:
         packages_names: ${{ inputs.packages_names }}

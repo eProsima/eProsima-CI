@@ -23,6 +23,10 @@ inputs:
     required: false
     default: '--timeout 60'
 
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
   workspace:
     description: 'Workspace where built has been done'
     required: false
@@ -33,11 +37,17 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test_ubuntu.outputs.ctest_results_path || steps.test_windows.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
     - name: Run in ubuntu
+      id: test_ubuntu
       uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
       if: runner.os == 'Linux'
       with:
@@ -45,10 +55,12 @@ runs:
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
         ctest_args: ${{ inputs.ctest_args }}
         ctest_args_default: ${{ inputs.ctest_args_default }}
+        packages_names: ${{ inputs.packages_names }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Run in windows
+      id: test_windows
       uses: eProsima/eProsima-CI/windows/colcon_test@main
       if: runner.os == 'Windows'
       with:
@@ -56,5 +68,6 @@ runs:
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
         ctest_args: ${{ inputs.ctest_args }}
         ctest_args_default: ${{ inputs.ctest_args_default }}
+        packages_names: ${{ inputs.packages_names }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}

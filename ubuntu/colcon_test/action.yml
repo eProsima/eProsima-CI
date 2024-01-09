@@ -23,6 +23,10 @@ inputs:
     required: false
     default: '--timeout 60'
 
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
   workspace:
     description: 'Workspace where built has been done'
     required: false
@@ -33,13 +37,25 @@ inputs:
     required: false
     default: ''
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format.
+      Default: test_report_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
-    - name: Build workspace with colcon
+    - name: Run tests with colcon
+      id: test
       run: |
-
         echo "::group::Test colcon ${{ inputs.workspace }}"
 
         if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
@@ -47,14 +63,42 @@ runs:
         fi
 
         cd ${{ inputs.workspace }}
-
-        colcon test \
-          ${{ inputs.colcon_test_args_default }} \
-          ${{ inputs.colcon_test_args }} \
-          --ctest-args \
-            ${{ inputs.ctest_args_default }} \
-            ${{ inputs.ctest_args }}
+        mkdir test_results
+        echo "ctest_results_path=${{ inputs.workspace }}/test_results/" >> $GITHUB_OUTPUT
 
         echo "::endgroup::"
 
+        set +e
+        exit_code=0
+
+        for package in ${{ inputs.packages_names }}; do
+          echo "::group::Testing ${package} ..."
+
+            colcon test \
+              ${{ inputs.colcon_test_args_default }} \
+              ${{ inputs.colcon_test_args }} \
+              --packages-select ${package} \
+              --ctest-args \
+                ${{ inputs.ctest_args_default }} \
+                ${{ inputs.ctest_args }} \
+                --output-junit ${{ inputs.workspace }}/test_results/${package}_test_results.xml
+
+          last_exit_code=$?
+
+          if [ $last_exit_code -gt 0 ]; then
+            exit_code=$last_exit_code
+          fi
+
+          echo "::endgroup::"
+        done
+
+        exit $exit_code
+
       shell: bash
+
+    - name: Upload test report in JUnit format
+      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      if: success() || failure()
+      with:
+          name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
+          path: ${{ inputs.workspace }}/test_results

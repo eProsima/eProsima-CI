@@ -32,6 +32,11 @@ inputs:
     required: false
     default: ''
 
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
@@ -46,8 +51,11 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Test
+      id: test
       uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
       with:
         workspace: ${{ inputs.workspace }}
-        colcon_test_args: '--packages-select ${{ inputs.packages_names }} ${{ inputs.colcon_test_args }}'
-        ctest_args: ' --label-regex "xfail" ${{ inputs.ctest_args }}'
+        packages_names: ${{ inputs.packages_names }}
+        colcon_test_args: ${{ inputs.colcon_test_args }}
+        ctest_args: ' --label-regex "xfail" ${{ inputs.ctest_args }} '
+        workspace_dependencies: ${{ inputs.workspace_dependencies }}

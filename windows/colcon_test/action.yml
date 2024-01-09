@@ -23,6 +23,10 @@ inputs:
     required: false
     default: '--timeout 60'
 
+  packages_names:
+    description: 'Name of the colcon packages to build and test'
+    required: true
+
   workspace:
     description: 'Workspace where built has been done'
     required: false
@@ -33,25 +37,75 @@ inputs:
     required: false
     default: ''
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format
+      Default: test_report_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
+outputs:
+  ctest_results_path:
+    description: "Path to test results"
+    value: ${{ steps.test.outputs.ctest_results_path }}
+
 runs:
   using: composite
   steps:
 
-    - name: Build workspace with colcon
+    - name: Run tests with colcon
+      id: test
       shell: pwsh
       run: |
 
-        "::group::Run tests using colcon"
+        $ErrorActionPreference = 'Continue'
+
+        Write-Host "::group::Run tests using colcon"
 
         if ([string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
           ${{ inputs.workspace_dependencies }}/setup.ps1
         }
 
         cd ${{ inputs.workspace }}
+        $resultsPath = "${{ inputs.workspace }}\test_results\"
+        New-Item -ItemType Directory -Path $resultsPath
+        Add-Content -Path $env:GITHUB_OUTPUT -Value "ctest_results_path=$resultsPath"
 
-        colcon test `
-          ${{ inputs.colcon_test_args_default }} `
-          ${{ inputs.colcon_test_args }} `
-          --ctest-args ${{ inputs.ctest_args_default }} ${{ inputs.ctest_args }}
+        Write-Host "::endgroup::"
 
-        "::endgroup::"
+        $exitCode = 0
+        $packages_names = "${{ inputs.packages_names }}" -split '\s+'
+
+        foreach ($package in $packages_names) {
+          Write-Host "::group::Testing $package ..."
+
+          $testCommand = @"
+            colcon test
+              ${{ inputs.colcon_test_args_default }}
+              ${{ inputs.colcon_test_args }}
+              --packages-select $package
+              --ctest-args
+                ${{ inputs.ctest_args_default }}
+                ${{ inputs.ctest_args }}
+                --output-junit "$resultsPath\${package}_test_results.xml"
+        "@
+
+          $testCommand = $testCommand -replace "[`r`n\t\s]+", " " -replace '^\s+', ''
+
+          Invoke-Expression $testCommand
+
+          if ($lastexitcode -ne 0) {
+            $exitCode = $lastexitcode
+          }
+
+          Write-Host "::endgroup::"
+        }
+
+        Exit $exitCode
+
+    - name: Upload test report in JUnit format
+      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      if: success() || failure()
+      with:
+          name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
+          path: "${{ inputs.workspace }}\\test_results"
