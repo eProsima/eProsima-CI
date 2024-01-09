@@ -48,7 +48,7 @@ runs:
 
     - name: Run in ubuntu
       id: test_ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@feature/test-results
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
       if: runner.os == 'Linux'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
@@ -61,7 +61,7 @@ runs:
 
     - name: Run in windows
       id: test_windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@feature/test-results
+      uses: eProsima/eProsima-CI/windows/colcon_test@main
       if: runner.os == 'Windows'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
