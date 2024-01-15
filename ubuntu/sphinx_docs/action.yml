@@ -61,6 +61,7 @@ runs:
 
     - name: Install docs dependencies
       uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@docs/fix-requirements
+      with:
         path_to_requirements: ${{ inputs.path_to_requirements }}
 
     - name: Install Colcon
