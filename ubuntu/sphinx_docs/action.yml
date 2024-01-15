@@ -24,6 +24,11 @@ description: Build and test documentation using sphinx
 
 inputs:
 
+  checkout_path:
+    description: 'Path where the original repository will be downloaded (Default: <github-workspace>/src)'
+    required: false
+    default: 'src'
+
   docs_subpackage_name:
     description: Name of colcon subpackage that contains the sphinx documentation
     required: false
@@ -40,6 +45,11 @@ inputs:
     required: false
     default: ''
 
+  path_to_requirements:
+    description: 'Path to requirements.txt file'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -47,10 +57,11 @@ runs:
     - name: Sync repository
       uses: eProsima/eProsima-CI/external/checkout@main
       with:
-        path: src
+        path: ${{ inputs.checkout_path }}
 
     - name: Install docs dependencies
       uses: eProsima/eProsima-CI/ubuntu/install_documentation_requirements@main
+        path_to_requirements: ${{ inputs.path_to_requirements }}
 
     - name: Install Colcon
       uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
