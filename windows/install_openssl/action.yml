@@ -19,7 +19,7 @@ runs:
         "::group::Install OpenSSL"
 
         if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.version }}" )) {
-          $VERSION = "--version ${{ inputs.version }}"
+          $VERSION = "--version=${{ inputs.version }}"
         } else {
           $VERSION = ""
         }
