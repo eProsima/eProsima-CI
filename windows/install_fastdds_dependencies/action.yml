@@ -20,4 +20,6 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Install Open SSL
-      uses: eProsima/eProsima-CI/windows/install_openssl@main
+      uses: eProsima/eprosima-CI/windows/install_openssl@main
+      with:
+        version: '3.1.1'
