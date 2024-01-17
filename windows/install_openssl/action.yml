@@ -1,5 +1,12 @@
 name: install_openssl
-description: Install and setup Open SSL for linking and building in Windows
+description: Install and setup OpenSSL for linking and building in Windows
+
+inputs:
+
+  version:
+    description: 'OpenSSL version (default: latests)'
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -9,9 +16,15 @@ runs:
       shell: pwsh
       run: |
 
-        "::group::Install Open SSL"
+        "::group::Install OpenSSL"
 
-        choco install openssl -yr --no-progress;
+        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.version }}" )) {
+          $VERSION = "--version=${{ inputs.version }}"
+        } else {
+          $VERSION = ""
+        }
+
+        choco install openssl $VERSION -yr --no-progress;
         @(ls -Path C:\Windows\System32\* -Include libssl-*.dll; ls -Path C:\Windows\SysWOW64\* -Include libssl-*.dll) | rm -ErrorAction SilentlyContinue
 
         "::endgroup::"
