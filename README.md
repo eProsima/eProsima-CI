@@ -142,6 +142,8 @@ For more information about versioning handle of this project, check following [f
 - [set_platform](ubuntu/set_platform/action.yml)
   - Set the platform OS version in a environment variable.
 
+- [setup_cmake](ubuntu/setup_cmake/action.yml)
+  - Set a specific CMake version
 ---
 
 ## Workflows
@@ -260,3 +262,4 @@ Find below the external actions listed:
 | [test-reporter](external/test-reporter/action.yml) | Display test results directly in GitHub | MIT license |
 | [upload-artifact](external/upload-artifact/action.yml) | Upload build artifact | MIT license |
 | [wait-on-check-action](external/wait-on-check-action/action.yml) | Wait on certain check | MIT license |
+| [test-reporter](external/test-reporter/action.yml) | Generate test reports in workflow summaries | MIT license |
