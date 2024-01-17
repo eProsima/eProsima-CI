@@ -16,7 +16,6 @@
 - [ ] Commit messages follow the company guidelines. <!-- External contributors should sign the DCO. Fast DDS developers must also refer to the internal Redmine task. -->
 - [ ] Changes are API compatible. <!-- Public API must not be broken within the same major release. -->
 - [ ] New features have been added to the `versions.md` and `README.md` files (if applicable).
-s
 
 ## Reviewer Checklist
 - [ ] The title and description correctly express the PR's purpose.
