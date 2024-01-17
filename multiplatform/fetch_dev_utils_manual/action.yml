@@ -20,14 +20,14 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/fetch_dev_utils_manual@main
+      uses: eProsima/eProsima-CI/ubuntu/fetch_dev_utils_manual@v0.7.0
       if: runner.os == 'Linux'
       with:
         dev_utils_branch: ${{ inputs.dev_utils_branch }}
         destination_workspace: ${{ inputs.destination_workspace }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/fetch_dev_utils_manual@main
+      uses: eProsima/eProsima-CI/windows/fetch_dev_utils_manual@v0.7.0
       if: runner.os == 'Windows'
       with:
         dev_utils_branch: ${{ inputs.dev_utils_branch }}
