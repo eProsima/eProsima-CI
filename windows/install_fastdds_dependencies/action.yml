@@ -12,14 +12,14 @@ runs:
   steps:
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@v0.7.1
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@v0.7.1
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Install Open SSL
-      uses: eProsima/eprosima-CI/windows/install_openssl@main
+      uses: eProsima/eprosima-CI/windows/install_openssl@v0.7.1
       with:
         version: '3.1.1'
