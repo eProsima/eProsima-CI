@@ -77,14 +77,14 @@ runs:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
         token: ${{ inputs.token }}
-        ssh-key: ${{ inputs.ssh }}
-        ssh-known-hosts: ${{ inputs.ssh }}
-        ssh-strict: ${{ inputs.ssh }}
-        persist-credentials: ${{ inputs.persist }}
+        ssh-key: ${{ inputs.ssh-key }}
+        ssh-known-hosts: ${{ inputs.ssh-known-hosts }}
+        ssh-strict: ${{ inputs.ssh-strict }}
+        persist-credentials: ${{ inputs.persist-credentials }}
         path: ${{ inputs.path }}
         clean: ${{ inputs.clean }}
-        fetch-depth: ${{ inputs.fetch }}
+        fetch-depth: ${{ inputs.fetch-depth }}
         lfs: ${{ inputs.lfs }}
         submodules: ${{ inputs.submodules }}
-        set-safe-directory: ${{ inputs.set }}
-        github-server-url: ${{ inputs.github }}
+        set-safe-directory: ${{ inputs.set-safe-directory }}
+        github-server-url: ${{ inputs.github-server-url }}
