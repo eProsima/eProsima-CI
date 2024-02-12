@@ -24,7 +24,7 @@ inputs:
     default: '--timeout 60'
 
   packages_names:
-    description: 'Name of the colcon packages to build and test'
+    description: 'Name of the colcon packages to test'
     required: true
 
   workspace:
@@ -53,6 +53,11 @@ runs:
   using: composite
   steps:
 
+    - name: Install lxml
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/ctest2junit_translation
+      with:
+        packages: lxml
+
     - name: Run tests with colcon
       id: test
       run: |
@@ -74,19 +79,35 @@ runs:
         for package in ${{ inputs.packages_names }}; do
           echo "::group::Testing ${package} ..."
 
-            colcon test \
-              ${{ inputs.colcon_test_args_default }} \
-              ${{ inputs.colcon_test_args }} \
-              --packages-select ${package} \
-              --ctest-args \
-                ${{ inputs.ctest_args_default }} \
-                ${{ inputs.ctest_args }} \
-                --output-junit ${{ inputs.workspace }}/test_results/${package}_test_results.xml
+          test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results.xml"
+
+          colcon test \
+            ${{ inputs.colcon_test_args_default }} \
+            ${{ inputs.colcon_test_args }} \
+            --packages-select ${package} \
+            --ctest-args \
+              ${{ inputs.ctest_args_default }} \
+              ${{ inputs.ctest_args }} \
+              --output-junit ${test_results_file}
 
           last_exit_code=$?
 
           if [ $last_exit_code -gt 0 ]; then
             exit_code=$last_exit_code
+          fi
+
+          # Translate CTest XML reports to jUnit in case CTest does not support '--output-junit'
+
+          if [ ! -f ${test_results_file} ]
+          then
+            echo "::group::Translating ${package} test report to jUnit..."
+
+            python3 ${{ github.action_path }}/../../resources/ctest2junit.py \
+              --build-dir ${{ inputs.workspace }}/build/${package} \
+              --xslt ${{ github.action_path }}/../../resources/ctest-to-junit.xsl \
+              --output-junit ${test_results_file}
+
+            echo "::endgroup::"
           fi
 
           echo "::endgroup::"
@@ -97,8 +118,8 @@ runs:
       shell: bash
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
-      if: success() || failure()
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/ctest2junit_translation
+      if: ${{ ! cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
           path: ${{ inputs.workspace }}/test_results

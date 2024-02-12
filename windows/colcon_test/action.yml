@@ -24,7 +24,7 @@ inputs:
     default: '--timeout 60'
 
   packages_names:
-    description: 'Name of the colcon packages to build and test'
+    description: 'Name of the colcon packages to test'
     required: true
 
   workspace:
@@ -53,6 +53,11 @@ runs:
   using: composite
   steps:
 
+    - name: Install lxml
+      uses: eProsima/eProsima-CI/windows/install_python_packages@feature/ctest2junit_translation
+      with:
+        packages: lxml
+
     - name: Run tests with colcon
       id: test
       shell: pwsh
@@ -79,6 +84,8 @@ runs:
         foreach ($package in $packages_names) {
           Write-Host "::group::Testing $package ..."
 
+          $testResultsFile = "$resultsPath\${package}_test_results.xml"
+
           $testCommand = @"
             colcon test
               ${{ inputs.colcon_test_args_default }}
@@ -87,7 +94,7 @@ runs:
               --ctest-args
                 ${{ inputs.ctest_args_default }}
                 ${{ inputs.ctest_args }}
-                --output-junit "$resultsPath\${package}_test_results.xml"
+                --output-junit "$testResultsFile"
         "@
 
           $testCommand = $testCommand -replace "[`r`n\t\s]+", " " -replace '^\s+', ''
@@ -98,14 +105,24 @@ runs:
             $exitCode = $lastexitcode
           }
 
+          # Translate CTest XML reports to jUnit in case CTest does not support '--output-junit'
+          $testResultsExist = Test-Path $testResultsFile
+          if (! $testResultsExist) {
+            Write-Host  "::group::Translating ${package} test report to jUnit..."
+
+            python3 ${{ github.action_path }}\..\..\resources\ctest2junit.py --build-dir "${{ inputs.workspace }}\build\${package}" --xslt ${{ github.action_path }}\..\..\resources\ctest-to-junit.xsl --output-junit $testResultsFile
+
+            Write-Host "::endgroup::"
+          }
+
           Write-Host "::endgroup::"
         }
 
         Exit $exitCode
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
-      if: success() || failure()
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/ctest2junit_translation
+      if: ${{ ! cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
           path: "${{ inputs.workspace }}\\test_results"
