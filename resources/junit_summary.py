@@ -114,7 +114,7 @@ def create_md_summary(results_dict, show_failed, show_disabled, show_skipped):
     summary = '## Test summary\n'
 
     # Table header
-    summary += '|Total number of tests|Test failures|Disabled test|Skipped test|Spent time|Timestamp|\n'
+    summary += '|Total number of tests|Test failures|Disabled test|Skipped test|Spent time [s]|Timestamp|\n'
     summary += '|-|-|-|-|-|-|\n'
 
     # Entry

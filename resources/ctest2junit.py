@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Script to transform CTest native XML reports to jUnit"""
+"""Script to transform CTest native XML reports to jUnit if they do not exist"""
 
 import argparse
 
@@ -94,17 +94,17 @@ def find_ctest_report(build_dir):
     return ret
 
 
-def translate(original_xml, xls_file):
+def translate(original_xml, xsl_file):
     """
     Translate an XML from one spec to another using an XSLT file.
 
     :param original_xml: The XML to translate
-    :param xls_file: The XSLT transformation file
+    :param xsl_file: The XSLT transformation file
 
     :return: A stream containing the translated XML
     """
     xml = etree.parse(original_xml)
-    xslt = etree.parse(xls_file)
+    xslt = etree.parse(xsl_file)
     transform = etree.XSLT(xslt)
     try:
         return str(transform(xml))
@@ -131,7 +131,10 @@ if __name__ == '__main__':
 
     exit_code = 0
 
-    if not os.path.isfile(args.output_junit):
+    if os.path.isfile(args.output_junit):
+        print(f'File {args.output_junit} already exists. No action taken.')
+
+    else:
         exit_code = 1
         ctest_report = find_ctest_report(args.build_dir)
 
