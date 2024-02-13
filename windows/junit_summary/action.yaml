@@ -6,10 +6,6 @@ inputs:
     description: 'Path to directory containing XML files with the jUnit reports'
     required: true
 
-  output_file:
-    description: 'Path to the file where the summary will be written'
-    required: true
-
   print_summary:
     description: 'Whether to print the summary (Default: True)'
     required: false
@@ -37,10 +33,7 @@ runs:
       id: junit_summary
       shell: pwsh
       run: |
-        $OUTPUT_FILE_OPTION = ""
-        if (-not [string]::IsNullOrEmpty(${{ inputs.output_file }})) {
-          $OUTPUT_FILE_OPTION = "--output-file ${{ inputs.output_file }}"
-        }
+        $OUTPUT_FILE_OPTION = "--output-file $env:GITHUB_STEP_SUMMARY"
 
         $PRINT_SUMMARY_OPTION = ""
         if ($env:INPUT_PRINT_SUMMARY -eq "True") {

@@ -6,10 +6,6 @@ inputs:
     description: 'Path to directory containing XML files with the jUnit reports'
     required: true
 
-  output_file:
-    description: 'Path to the file where the summary will be written'
-    required: true
-
   print_summary:
     description: 'Whether to print the summary (Default: True)'
     required: false
@@ -39,7 +35,6 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/junit_summary@feature/ctest2junit_translation
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
-        output_file: ${{ inputs.output_file }}
         print_summary: ${{ inputs.print_summary }}
         show_failed: ${{ inputs.show_failed }}
         show_disabled: ${{ inputs.show_disabled }}
@@ -50,7 +45,6 @@ runs:
       uses: eProsima/eProsima-CI/windows/junit_summary@feature/ctest2junit_translation
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
-        output_file: ${{ inputs.output_file }}
         print_summary: ${{ inputs.print_summary }}
         show_failed: ${{ inputs.show_failed }}
         show_disabled: ${{ inputs.show_disabled }}
