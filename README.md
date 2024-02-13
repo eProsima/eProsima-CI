@@ -107,16 +107,19 @@ For more information about versioning handle of this project, check following [f
   - Install Fast DDS and general eProsima projects dependencies.
 
 - [install_gtest](multiplatform/install_gtest/action.yml)
-  - Instal `gtest` and `gmock` C++ library.
+  - Install `gtest` and `gmock` C++ library.
 
 - [install_openssl](multiplatform/install_openssl/action.yml)
-  - Instal `Open SSL` C++ library.
+  - Install `Open SSL` C++ library.
 
 - [install_python_packages](ubuntu/install_python_packages/action.yml)
   - Install python packages.
 
 - [install_yamlcpp](multiplatform/install_yamlcpp/action.yml)
-  - Instal `yaml-cpp` C++ library.
+  - Install `yaml-cpp` C++ library.
+
+- [junit_summary](multiplatform/junit_summary/action.yaml)
+  - Create a workflow summary with the results of the tests from jUnit reports.
 
 - [tsan_build_test](multiplatform/tsan_build_test/action.yml)
   - Build a project using colcon and TSAN flags and execute tests.
@@ -138,6 +141,9 @@ For more information about versioning handle of this project, check following [f
 
 - [install_apt_packages](ubuntu/install_apt_packages/action.yml)
   - Install apt packages.
+
+- [junit_summary](ubuntu/junit_summary/action.yaml)
+  - Create a workflow summary with the results of the tests from jUnit reports.
 
 - [set_platform](ubuntu/set_platform/action.yml)
   - Set the platform OS version in a environment variable.
