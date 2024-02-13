@@ -1,0 +1,57 @@
+name: 'junit_summary'
+description: 'Generate a summary from a jUnit report. This summary shows in the workflow summary page. Exit code is number of failed tests.'
+
+inputs:
+  junit_reports_dir:
+    description: 'Path to directory containing XML files with the jUnit reports'
+    required: true
+
+  output_file:
+    description: 'Path to the file where the summary will be written'
+    required: true
+
+  print_summary:
+    description: 'Whether to print the summary (Default: True)'
+    required: false
+    default: 'True'
+
+  show_failed:
+    description: 'Whether to show the list of failed tests (Default: True)'
+    required: false
+    default: 'True'
+
+  show_disabled:
+    description: 'Whether to show the list of disabled tests (Default: False)'
+    required: false
+    default: 'False'
+
+  show_skipped:
+    description: 'Whether to show the list of skipped tests (Default: False)'
+    required: false
+    default: 'False'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      if: runner.os == 'Linux'
+      uses: eProsima/eProsima-CI/ubuntu/junit_summary@feature/ctest2junit_translation
+      with:
+        junit_reports_dir: ${{ inputs.junit_reports_dir }}
+        output_file: ${{ inputs.output_file }}
+        print_summary: ${{ inputs.print_summary }}
+        show_failed: ${{ inputs.show_failed }}
+        show_disabled: ${{ inputs.show_disabled }}
+        show_skipped: ${{ inputs.show_skipped }}
+
+    - name: Run in windows
+      if: runner.os == 'Windows'
+      uses: eProsima/eProsima-CI/windows/junit_summary@feature/ctest2junit_translation
+      with:
+        junit_reports_dir: ${{ inputs.junit_reports_dir }}
+        output_file: ${{ inputs.output_file }}
+        print_summary: ${{ inputs.print_summary }}
+        show_failed: ${{ inputs.show_failed }}
+        show_disabled: ${{ inputs.show_disabled }}
+        show_skipped: ${{ inputs.show_skipped }}
