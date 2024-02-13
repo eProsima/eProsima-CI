@@ -58,8 +58,8 @@ runs:
         }
 
         if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
-          New-Item -ItemType File colcon.meta
-          $env:COLCON_BUILD_META_ = "colcon.meta"
+          New-Item -ItemType File "${{ inputs.workspace }}\colcon.meta"
+          $env:COLCON_BUILD_META_ = "${{ inputs.workspace }}\colcon.meta"
         } else {
           $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
         }
@@ -84,10 +84,10 @@ runs:
           --cmake-args `
             -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} ${{ inputs.cmake_args_default }} ${{ inputs.cmake_args }}
 
-        cd ..
+        cd -
 
         if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
-          Remove-Item -Path "colcon.meta"
+          Remove-Item -Path "${{ inputs.workspace }}\colcon.meta"
         }
 
         "::endgroup::"

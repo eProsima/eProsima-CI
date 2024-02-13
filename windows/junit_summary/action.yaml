@@ -1,0 +1,70 @@
+name: 'junit_summary'
+description: 'Generate a summary from a jUnit report. This summary shows in the workflow summary page. Exit code is number of failed tests.'
+
+inputs:
+  junit_reports_dir:
+    description: 'Path to directory containing XML files with the jUnit reports'
+    required: true
+
+  print_summary:
+    description: 'Whether to print the summary (Default: True)'
+    required: false
+    default: "True"
+
+  show_failed:
+    description: 'Whether to show the list of failed tests (Default: True)'
+    required: false
+    default: "True"
+
+  show_disabled:
+    description: 'Whether to show the list of disabled tests (Default: False)'
+    required: false
+    default: "False"
+
+  show_skipped:
+    description: 'Whether to show the list of skipped tests (Default: False)'
+    required: false
+    default: "False"
+
+runs:
+  using: composite
+  steps:
+    - name: jUnit Summary
+      id: junit_summary
+      shell: pwsh
+      run: |
+        $PRINT_SUMMARY_OPTION = $null
+        if ("${{ inputs.print_summary }}" -eq "True") {
+          $PRINT_SUMMARY_OPTION = "--print-summary"
+        }
+
+        $SHOW_FAILED_OPTION = $null
+        if ("${{ inputs.show_failed }}" -eq "True") {
+          $SHOW_FAILED_OPTION = "--show-failed"
+        }
+
+        $SHOW_DISABLED_OPTION = $null
+        if ("${{ inputs.show_disabled }}" -eq "True") {
+          $SHOW_DISABLED_OPTION = "--show-disabled"
+        }
+
+        $SHOW_SKIPPED_OPTION = $null
+        if ("${{ inputs.show_skipped }}" -eq "True") {
+          $SHOW_SKIPPED_OPTION = "--show-skipped"
+        }
+
+        $EXIT_CODE=0
+
+        foreach ($JUNIT_REPORT in Get-ChildItem -Path ${{ inputs.junit_reports_dir }} -Filter "*.xml") {
+          python3 ${{ github.action_path }}\..\..\resources\junit_summary.py `
+            --junit-report $JUNIT_REPORT.FullName `
+            --output-file $env:GITHUB_STEP_SUMMARY `
+            $PRINT_SUMMARY_OPTION `
+            $SHOW_FAILED_OPTION `
+            $SHOW_DISABLED_OPTION `
+            $SHOW_SKIPPED_OPTION
+
+          $EXIT_CODE += $LASTEXITCODE
+        }
+
+        exit $EXIT_CODE
