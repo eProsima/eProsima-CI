@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.8.0](#v0.8.0)
 - [v0.7.0](#v0.7.0)
 - [v0.6.0](#v0.6.0)
 - [v0.5.0](#v0.5.0)
@@ -15,6 +16,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.8.0
+
+This release includes the following **features**:
 
 - Add a `junit-summary` action to generate a summary of JUnit test results.
 

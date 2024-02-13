@@ -6,9 +6,9 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@v0.8.0
       if: runner.os == 'Linux'
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@v0.8.0
       if: runner.os == 'Windows'

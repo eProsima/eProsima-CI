@@ -28,7 +28,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/fetch_fastdds_manual@main
+      uses: eProsima/eProsima-CI/ubuntu/fetch_fastdds_manual@v0.8.0
       if: runner.os == 'Linux'
       with:
         foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
@@ -37,7 +37,7 @@ runs:
         destination_workspace: ${{ inputs.destination_workspace }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/fetch_fastdds_manual@main
+      uses: eProsima/eProsima-CI/windows/fetch_fastdds_manual@v0.8.0
       if: runner.os == 'Windows'
       with:
         foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
