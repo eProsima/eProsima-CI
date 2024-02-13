@@ -17,14 +17,14 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_yamlcpp@main
+      uses: eProsima/eProsima-CI/ubuntu/install_yamlcpp@v0.7.2
       if: runner.os == 'Linux'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
         version: ${{ inputs.version }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_yamlcpp@main
+      uses: eProsima/eProsima-CI/windows/install_yamlcpp@v0.7.2
       if: runner.os == 'Windows'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}

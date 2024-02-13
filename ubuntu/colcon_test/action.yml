@@ -97,7 +97,7 @@ runs:
       shell: bash
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@v0.7.2
       if: success() || failure()
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}

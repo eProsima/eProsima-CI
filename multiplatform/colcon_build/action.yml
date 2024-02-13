@@ -48,7 +48,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/colcon_build@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_build@v0.7.2
       if: runner.os == 'Linux'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
@@ -61,7 +61,7 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/colcon_build@main
+      uses: eProsima/eProsima-CI/windows/colcon_build@v0.7.2
       if: runner.os == 'Windows'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}

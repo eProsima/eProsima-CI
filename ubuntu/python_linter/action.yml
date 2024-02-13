@@ -34,17 +34,17 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@main
+      uses: eProsima/eProsima-CI/external/checkout@v0.7.2
       with:
         path: src
 
     - name: Fetch all branches and tags
-      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@v0.7.2
       with:
         workspace: src
 
     - name: Install Flake8
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0.7.2
       with:
         packages: flake8==5.0.4 flake8-quotes
 
@@ -57,7 +57,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@v0.7.2
       with:
         result_env_var:
           MODIFIED_FILES
