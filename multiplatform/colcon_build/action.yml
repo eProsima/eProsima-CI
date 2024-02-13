@@ -48,7 +48,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/colcon_build@feature/ctest2junit_translation
+      uses: eProsima/eProsima-CI/ubuntu/colcon_build@main
       if: runner.os == 'Linux'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
@@ -61,15 +61,15 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/colcon_build@feature/ctest2junit_translation
+      uses: eProsima/eProsima-CI/windows/colcon_build@main
       if: runner.os == 'Windows'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: ${{ inputs.colcon_build_args }}
         colcon_build_args_default: ${{ inputs.colcon_build_args_default }}
         cmake_args: ${{ inputs.cmake_args }}
+        # TODO (jparisu) find a way to use it for windows, as there is not a common Werror flag for both
         cmake_args_default: ${{ inputs.cmake_args_default }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}
-        # TODO (jparisu) find a way to use it for windows, as there is not a common Werror flag for both
