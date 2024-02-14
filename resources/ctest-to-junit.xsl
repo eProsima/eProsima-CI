@@ -6,7 +6,7 @@
         <testsuites>
             <xsl:variable name="buildName" select="//Site/@BuildName"/>
             <xsl:variable name="numberOfTests" select="count(//Site/Testing/Test)"/>
-            <xsl:variable name="numberOfFailures" select="count(//Site/Testing/Test[@Status!='passed'])" />
+            <xsl:variable name="numberOfFailures" select="count(//Site/Testing/Test[@Status='failed'])" />
             <xsl:variable name="numberOfErrors" select="count(//Site/Testing/Test[@Status='error'])" />
             <xsl:variable name="numberOfSkipped" select="count(//Site/Testing/Test[@Status='notrun'])"/>
             <xsl:variable name="buildTime" select="(//Site/Testing/EndTestTime - //Site/Testing/StartTestTime)"/>
@@ -24,6 +24,7 @@
                     <xsl:variable name="className" select="translate(Path, '/.', '.')"/>
                     <testcase classname="projectroot{$className}"
                         name="{$testName}"
+                        status="{$status}"
                         time="{$duration}">
                         <xsl:if test="@Status!='passed'">
                             <failure>
