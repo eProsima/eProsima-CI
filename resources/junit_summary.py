@@ -170,7 +170,7 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped):
     for suite in results:
         # Failed tests list
         if show_failed is True and len(suite['failed_tests']) != 0:
-            summary += f'\n### Failed tests in suite: {suite["name"]}\n'
+            summary += f'\n### Suite `{suite["name"]}` had {suite["failures"]} failed tests:\n'
             summary += '<details>\n\n'
             for failed_test in suite['failed_tests']:
                 summary += f'* {failed_test}\n'
@@ -178,7 +178,7 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped):
 
         # Disabled tests list
         if show_disabled is True and len(suite['disabled_tests']) != 0:
-            summary += f'\n### Disabled tests in suite: {suite["name"]}\n'
+            summary += f'\n### Suite `{suite["name"]}` had {suite["disabled"]} disabled tests:\n'
             summary += '<details>\n'
             for failed_test in suite['disabled_tests']:
                 summary += f'* {failed_test}\n'
@@ -186,7 +186,7 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped):
 
         # Skipped tests list
         if show_skipped is True and len(suite['skipped_tests']) != 0:
-            summary += f'\n### Skipped tests in suite: {suite["name"]}\n'
+            summary += f'\n### Suite `{suite["name"]}` had {suite["skipped"]} skipped tests:\n'
             summary += '<details>\n\n'
             for failed_test in suite['skipped_tests']:
                 summary += f'* {failed_test}\n'
