@@ -37,6 +37,13 @@ inputs:
     required: false
     default: ''
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format. It shall be unique withing the workflow run.
+      Default: test_report_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
 outputs:
   ctest_results_path:
     description: "Path to test results"
@@ -58,6 +65,7 @@ runs:
         packages_names: ${{ inputs.packages_names }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
+        test_report_artifact: ${{ inputs.test_report_artifact }}
 
     - name: Run in windows
       id: test_windows
@@ -71,3 +79,4 @@ runs:
         packages_names: ${{ inputs.packages_names }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
+        test_report_artifact: ${{ inputs.test_report_artifact }}

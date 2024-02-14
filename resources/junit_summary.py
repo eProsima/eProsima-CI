@@ -77,34 +77,67 @@ def parse_options():
 
 def junit_report_to_dict(junit_report):
     """Convert a jUnit report to a dictionary."""
-    result = {
+    result = {}
+    tree = ET.parse(junit_report)
+    root = tree.getroot()
+    print(root)
+    print(root.tag)
+
+    # Root can be 'testsuites' or 'testsuite'
+    if root.tag == 'testsuites':
+        for test_suite in root:
+            result = parse_testsuite(test_suite, result)
+    elif root.tag == 'testsuite':
+        print('parsing testsuite')
+        result = parse_testsuite(root, result)
+
+    print(result)
+    return result
+
+
+def parse_testsuite(test_suite, result):
+    """Parse a testsuite tag."""
+    suite_result = {
         'passed_tests': [],
         'failed_tests': [],
         'disabled_tests': [],
         'skipped_tests': [],
     }
-    tree = ET.parse(junit_report)
-    root = tree.getroot()
-    result['tests'] = root.attrib['tests']
-    result['failures'] = root.attrib['failures']
-    result['disabled'] = root.attrib['disabled']
-    result['skipped'] = root.attrib['skipped']
-    result['time'] = root.attrib['time']
-    result['timestamp'] = root.attrib['timestamp']
+    suite_result['tests'] = test_suite.attrib['tests']
+    suite_result['failures'] = test_suite.attrib['failures']
+    suite_result['time'] = test_suite.attrib['time']
 
-    for child in root:
+    suite_result['disabled'] = None
+    if 'disabled' in test_suite.attrib:
+        suite_result['disabled'] = test_suite.attrib['disabled']
+
+    suite_result['skipped'] = None
+    if 'skipped' in test_suite.attrib:
+        suite_result['skipped'] = test_suite.attrib['skipped']
+
+    suite_result['timestamp'] = None
+    if 'timestamp' in test_suite.attrib:
+        suite_result['timestamp'] = test_suite.attrib['timestamp']
+
+    for child in test_suite:
         if child.tag == 'testcase':
-            if child.attrib['status'] == "run":
-                result['passed_tests'].append(child.attrib['name'])
+            if child.attrib['status'] == "run" or child.attrib['status'] == "passed":
+                suite_result['passed_tests'].append(child.attrib['name'])
 
-            elif child.attrib['status'] == "fail":
-                result['failed_tests'].append(child.attrib['name'])
+            elif child.attrib['status'] == "fail" or child.attrib['status'] == "failed":
+                suite_result['failed_tests'].append(child.attrib['name'])
 
             elif child.attrib['status'] == "ignored":
-                result['disabled_tests'].append(child.attrib['name'])
+                suite_result['disabled_tests'].append(child.attrib['name'])
 
             elif child.attrib['status'] == "notrun":
-                result['skipped_tests'].append(child.attrib['name'])
+                suite_result['skipped_tests'].append(child.attrib['name'])
+
+    # Update result
+    suite_name = 'Not specified'
+    if 'name' in test_suite.attrib and test_suite.attrib['name'] != '(empty)':
+        suite_name = test_suite.attrib['name']
+    result[suite_name] = suite_result
 
     return result
 
@@ -114,35 +147,39 @@ def create_md_summary(results_dict, show_failed, show_disabled, show_skipped):
     summary = '## Test summary\n'
 
     # Table header
-    summary += '|Total number of tests|Test failures|Disabled test|Skipped test|Spent time [s]|Timestamp|\n'
-    summary += '|-|-|-|-|-|-|\n'
+    summary += '|Suite|Total number of tests|Test failures|Disabled test|Skipped test|Spent time [s]|Timestamp|\n'
+    summary += '|-|-|-|-|-|-|-|\n'
 
-    # Entry
-    summary += f'|{results_dict["tests"]}'
-    summary += f'|{results_dict["failures"]}'
-    summary += f'|{results_dict["disabled"]}'
-    summary += f'|{results_dict["skipped"]}'
-    summary += f'|{results_dict["time"]}'
-    summary += f'|{results_dict["timestamp"]}'
-    summary += '|\n'
+    # Entries
+    for suite, suite_results in results_dict.items():
+        summary += f'|{suite}'
+        summary += f'|{suite_results["tests"]}'
+        summary += f'|{suite_results["failures"]}'
+        summary += f'|{suite_results["disabled"]}'
+        summary += f'|{suite_results["skipped"]}'
+        summary += f'|{suite_results["time"]}'
+        summary += f'|{suite_results["timestamp"]}'
+        summary += '|\n'
 
-    # Failed tests list
-    if show_failed is True and len(results_dict['failed_tests']) != 0:
-        summary += '\n## Failed tests\n'
-        for failed_test in results_dict['failed_tests']:
-            summary += f'* {failed_test}\n'
+    # Test lists
+    for suite, suite_results in results_dict.items():
+        # Failed tests list
+        if show_failed is True and len(suite_results['failed_tests']) != 0:
+            summary += f'\n## Failed tests in suite: {suite}\n'
+            for failed_test in suite_results['failed_tests']:
+                summary += f'* {failed_test}\n'
 
-    # Disabled tests list
-    if show_disabled is True and len(results_dict['disabled_tests']) != 0:
-        summary += '\n## Disabled tests\n'
-        for failed_test in results_dict['disabled_tests']:
-            summary += f'* {failed_test}\n'
+        # Disabled tests list
+        if show_disabled is True and len(suite_results['disabled_tests']) != 0:
+            summary += f'\n## Disabled tests in suite: {suite}\n'
+            for failed_test in suite_results['disabled_tests']:
+                summary += f'* {failed_test}\n'
 
-    # Skipped tests list
-    if show_skipped is True and len(results_dict['skipped_tests']) != 0:
-        summary += '\n## Skipped tests\n'
-        for failed_test in results_dict['skipped_tests']:
-            summary += f'* {failed_test}\n'
+        # Skipped tests list
+        if show_skipped is True and len(suite_results['skipped_tests']) != 0:
+            summary += f'\n## Skipped tests in suite: {suite}\n'
+            for failed_test in suite_results['skipped_tests']:
+                summary += f'* {failed_test}\n'
 
     return summary
 
@@ -177,4 +214,7 @@ if __name__ == '__main__':
             )
 
     # Exit code is the number of failed tests
-    exit(int(results['failures']))
+    exit_code = 0
+    for suite in results:
+        exit_code += int(results[suite]['failures'])
+    exit(exit_code)
