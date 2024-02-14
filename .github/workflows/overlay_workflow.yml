@@ -1,0 +1,12 @@
+name: pr_test_overlay
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  dummy-overlay:
+    uses: ./.github/workflows/pr_test.yml
