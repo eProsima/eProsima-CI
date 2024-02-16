@@ -46,7 +46,7 @@ inputs:
 outputs:
   ctest_results_path:
     description: "Path to test results"
-    value: ${{ steps.test_ubuntu.outputs.ctest_results_path || steps.test_windows.outputs.ctest_results_path }}
+    value: ${{ steps.test_ubuntu_mac.outputs.ctest_results_path || steps.test_windows.outputs.ctest_results_path }}
 
 runs:
   using: composite
@@ -54,7 +54,7 @@ runs:
 
     - name: Run in ubuntu or macOS
       id: test_ubuntu_mac
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@feature/fastdds_mac_ci_support
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
@@ -68,7 +68,7 @@ runs:
 
     - name: Run in windows
       id: test_windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@main
+      uses: eProsima/eProsima-CI/windows/colcon_test@feature/fastdds_mac_ci_support
       if: runner.os == 'Windows'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}

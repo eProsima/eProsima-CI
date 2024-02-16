@@ -17,15 +17,15 @@ runs:
   using: composite
   steps:
 
-    - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
-      if: runner.os == 'Linux'
+    - name: Run in ubuntu or macOS
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@feature/fastdds_mac_ci_support
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
         version: ${{ inputs.version }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@feature/fastdds_mac_ci_support
       if: runner.os == 'Windows'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
