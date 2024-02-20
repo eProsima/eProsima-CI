@@ -30,7 +30,7 @@ inputs:
   workspace:
     description: 'Workspace where built has been done'
     required: false
-    default: ''
+    default: '${{ github.workspace }}'
 
   workspace_dependencies:
     description: 'Workspace to source where dependencies are'
@@ -47,16 +47,16 @@ inputs:
 outputs:
   ctest_results_path:
     description: "Path to test results"
-    value: ${{ steps.test_ubuntu.outputs.ctest_results_path || steps.test_windows.outputs.ctest_results_path }}
+    value: ${{ steps.test_ubuntu_mac.outputs.ctest_results_path || steps.test_windows.outputs.ctest_results_path }}
 
 runs:
   using: composite
   steps:
 
-    - name: Run in ubuntu
-      id: test_ubuntu
+    - name: Run in ubuntu or macOS
+      id: test_ubuntu_mac
       uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}

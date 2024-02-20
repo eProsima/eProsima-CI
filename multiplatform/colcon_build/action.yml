@@ -47,9 +47,9 @@ runs:
   using: composite
   steps:
 
-    - name: Run in ubuntu
+    - name: Run in ubuntu or macOS
       uses: eProsima/eProsima-CI/ubuntu/colcon_build@main
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: ${{ inputs.colcon_build_args }}

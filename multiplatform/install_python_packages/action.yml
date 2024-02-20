@@ -30,6 +30,14 @@ runs:
         upgrade: ${{ inputs.upgrade }}
         requirements_file_name: ${{ inputs.requirements_file_name }}
 
+    - name: Run in macOS
+      uses: eProsima/eProsima-CI/macos/install_python_packages@main
+      if: runner.os == 'macOS'
+      with:
+        packages: ${{ inputs.packages }}
+        upgrade: ${{ inputs.upgrade }}
+        requirements_file_name: ${{ inputs.requirements_file_name }}
+
     - name: Run in windows
       uses: eProsima/eProsima-CI/windows/install_python_packages@main
       if: runner.os == 'Windows'

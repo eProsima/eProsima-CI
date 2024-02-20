@@ -17,9 +17,9 @@ runs:
   using: composite
   steps:
 
-    - name: Run in ubuntu
+    - name: Run in ubuntu or macOS
       uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
         version: ${{ inputs.version }}

@@ -1,0 +1,45 @@
+name: 'install_brew_packages'
+description: 'Install brew packages'
+
+inputs:
+
+  packages:
+    description: 'Custom packages to install using brew'
+    required: true
+
+  update:
+    description: 'Update brew'
+    required: false
+    default: true
+
+  upgrade:
+    description: 'Upgrade already installed brew packages'
+    required: false
+    default: false
+
+runs:
+  using: composite
+  steps:
+
+    - name: install_brew_packages
+      run: |
+
+        echo "::group::Install brew packages ${{ inputs.packages }}"
+
+        # Update brew repos
+        if [ "${{ inputs.update }}" = "true" ]; then
+          brew update
+        fi
+
+        # Install custom packages
+        brew install \
+          ${{ inputs.packages }}
+
+        # Upgrade brew repos
+        if [ "${{ inputs.upgrade }}" = "true" ]; then
+          brew upgrade
+        fi
+
+        echo "::endgroup::"
+
+      shell: bash

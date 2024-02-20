@@ -152,6 +152,15 @@ For more information about versioning handle of this project, check following [f
   - Set a specific CMake version
 ---
 
+### macOS
+
+- [install_brew_packages](macos/install_brew_packages/action.yml)
+  - Install brew packages.
+- [install_python_packages](macos/install_python_packages/action.yml)
+  - Install python packages.
+- [install_colcon](macos/install_colcon/action.yml)
+  - Install colcon and its dependencies.
+
 ## Workflows
 
 There are several workflows implemented that build projects and upload them as artifacts.

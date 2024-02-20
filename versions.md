@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.9.0](#v0.9.0)
 - [v0.8.0](#v0.8.0)
 - [v0.7.0](#v0.7.0)
 - [v0.6.0](#v0.6.0)
@@ -16,6 +17,21 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.9.0
+
+This release includes the following **features**:
+
+- An action to install brew packages on macOS.
+- An action to install python packages on macOS.
+- An action to install colcon on macOS.
+- macOS support through the following multiplatform actions:
+  - `colcon_build`
+  - `colcon_test`
+  - `install_colcon`
+  - `install_gtest`
+  - `install_python_packages`
+  - `junit_summary`
 
 ## v0.8.0
 

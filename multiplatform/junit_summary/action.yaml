@@ -30,8 +30,8 @@ runs:
   using: composite
   steps:
 
-    - name: Run in ubuntu
-      if: runner.os == 'Linux'
+    - name: Run in ubuntu or macOS
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       uses: eProsima/eProsima-CI/ubuntu/junit_summary@main
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
