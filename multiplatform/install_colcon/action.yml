@@ -6,13 +6,13 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@feature/fastdds_mac_ci_support
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
       if: runner.os == 'Linux'
 
     - name: Run in macOS
-      uses: eProsima/eProsima-CI/macos/install_colcon@feature/fastdds_mac_ci_support
+      uses: eProsima/eProsima-CI/macos/install_colcon@main
       if: runner.os == 'macOS'
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_colcon@feature/fastdds_mac_ci_support
+      uses: eProsima/eProsima-CI/windows/install_colcon@main
       if: runner.os == 'Windows'

@@ -6,7 +6,7 @@ runs:
   steps:
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/macos/install_python_packages@feature/fastdds_mac_ci_support
+      uses: eProsima/eProsima-CI/macos/install_python_packages@main
       with:
         packages: 'setuptools==58.3.0 colcon-common-extensions colcon-mixin'
         upgrade: false
