@@ -26,7 +26,7 @@ inputs:
   cmake_args_default:
     description: Default CMake arguments
     required: false
-    default: '/Werror'
+    default: ''
 
   cmake_build_type:
     description: Set the cmake build type
