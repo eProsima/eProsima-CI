@@ -18,6 +18,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Support for skipping existing repositories in the `vcs_import` action.
+
 ## v0.9.0
 
 This release includes the following **features**:

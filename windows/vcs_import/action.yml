@@ -12,6 +12,11 @@ inputs:
     required: false
     default: '${{ github.workspace }}'
 
+  skip_existing:
+    description: 'Skip existing repositories'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -24,6 +29,11 @@ runs:
 
         New-Item -ItemType Directory -Path ${{ inputs.destination_workspace }} -Force
 
-        vcs import ${{ inputs.destination_workspace }} --input ${{ inputs.vcs_repos_file }}
+        $SKIP_EXISTING = $null
+        if ("${{ inputs.skip_existing }}" -eq "true") {
+          $SKIP_EXISTING = "--skip_existing"
+        }
+
+        vcs import $SKIP_EXISTING ${{ inputs.destination_workspace }} --input ${{ inputs.vcs_repos_file }}
 
         "::endgroup::"

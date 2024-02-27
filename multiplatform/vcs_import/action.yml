@@ -12,6 +12,11 @@ inputs:
     required: false
     default: '${{ github.workspace }}'
 
+  skip_existing:
+    description: 'Skip existing repositories'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -22,6 +27,7 @@ runs:
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.destination_workspace }}
+        skip_existing: ${{ inputs.skip_existing }}
 
     - name: Run in windows
       uses: eProsima/eProsima-CI/windows/vcs_import@main
@@ -29,3 +35,4 @@ runs:
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.destination_workspace }}
+        skip_existing: ${{ inputs.skip_existing }}
