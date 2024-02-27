@@ -34,7 +34,7 @@ runs:
         SKIP_EXISTING=""
         if [[ "${{ inputs.skip_existing }}" == "true" ]]
         then
-          SKIP_EXISTING="--skip_existing"
+          SKIP_EXISTING="--skip-existing"
         fi
 
         vcs import ${SKIP_EXISTING} ${{ inputs.destination_workspace }} < ${{ inputs.vcs_repos_file }}

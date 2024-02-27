@@ -31,7 +31,7 @@ runs:
 
         $SKIP_EXISTING = $null
         if ("${{ inputs.skip_existing }}" -eq "true") {
-          $SKIP_EXISTING = "--skip_existing"
+          $SKIP_EXISTING = "--skip-existing"
         }
 
         vcs import $SKIP_EXISTING ${{ inputs.destination_workspace }} --input ${{ inputs.vcs_repos_file }}
