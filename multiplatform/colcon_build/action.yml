@@ -18,13 +18,21 @@ inputs:
     required: false
     default: '--event-handlers=console_direct+'
 
+  set_eprosima_flags:
+    description: |
+      This flag sets the compilation flags (CMAKE_CXX_FLAGS) for eProsima product testing.
+      These are:
+        - Warnigs as errors
+          - Linux: -Werror -Wall
+          - Windows: /WX /W4
+        - Multithreaded compilation
+          - Windows: /MP
+    type: boolean
+    required: false
+    default: true
+
   cmake_args:
     description: CMake arguments
-    required: false
-    default: ''
-
-  cmake_args_default:
-    description: Default CMake arguments
     required: false
     default: ''
 
@@ -55,7 +63,7 @@ runs:
         colcon_build_args: ${{ inputs.colcon_build_args }}
         colcon_build_args_default: ${{ inputs.colcon_build_args_default }}
         cmake_args: ${{ inputs.cmake_args }}
-        cmake_args_default: ${{ inputs.cmake_args_default }}
+        set_eprosima_flags: ${{ inputs.set_eprosima_flags }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}
@@ -69,7 +77,7 @@ runs:
         colcon_build_args_default: ${{ inputs.colcon_build_args_default }}
         cmake_args: ${{ inputs.cmake_args }}
         # TODO (jparisu) find a way to use it for windows, as there is not a common Werror flag for both
-        cmake_args_default: ${{ inputs.cmake_args_default }}
+        set_eprosima_flags: ${{ inputs.set_eprosima_flags }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}

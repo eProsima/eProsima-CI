@@ -18,15 +18,19 @@ inputs:
     required: false
     default: '--event-handlers=console_direct+'
 
+  set_eprosima_flags:
+    description: |
+      This flag sets the compilation flags (CMAKE_CXX_FLAGS) for eProsima product testing.
+      These are:
+        - Warnigs as errors (-Werror -Wall)
+    type: boolean
+    required: false
+    default: true
+
   cmake_args:
     description: 'CMake arguments'
     required: false
     default: ''
-
-  cmake_args_default:
-    description: Default CMake arguments
-    required: false
-    default: '-DCMAKE_CXX_FLAGS="-Werror -Wall"'
 
   cmake_build_type:
     description: Set the cmake build type
@@ -43,6 +47,10 @@ inputs:
     required: false
     default: ''
 
+env:
+
+  EPROSIMA_CXX_FLAGS: "-DCMAKE_CXX_FLAGS='-Werror -Wall'"
+
 runs:
   using: composite
   steps:
@@ -57,6 +65,15 @@ runs:
         fi
 
         echo "::group::Compile using colcon ${{ inputs.workspace }}"
+
+        if [ "${{ inputs.set_eprosima_flags }}" = "true" ]; then
+          # EPROSIMA_CXX_FLAGS is set first so that it can be overridden by cmake_args
+          # in case the user wants to set its own flags. If that's the case and the user want's to use both flags,
+          # it should set EPROSIMA_CXX_FLAGS in cmake_args.
+          export CMAKE_ARGS="${EPROSIMA_CXX_FLAGS} ${{ inputs.cmake_args }}"
+        else
+          export CMAKE_ARGS="${{ inputs.cmake_args }}"
+        fi
 
         if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
           source ${{ inputs.workspace_dependencies }}/setup.bash
@@ -77,8 +94,7 @@ runs:
           ${{ inputs.colcon_build_args }} \
           --cmake-args \
             -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} \
-            ${{ inputs.cmake_args_default }} \
-            ${{ inputs.cmake_args }}
+            ${CMAKE_ARGS}
 
         if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
           rm colcon.meta
