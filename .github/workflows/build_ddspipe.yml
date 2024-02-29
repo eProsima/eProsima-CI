@@ -185,7 +185,6 @@ jobs:
 
     # Windows env variables
     env:
-      CXXFLAGS: /MP
       OPENSSL64_ROOT: "C:/Program Files/OpenSSL-Win64"
 
     steps:
