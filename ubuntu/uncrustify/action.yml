@@ -35,6 +35,11 @@ inputs:
     required: false
     default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp' -e '\\.cxx'"
 
+  path:
+    description: 'Path to the repository to check'
+    required: false
+    default: '${{ github.workspace }}/src/package_name'
+
   # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22.
   # And on Ubuntu 22 there is only 1 version available in apt.
 
@@ -45,12 +50,12 @@ runs:
     - name: Sync repository
       uses: eProsima/eProsima-CI/external/checkout@main
       with:
-        path: src
+        path: '${{ inputs.path }}'
 
     - name: Fetch all branches and tags
       uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
       with:
-        workspace: src
+        workspace: '${{ inputs.path }}'
 
     - name: Install uncrustify
       uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
@@ -63,26 +68,15 @@ runs:
     - name: Clone and build ament_lint
       run: |
         echo "::group::Build ament_lint"
+        cd ${{ github.workspace }}
         git clone --branch feature/fix-language-set https://github.com/jparisu/ament_lint.git src/ament_lint
-        echo "---------------PWD-----------------------"
-        pwd
-        echo "---------------Install tree-----------------------"
-        sudo apt install tree
-        echo "---------------Tree here-----------------------"
-        tree
-        echo "---------------Tree cd ..-----------------------"
-        cd .. && tree && cd -
-        echo "----------------Graph----------------------"
-        colcon graph
-        echo "------------------List---------------------"
-        colcon list 
-        echo "-------------------------------------------"
         colcon build --packages-up-to ament_uncrustify
         echo "::endgroup::"
       shell: bash
 
     - name: Fetch uncrustify config file
       run: |
+        cd ${{ inputs.path }}
         curl \
           -l https://raw.githubusercontent.com/eProsima/cpp-style/${{ inputs.uncrustify_configuration_version }}/uncrustify.cfg \
           -o uncrustify.cfg
@@ -96,11 +90,10 @@ runs:
         head_ref: origin/${GITHUB_HEAD_REF}
         base_ref: origin/${GITHUB_BASE_REF}
         grep_args: ${{ inputs.file_extensions_grep_args }}
-        workspace: src
+        workspace: ${{ inputs.path }}
 
     - name: Check difference is not empty
       run: |
-        cd src
         if [[ -z "${MODIFIED_FILES}" ]]
         then
           touch __empty.hpp
@@ -112,13 +105,13 @@ runs:
     - name: Check style
       run: |
         source install/local_setup.bash
-        cd src
+        cd ${{ inputs.path }}
 
         echo "################################################################################################"
         echo "###################################### UNCRUSTIFY RESULT #######################################"
 
         ament_uncrustify \
-          -c ../uncrustify.cfg \
+          -c uncrustify.cfg \
           --language CPP \
           --xunit-file ../${{ inputs.result_filename }} \
           ${MODIFIED_FILES}
