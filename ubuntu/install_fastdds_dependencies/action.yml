@@ -6,12 +6,28 @@ inputs:
     description: 'Unused variable'
     required: false
 
+  ############################################
+  # Setup CMake Inputs
+
+  cmakeVersion:
+    required: false
+    description: |
+      "Optional CMake version, expressed with the semantic version syntax, e.g. '~3.25.0' for the most recent 3.25.x, "
+      "`ˆ3.25.0` for the most recent 3.x version, or a specific version `3.25.2'. Or `latest` or `latestrc` for the "
+      "latest stable or release candidate version. If not specified the `latest` is installed."
+    default: '3.22.6'
+  ninjaVersion:
+    required: false
+    description: "Optional Ninja version, same syntax as `cmakeVersion` input. If not specified, `latest` is installed"
+
 runs:
   using: composite
   steps:
 
     - name: Setup CMake
       uses: eProsima/eProsima-CI/ubuntu/setup_cmake@main
+        cmakeVersion: ${{ inputs.cmakeVersion }}
+        ninjaVersion: ${{ inputs.ninjaVersion }}
 
     - name: Install vcs tools
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
