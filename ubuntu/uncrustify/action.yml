@@ -14,6 +14,20 @@
 # - result_filename : file name to store the uncrustify errors [uncrustify_results.xml]
 # - uncrustify_configuration_version : branch of cpp-style repo to get configuration from [master]
 # - file_extensions_grep_args : grep filer for file extensions [-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp']
+#
+# Files structure:
+#   ${{ github.workspace }}
+#   ├── check
+#   │   ├── Sync repository      <-- execute uncrustify here
+#   │
+#   ├── ament_lint_ws
+#   │   ├── src
+#   │   │   ├── ament_lint
+#   │   |
+#   │   ├── install
+#   │   ├── build
+#   │   ├── log
+
 
 name: 'uncrustify'
 description: 'Uncrustify action to check C++ linter over modified files.'
@@ -35,11 +49,6 @@ inputs:
     required: false
     default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp' -e '\\.cxx'"
 
-  path:
-    description: 'Path to the repository to check'
-    required: false
-    default: '${{ github.workspace }}/src/package_name'
-
   # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22.
   # And on Ubuntu 22 there is only 1 version available in apt.
 
@@ -50,12 +59,12 @@ runs:
     - name: Sync repository
       uses: eProsima/eProsima-CI/external/checkout@main
       with:
-        path: '${{ inputs.path }}'
+        path: '${{ github.workspace }}/check'
 
     - name: Fetch all branches and tags
       uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
       with:
-        workspace: '${{ inputs.path }}'
+        workspace: '${{ github.workspace }}/check'
 
     - name: Install uncrustify
       uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
@@ -68,7 +77,8 @@ runs:
     - name: Clone and build ament_lint
       run: |
         echo "::group::Build ament_lint"
-        cd ${{ github.workspace }}
+        mkdir -p ${{ github.workspace }}/ament_lint_ws
+        cd ${{ github.workspace }}/ament_lint_ws
         git clone --branch feature/fix-language-set https://github.com/jparisu/ament_lint.git src/ament_lint
         colcon build --packages-up-to ament_uncrustify
         echo "::endgroup::"
@@ -76,7 +86,7 @@ runs:
 
     - name: Fetch uncrustify config file
       run: |
-        cd ${{ inputs.path }}
+        cd ${{ github.workspace }}/ament_lint_ws
         curl \
           -l https://raw.githubusercontent.com/eProsima/cpp-style/${{ inputs.uncrustify_configuration_version }}/uncrustify.cfg \
           -o uncrustify.cfg
@@ -90,7 +100,7 @@ runs:
         head_ref: origin/${GITHUB_HEAD_REF}
         base_ref: origin/${GITHUB_BASE_REF}
         grep_args: ${{ inputs.file_extensions_grep_args }}
-        workspace: ${{ inputs.path }}
+        workspace: ${{ github.workspace }}/check
 
     - name: Check difference is not empty
       run: |
@@ -104,14 +114,15 @@ runs:
 
     - name: Check style
       run: |
+        cd ${{ github.workspace }}/ament_lint_ws
         source install/local_setup.bash
-        cd ${{ inputs.path }}
+        cd ${{ github.workspace }}/check
 
         echo "################################################################################################"
         echo "###################################### UNCRUSTIFY RESULT #######################################"
 
         ament_uncrustify \
-          -c uncrustify.cfg \
+          -c ${{ github.workspace }}/ament_lint_ws/uncrustify.cfg \
           --language CPP \
           --xunit-file ../${{ inputs.result_filename }} \
           ${MODIFIED_FILES}
