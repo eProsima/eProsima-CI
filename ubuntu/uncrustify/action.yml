@@ -64,6 +64,19 @@ runs:
       run: |
         echo "::group::Build ament_lint"
         git clone --branch feature/fix-language-set https://github.com/jparisu/ament_lint.git src/ament_lint
+        echo "---------------PWD-----------------------"
+        pwd
+        echo "---------------Install tree-----------------------"
+        sudo apt install tree
+        echo "---------------Tree here-----------------------"
+        tree
+        echo "---------------Tree cd ..-----------------------"
+        cd .. && tree && cd -
+        echo "----------------Graph----------------------"
+        colcon graph
+        echo "------------------List---------------------"
+        colcon list 
+        echo "-------------------------------------------"
         colcon build --packages-up-to ament_uncrustify
         echo "::endgroup::"
       shell: bash
