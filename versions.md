@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.11.0](#v0.11.0)
 - [v0.10.0](#v0.10.0)
 - [v0.9.0](#v0.9.0)
 - [v0.8.0](#v0.8.0)
@@ -18,6 +19,14 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.11.0
+
+This release includes the following **updates**:
+
+- Remove `CXXFLAGS` for windows build.
+- Bump download artifact action to v4
+- Support for the `vcs_import` action in macOS.
 
 ## v0.10.0
 
