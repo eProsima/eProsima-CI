@@ -23,7 +23,7 @@ runs:
 
     - name: Run in ubuntu
       uses: eProsima/eProsima-CI/ubuntu/vcs_import@main
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.destination_workspace }}
