@@ -50,9 +50,6 @@ runs:
     - name: Build workspace with colcon
       run: |
 
-        # https://github.com/actions/runner-images/issues/9491
-        sudo sysctl vm.mmap_rnd_bits=28
-
         echo "::group::Compile using colcon ${{ inputs.workspace }}"
 
         if [[ ! -z "${{ inputs.workspace_dependencies }}" ]]; then
