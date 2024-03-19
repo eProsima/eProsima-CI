@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.12.1](#v0.12.1)
 - [v0.12.0](#v0.12.0)
 - [v0.11.0](#v0.11.0)
 - [v0.10.0](#v0.10.0)
@@ -20,6 +21,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.12.1
+
+- Fix a regression in `colcon_build` action for macOS.
 
 ## v0.12.0
 
