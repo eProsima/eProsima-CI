@@ -21,6 +21,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.12.1
+
+- Fix a regression in `colcon_build` action for macOS.
+
 ## v0.12.0
 
 - Temporary `TSAN` & `ASAN` workflow fix: set the number of random bits for `mmap` to 28.
