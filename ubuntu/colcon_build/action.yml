@@ -51,7 +51,10 @@ runs:
       run: |
 
         # https://github.com/actions/runner-images/issues/9491
-        sudo sysctl vm.mmap_rnd_bits=28
+        if [[ ${RUNNER_OS} == "Linux" ]]
+        then
+          sudo sysctl vm.mmap_rnd_bits=28
+        fi
 
         echo "::group::Compile using colcon ${{ inputs.workspace }}"
 
