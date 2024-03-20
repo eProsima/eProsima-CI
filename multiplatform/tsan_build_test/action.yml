@@ -43,6 +43,11 @@ runs:
 
     - name: Build and test
       id: build_and_test
+      env:
+        # GCC 11.3 (Ubuntu Jammy default) produces several false positives regarding timed synchronization protocols
+        # These issues were fixed in GCC 12 so we upgrade to that version.
+        CC: gcc-12
+        CXX: g++-12
       uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@main
       with:
         packages_names: ${{ inputs.packages_names }}
