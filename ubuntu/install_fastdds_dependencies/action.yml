@@ -10,8 +10,10 @@ runs:
   using: composite
   steps:
 
-    - name: Setup CMake
-      uses: eProsima/eProsima-CI/ubuntu/setup_cmake@main
+    - name: Set CMake version
+      uses: eProsima/eProsima-CI/external/get-cmake@main
+      with:
+        cmakeVersion: '3.22.x'
 
     - name: Install vcs tools
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main

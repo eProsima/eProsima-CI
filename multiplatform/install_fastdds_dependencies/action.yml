@@ -18,7 +18,7 @@ runs:
       if: runner.os == 'Linux'
 
     - name: Install in windows
-      uses: eProsima/eProsima-CI/windows/install_fastdds_dependencies@main
+      uses: eProsima/eProsima-CI/windows/install_fastdds_dependencies@tmp/gtest-version
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
       if: runner.os == 'Windows'

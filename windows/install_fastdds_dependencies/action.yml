@@ -11,11 +11,16 @@ runs:
   using: composite
   steps:
 
+    - name: Set CMake version
+      uses: eProsima/eProsima-CI/external/get-cmake@main
+      with:
+        cmakeVersion: '3.26.4'
+
     - name: Install colcon
       uses: eProsima/eProsima-CI/windows/install_colcon@main
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@tmp/gtest-version
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
