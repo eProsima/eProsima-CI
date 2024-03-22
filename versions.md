@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.14.0](#v0.14.0)
 - [v0.13.0](#v0.13.0)
 - [v0.12.1](#v0.12.1)
 - [v0.12.0](#v0.12.0)
@@ -23,8 +24,11 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.14.0
+
 - New `add_labels` action to add labels to a pull request.
 - New `remove_labels` action to remove labels from a pull request.
+- Set default CMake version in the `install_fastdds_dependencies` action
 
 ## v0.13.0
 
