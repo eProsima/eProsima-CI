@@ -266,6 +266,7 @@ Find below the external actions listed:
 
 | External Action | Description | LICENSE |
 |---|---|---|
+| [add_labels](external/add_labels/action.yml) | Add labels from an issue or PR | Apache-2.0 license |
 | [action-download-artifact](external/action-download-artifact/action.yml) | Download and extract an artifact | MIT license |
 | [checkout](external/checkout/action.yml) | Checkout repository | MIT license |
 | [codecov-action](external/codecov-action/action.yml) | Upload coverage report to codecov.io | MIT license |
