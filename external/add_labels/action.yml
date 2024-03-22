@@ -1,0 +1,35 @@
+name: 'add_labels'
+description: 'https://github.com/actions-ecosystem/action-add-labels'
+
+inputs:
+
+  github_token:
+    description: 'A GitHub token'
+    required: false
+    default: ${{ github.token }}
+  labels:
+    description: >
+      The labels' name to be removed. Must be separated with line breaks if there're multiple labels.
+    required: true
+  number:
+    description: >
+      The number of the issue or pull request.
+    required: false
+    default: ${{ github.event.pull_request.number }}
+  repo:
+    description: >
+      The owner and repository name (e.g. eProsima/Fast-DDS)
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+
+    - name: Checkout repository
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        github_token: ${{ inputs.github_token }}
+        labels: ${{ inputs.labels }}
+        number: ${{ inputs.number }}
+        repo: ${{ inputs.repo }}

@@ -266,12 +266,14 @@ Find below the external actions listed:
 
 | External Action | Description | LICENSE |
 |---|---|---|
+| [add_labels](external/add_labels/action.yml) | Add labels from an issue or PR | Apache-2.0 license |
 | [action-download-artifact](external/action-download-artifact/action.yml) | Download and extract an artifact | MIT license |
 | [checkout](external/checkout/action.yml) | Checkout repository | MIT license |
 | [codecov-action](external/codecov-action/action.yml) | Upload coverage report to codecov.io | MIT license |
 | [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
 | [get-cmake](external/get-cmake/action.yml) | Installs desired versions of CMake and Ninja | Mit license |
 | [mirror-branch-action](external/mirror-branch-action/action.yml) | Mirror branch within the same repository | Apache-2.0 license |
+| [remove_labels](external/remove_labels/action.yml) | Remove labels from an issue or PR | Apache-2.0 license |
 | [setup-ccache-action](external/setup-ccache-action/action.yml) | Setup CCache in a workflow | MIT license |
 | [setup-python](external/setup-python/action.yml) | Installs a version of Python or PyPy and (by default) adds it to the PATH | MIT license |
 | [test-reporter](external/test-reporter/action.yml) | Display test results directly in GitHub | MIT license |
