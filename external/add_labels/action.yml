@@ -18,7 +18,7 @@ inputs:
     default: ${{ github.event.pull_request.number }}
   repo:
     description: >
-      The owner and repository name (e.g. Codertocat/Hello-World)
+      The owner and repository name (e.g. eProsima/Fast-DDS)
     required: false
     default: ''
 
