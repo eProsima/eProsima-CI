@@ -1,0 +1,41 @@
+name: 'remove_labels'
+description: 'https://github.com/actions-ecosystem/action-remove-labels'
+
+inputs:
+
+  github_token:
+    description: 'A GitHub token'
+    required: false
+    default: ${{ github.token }}
+  labels:
+    description: >
+      The labels' name to be removed. Must be separated with line breaks if there're multiple labels.
+    required: true
+  number:
+    description: >
+      The number of the issue or pull request.
+    required: false
+    default: ${{ github.event.pull_request.number }}
+  repo:
+    description: >
+      The owner and repository name (e.g. Codertocat/Hello-World)
+    required: false
+    default: ''
+  fail_on_error:
+    description: >
+      Whether the action fails or not when getting errors. [true,false]
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Checkout repository
+      uses: actions-ecosystem/action-remove-labels@v1
+      with:
+        github_token: ${{ inputs.github_token }}
+        labels: ${{ inputs.labels }}
+        number: ${{ inputs.number }}
+        repo: ${{ inputs.repo }}
+        fail_on_error: ${{ inputs.fail_on_error }}

@@ -24,6 +24,7 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - New `add_labels` action to add labels to a pull request.
+- New `remove_labels` action to remove labels from a pull request.
 
 ## v0.13.0
 

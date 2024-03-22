@@ -273,6 +273,7 @@ Find below the external actions listed:
 | [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
 | [get-cmake](external/get-cmake/action.yml) | Installs desired versions of CMake and Ninja | Mit license |
 | [mirror-branch-action](external/mirror-branch-action/action.yml) | Mirror branch within the same repository | Apache-2.0 license |
+| [remove_labels](external/remove_labels/action.yml) | Remove labels from an issue or PR | Apache-2.0 license |
 | [setup-ccache-action](external/setup-ccache-action/action.yml) | Setup CCache in a workflow | MIT license |
 | [setup-python](external/setup-python/action.yml) | Installs a version of Python or PyPy and (by default) adds it to the PATH | MIT license |
 | [test-reporter](external/test-reporter/action.yml) | Display test results directly in GitHub | MIT license |
