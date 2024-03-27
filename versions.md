@@ -24,6 +24,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- New Ubuntu `get_related_branch_from_repo` action to get the related branch from a remote repository.
+
 ## v0.14.0
 
 - New `add_labels` action to add labels to a pull request.
