@@ -106,7 +106,7 @@ runs:
       run: |
         if [[ -z "${MODIFIED_FILES}" ]]
         then
-          touch __empty.hpp
+          touch ${{ github.workspace }}/check/__empty.hpp
           echo "MODIFIED_FILES=__empty.hpp" >> $GITHUB_ENV
         fi
         echo "Files to check: ${MODIFIED_FILES}"
