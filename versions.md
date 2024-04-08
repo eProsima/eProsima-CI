@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.16.0](#v0.16.0)
 - [v0.15.0](#v0.15.0)
 - [v0.14.0](#v0.14.0)
 - [v0.13.0](#v0.13.0)
@@ -24,6 +25,12 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.16.0
+
+- Remove `uncrustify` installation action for Ubuntu 20.04.
+- Update `uncrustify` action to use eProsima fork of `ament_lint` repository.
+- Fix `uncrustify` action to properly calculate the path to files with changes.
 
 ## v0.15.0
 
