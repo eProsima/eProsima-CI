@@ -152,7 +152,7 @@ For more information about versioning handle of this project, check following [f
   - Set a specific CMake version
 
 - [get_related_branch_from_repo](ubuntu/get_related_branch_from_repo/action.yml)
-  - Get the related branch from a remote repository.
+  - Get the related branch or tag from a remote repository.
 ---
 
 ### macOS
