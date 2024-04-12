@@ -67,7 +67,7 @@ runs:
 
         Write-Host "::group::Run tests using colcon"
 
-        if ([string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
+        if (! [string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
           ${{ inputs.workspace_dependencies }}/setup.ps1
         }
 
