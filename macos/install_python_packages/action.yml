@@ -45,7 +45,7 @@ runs:
         # Install requirements file if any
         if [[ ! -z "${{ inputs.requirements_file_name }}" ]]
         then
-          pip3 install ${UPGRADE_FLAG} -U \
+          pip3 install --no-build-isolation ${UPGRADE_FLAG} -U \
             -r ${{ inputs.requirements_file_name }}
         fi
 

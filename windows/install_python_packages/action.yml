@@ -37,7 +37,7 @@ runs:
 
         # Install python packages if any
         if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.packages }}" )) {
-          pip3 install ${{ inputs.packages }}
+          pip3 install --no-build-isolation ${{ inputs.packages }}
         }
 
         # Install requirements file if any
