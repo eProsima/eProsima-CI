@@ -55,7 +55,7 @@ runs:
 
     - name: Run in ubuntu or macOS
       id: test_ubuntu_mac
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@hotfix/python
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}
@@ -69,7 +69,7 @@ runs:
 
     - name: Run in windows
       id: test_windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@main
+      uses: eProsima/eProsima-CI/windows/colcon_test@hotfix/python
       if: runner.os == 'Windows'
       with:
         colcon_test_args: ${{ inputs.colcon_test_args }}

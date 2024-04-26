@@ -5,7 +5,7 @@ runs:
   steps:
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_python_packages@main
+      uses: eProsima/eProsima-CI/windows/install_python_packages@hotfix/python
       with:
         packages: 'vcstool setuptools==58.3.0 colcon-common-extensions colcon-mixin'
         upgrade: true

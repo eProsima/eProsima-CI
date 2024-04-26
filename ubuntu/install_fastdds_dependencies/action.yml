@@ -24,27 +24,27 @@ runs:
   steps:
 
     - name: Set CMake version
-      uses: eProsima/eProsima-CI/external/get-cmake@main
+      uses: eProsima/eProsima-CI/external/get-cmake@hotfix/python
       with:
         cmakeVersion: ${{ inputs.cmakeVersion }}
         ninjaVersion: ${{ inputs.ninjaVersion }}
 
     - name: Install vcs tools
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@hotfix/python
       with:
         packages: 'vcstool setuptools'
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@hotfix/python
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@hotfix/python
 
     - name: Install asio
-      uses: eProsima/eProsima-CI/ubuntu/install_asio@main
+      uses: eProsima/eProsima-CI/ubuntu/install_asio@hotfix/python
 
     - name: Install Tiny XML
-      uses: eProsima/eProsima-CI/ubuntu/install_tinyxml@main
+      uses: eProsima/eProsima-CI/ubuntu/install_tinyxml@hotfix/python
 
     - name: Install Open SSL
-      uses: eProsima/eProsima-CI/ubuntu/install_openssl@main
+      uses: eProsima/eProsima-CI/ubuntu/install_openssl@hotfix/python

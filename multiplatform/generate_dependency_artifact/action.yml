@@ -36,13 +36,13 @@ runs:
   steps:
 
     - name: Fetch repositories
-      uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+      uses: eProsima/eProsima-CI/multiplatform/vcs_import@hotfix/python
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
         destination_workspace: ${{ inputs.workspace }}/src
 
     - name: Build workspace
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@hotfix/python
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}
@@ -50,7 +50,7 @@ runs:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Upload binaries
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@hotfix/python
       with:
         name: ${{ inputs.artifact_name }}
         path: ${{ inputs.workspace }}/install
