@@ -20,6 +20,8 @@
 #
 # MANUAL RUN & WORKFLOW CALL:
 #  Running this workflow manually or from another workflow, the following arguments might be set:
+#   single_version_build:             flag to build only the custom version taken from .repos file of inputs will be built.
+#                                     If set to false, all versions of Fast DDS (v2 and v3) will be built.
 #
 #   built_configuration_branch:       set a branch to download colcon.meta file from this repository [Default: main]
 #
@@ -44,8 +46,15 @@ name: build_fastdds
 on:
 
   workflow_call:
-
     inputs:
+
+      single_version_build:
+        description: >
+          Flag to build only the custom version taken from .repos file of inputs will be built.
+          If set to false, all versions of Fast DDS (v2 and v3) will be built.
+        required: true
+        type: boolean
+        default: true
 
       built_configuration_branch:
         description: >
@@ -97,14 +106,20 @@ on:
         default: master
 
   workflow_dispatch:
-
     inputs:
+
+      single_version_build:
+        description: >
+          Flag to build only the custom version taken from .repos file of inputs will be built.
+          If set to false, all versions of Fast DDS (v2 and v3) will be built.
+        required: true
+        type: boolean
+        default: true
 
       built_configuration_branch:
         description: >
-          Branch or tag of eProsima-CI repository to get colcon.meta (and .repos if "use_repos_file" input set to
+          Branch or tag of eProsima-CI repository to get colcon.meta and .repos (if "use_repos_file" input set to
           true) that will be applied.
-
         required: false
         type: string
         default: main
@@ -150,7 +165,6 @@ on:
         default: master
 
   schedule:
-
     # Every night at 00:00
     - cron: '0 0 * * *'
 
@@ -165,12 +179,12 @@ env:
 
 jobs:
 
-  build_fastdds:
+  build_fastdds_manual:
 
-    name: build_fastdds
+    name: build_fastdds_manual
     runs-on: ${{ matrix.os }}
+    if: ${{ contains(inputs.single_version_build, 'true') }}
     strategy:
-
       matrix:
         cmake_build_type:
           - Release
@@ -232,4 +246,66 @@ jobs:
         uses: eProsima/eProsima-CI/external/upload-artifact@main
         with:
           name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: ${{ github.workspace }}/artifact/install
+
+
+  build_fastdds:
+
+    name: build_fastdds
+    runs-on: ${{ matrix.os }}
+    if: ${{ github.event_name == 'schedule' || contains(inputs.single_version_build, 'false') }}
+    strategy:
+      matrix:
+        fastdds_version:
+          - v2
+          - v3
+        cmake_build_type:
+          - Release
+          - Debug
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - windows-2019
+          - windows-2022
+      # Not cancel workflow if any matrix job fails
+      fail-fast: false
+
+    steps:
+
+      - name: Sync this repository
+        uses: eProsima/eProsima-CI/external/checkout@main
+        with:
+          path: src/eprosima-CI
+
+      - name: Install Fast DDS dependencies
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        with:
+          cmake_build_type: ${{ matrix.cmake_build_type }}
+
+      - name: Get colcon.meta and .repos files to build fastdds
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        with:
+          source_repository_branch: ${{ env.default_configuration_branch }}
+          colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
+          repos_file_path: .github/workflows/configurations/fastdds/deps_${{ matrix.fastdds_version }}.repos
+          colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
+          repos_file_result: ${{ github.workspace }}/dependencies.repos
+
+      - name: Fetch Fast DDS repositories with vcs-tool
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        with:
+          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
+          destination_workspace: ${{ github.workspace }}/artifact/src
+
+      - name: Build workspace
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        with:
+          colcon_meta_file: ${{ github.workspace }}/colcon.meta
+          workspace: ${{ github.workspace }}/artifact
+          cmake_build_type: ${{ matrix.cmake_build_type }}
+
+      - name: Upload binaries
+        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        with:
+          name: ${{ env.artifact_prefix }}_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ env.default_artifact_postfix }}
           path: ${{ github.workspace }}/artifact/install
