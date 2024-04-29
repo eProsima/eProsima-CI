@@ -32,9 +32,6 @@
 #   artifacts_name_postfix:           set the postfix name for the uploading artifact [Default: _manual]
 #                                     Note: do not use "_nightly" in this argument, or other workflows may be affected
 #
-#   use_repos_file:                   flag to use .repos file instead of manually set repository branches.
-#                                     The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
-#
 #   ddspipe_branch:                   branch, tag or commit of eProsima/DDS-Pipe repository.
 #                                     Check available branches in https://github.com/eProsima/DDS-Pipe.
 #
@@ -77,14 +74,6 @@ on:
         description: Branch or tag of eProsima-CI repository to get .repos and colcon.meta with which the workflow will be executed.
         required: false
         default: main
-
-      use_repos_file:
-        description: >
-          Flag to use .repos file instead of manually set repository branches.
-          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
-        required: false
-        type: boolean
-        default: true
 
       artifacts_name_postfix:
         description: Addition to artifacts name creation (do not use _nightly postfix when creating artifacts with specific arguments).
@@ -168,7 +157,6 @@ jobs:
     with:
       single_version_build: ${{ inputs.single_version_build }}
       built_configuration_branch: ${{ inputs.built_configuration_branch }}
-      use_repos_file: ${{ inputs.use_repos_file }}
       artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
       dev_utils_branch: ${{ inputs.dev_utils_branch }}
       build_fastdds: ${{ inputs.build_fastdds }}
@@ -243,16 +231,8 @@ jobs:
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
-      - name: Fetch DDS Pipe repositories with vcs-tool
-        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
-        if: inputs.use_repos_file
-        with:
-          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          destination_workspace: ${{ github.workspace }}/src
-
       - name: Fetch DDS Pipe repositories
         uses: eProsima/eProsima-CI/multiplatform/fetch_ddspipe_manual@main
-        if: (!inputs.use_repos_file)
         with:
           ddspipe_branch: ${{ inputs.ddspipe_branch || env.default_ddspipe_branch }}
           destination_workspace: ${{ github.workspace }}/src

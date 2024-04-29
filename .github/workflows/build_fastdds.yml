@@ -28,9 +28,6 @@
 #   artifacts_name_postfix:           set the postfix name for the uploading artifact [Default: _manual]
 #                                     Note: do not use "_nightly" in this argument, or other workflows may be affected
 #
-#   use_repos_file:                   flag to use .repos file instead of manually set repository branches.
-#                                     The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
-#
 #   foonathan_memory_vendor_branch:   branch, tag or commit of eProsima/foonathan_memory_vendor repository.
 #                                     Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
 #
@@ -59,20 +56,11 @@ on:
 
       built_configuration_branch:
         description: >
-          Branch or tag of eProsima-CI repository to get colcon.meta (and .repos if "use_repos_file" input set to
-          true) that will be applied.
+          Branch or tag of eProsima-CI repository to get colcon.meta that will be applied.
 
         required: false
         type: string
         default: main
-
-      use_repos_file:
-        description: >
-          Flag to use .repos file instead of manually set repository branches.
-          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
-        required: false
-        type: boolean
-        default: true
 
       artifacts_name_postfix:
         description: >
@@ -112,7 +100,7 @@ on:
 
       single_version_build:
         description: >
-          Flag to build only the custom version taken from inputs or .repos file.
+          Flag to build only the custom version taken from inputs.
           If set to false, all versions of Fast DDS (v2 and v3) will be built.
         required: true
         type: boolean
@@ -120,19 +108,10 @@ on:
 
       built_configuration_branch:
         description: >
-          Branch or tag of eProsima-CI repository to get colcon.meta and .repos (if "use_repos_file" input set to
-          true) that will be applied.
+          Branch or tag of eProsima-CI repository to get colcon.meta that will be applied.
         required: false
         type: string
         default: main
-
-      use_repos_file:
-        description: >
-          Flag to use .repos file instead of manually set repository branches.
-          The .repos file will be downloaded from the eProsima-CI branch set in "built_configuration_branch".
-        required: false
-        type: boolean
-        default: true
 
       artifacts_name_postfix:
         description: >
@@ -221,16 +200,8 @@ jobs:
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
-      - name: Fetch Fast DDS repositories with vcs-tool
-        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
-        if: inputs.use_repos_file
-        with:
-          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          destination_workspace: ${{ github.workspace }}/artifact/src
-
       - name: Fetch Fast DDS repositories
         uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@main
-        if: (!inputs.use_repos_file)
         with:
           foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }}
           fastcdr_branch: ${{ inputs.fastcdr_branch || env.default_fastcdr_branch }}
