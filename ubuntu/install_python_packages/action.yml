@@ -18,6 +18,11 @@ inputs:
     required: false
     default: ''
 
+  path:
+    description: 'Path to the installation folder'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -34,15 +39,22 @@ runs:
           export UPGRADE_FLAG=""
         fi
 
+        # Check if installation path is set
+        if [[ ! -z "${{ inputs.path }}" ]] ; then
+          export INSTALL_PATH="--target ${{ inputs.path }}"
+        else
+          export INSTALL_PATH=""
+        fi
+
         # Install python packages if any
         if [[ ! -z "${{ inputs.packages }}" ]] ; then
-          pip3 install ${UPGRADE_FLAG} -U \
+          pip3 install --user ${UPGRADE_FLAG} ${INSTALL_PATH} \
             ${{ inputs.packages }}
         fi
 
         # Install requirements file if any
         if [[ ! -z "${{ inputs.requirements_file_name }}" ]] ; then
-          pip3 install --no-build-isolation ${UPGRADE_FLAG} -U \
+          pip3 install --user ${UPGRADE_FLAG} ${INSTALL_PATH} \
             -r ${{ inputs.requirements_file_name }}
         fi
 

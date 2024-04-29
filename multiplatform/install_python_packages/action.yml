@@ -18,6 +18,11 @@ inputs:
     required: false
     default: ''
 
+  path:
+    description: 'Path to the installation folder'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -29,6 +34,7 @@ runs:
         packages: ${{ inputs.packages }}
         upgrade: ${{ inputs.upgrade }}
         requirements_file_name: ${{ inputs.requirements_file_name }}
+        path: ${{ inputs.path }}
 
     - name: Run in macOS
       uses: eProsima/eProsima-CI/macos/install_python_packages@hotfix/python
@@ -37,6 +43,7 @@ runs:
         packages: ${{ inputs.packages }}
         upgrade: ${{ inputs.upgrade }}
         requirements_file_name: ${{ inputs.requirements_file_name }}
+        path: ${{ inputs.path }}
 
     - name: Run in windows
       uses: eProsima/eProsima-CI/windows/install_python_packages@hotfix/python
@@ -45,3 +52,4 @@ runs:
         packages: ${{ inputs.packages }}
         upgrade: ${{ inputs.upgrade }}
         requirements_file_name: ${{ inputs.requirements_file_name }}
+        path: ${{ inputs.path }}
