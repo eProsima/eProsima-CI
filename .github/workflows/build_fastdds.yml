@@ -46,6 +46,7 @@ name: build_fastdds
 on:
 
   workflow_call:
+
     inputs:
 
       single_version_build:
@@ -106,6 +107,7 @@ on:
         default: master
 
   workflow_dispatch:
+
     inputs:
 
       single_version_build:
