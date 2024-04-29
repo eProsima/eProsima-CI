@@ -343,16 +343,8 @@ jobs:
 
       - name: Fetch DDS Pipe repositories with vcs-tool
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
-        if: inputs.use_repos_file
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
-          destination_workspace: ${{ github.workspace }}/src
-
-      - name: Fetch DDS Pipe repositories
-        uses: eProsima/eProsima-CI/multiplatform/fetch_ddspipe_manual@main
-        if: (!inputs.use_repos_file)
-        with:
-          ddspipe_branch: ${{ inputs.ddspipe_branch || env.default_ddspipe_branch }}
           destination_workspace: ${{ github.workspace }}/src
 
       - name: Build workspace
