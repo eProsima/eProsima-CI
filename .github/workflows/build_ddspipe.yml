@@ -23,7 +23,7 @@
 #
 # MANUAL RUN:
 #  Running this workflow manually, the following arguments might be set:
-#   single_version_build:             flag to build only the custom version taken from .repos file of inputs will be built.
+#   single_version_build:             flag to build only the custom version taken from inputs or .repos file.
 #                                     If set to false, all versions of Fast DDS (v2 and v3) will be built.
 #
 #   built_configuration_branch:       set a branch to download dependencies.repos and colcon.meta files from
@@ -67,7 +67,7 @@ on:
 
       single_version_build:
         description: >
-          Flag to build only the custom version taken from .repos file of inputs will be built.
+          Flag to build only the custom version taken from inputs or .repos file.
           If set to false, all versions of Fast DDS (v2 and v3) will be built.
         required: true
         type: boolean
