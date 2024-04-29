@@ -44,20 +44,20 @@ runs:
         if [[ ! -z "${{ inputs.path }}" ]] ; then
           export INSTALL_PATH="--target ${{ inputs.path }}"
         else
-          export INSTALL_PATH=""
+          export INSTALL_PATH="--user"
         fi
 
         # Install python packages if any
         if [[ ! -z "${{ inputs.packages }}" ]]
         then
-          pip3 install --user ${UPGRADE_FLAG} ${INSTALL_PATH} \
+          pip3 install ${UPGRADE_FLAG} ${INSTALL_PATH} \
             ${{ inputs.packages }}
         fi
 
         # Install requirements file if any
         if [[ ! -z "${{ inputs.requirements_file_name }}" ]]
         then
-          pip3 install --user ${UPGRADE_FLAG} ${INSTALL_PATH} \
+          pip3 install ${UPGRADE_FLAG} ${INSTALL_PATH} \
             -r ${{ inputs.requirements_file_name }}
         fi
 

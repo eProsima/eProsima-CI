@@ -46,17 +46,17 @@ runs:
         }
         else
         {
-          $INSTALL_PATH = ""
+          $INSTALL_PATH = "--user"
         }
 
         # Install python packages if any
         if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.packages }}" )) {
-          pip3 install --user ${{ inputs.packages }} $UPGRADE_FLAG $INSTALL_PATH
+          pip3 install ${{ inputs.packages }} $UPGRADE_FLAG $INSTALL_PATH
         }
 
         # Install requirements file if any
         if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.requirements_file_name }} ")) {
-          pip3 install -r ${{ inputs.requirements_file_name }} --user $UPGRADE_FLAG $INSTALL_PATH
+          pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG $INSTALL_PATH
         }
 
         # Thanks to Chat-GPT for the translation from bash
