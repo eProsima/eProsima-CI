@@ -50,6 +50,7 @@ runs:
         if [[ ! -z "${{ inputs.packages }}" ]] ; then
           pip3 install ${UPGRADE_FLAG} ${INSTALL_PATH} \
             ${{ inputs.packages }}
+          pip3 list -v
         fi
 
         # Install requirements file if any
