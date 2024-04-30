@@ -205,11 +205,26 @@ jobs:
       fastcdr_branch: ${{ inputs.fastcdr_branch }}
       fastdds_branch: ${{ inputs.fastdds_branch }}
 
+
+  check_build_fastdds:
+
+    name: check_build_fastdds
+    if: ${{ always() }}
+    needs: build_fastdds
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check Fast DDS build
+        shell: bash
+        run: |
+          echo "Fast DDS build finished"
+          echo "Inputs: ${{ toJson(inputs) }}"
+
+
   build_dev_utils_manual:
 
     name: build_dev_utils
     if: ${{ contains(inputs.single_version_build, 'true') }}
-    needs: build_fastdds
+    needs: check_build_fastdds
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -286,11 +301,12 @@ jobs:
           name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: ${{ github.workspace }}/install
 
+
   build_dev_utils:
 
     name: build_dev_utils
     if: ${{ github.event_name == 'schedule' || contains(inputs.single_version_build, 'false') }}
-    needs: build_fastdds
+    needs: check_build_fastdds
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

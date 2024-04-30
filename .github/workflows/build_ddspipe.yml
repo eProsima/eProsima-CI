@@ -165,11 +165,24 @@ jobs:
       fastdds_branch: ${{ inputs.fastdds_branch }}
 
 
+  check_build_dev_utils:
+
+    name: check_build_dev_utils
+    if: ${{ always() }}
+    needs: build_dev_utils
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check eProsima dev-utils build
+        shell: bash
+        run: |
+          echo "eProsima dev-utils build finished"
+
+
   build_ddspipe_manual:
 
     name: build_ddspipe
     if: ${{ contains(inputs.single_version_build, 'true') }}
-    needs: build_dev_utils
+    needs: check_build_dev_utils
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -256,7 +269,7 @@ jobs:
 
     name: build_ddspipe
     if: ${{ github.event_name == 'schedule' || contains(inputs.single_version_build, 'false') }}
-    needs: build_dev_utils
+    needs: check_build_dev_utils
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
