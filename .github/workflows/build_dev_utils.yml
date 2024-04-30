@@ -26,7 +26,7 @@
 #   single_version_build:             flag to build only the custom version taken from inputs.
 #                                     If set to false, all versions of Fast DDS (v2 and v3) will be built.
 #
-#   built_configuration_branch:       set a branch to download colcon.meta from this repository [Default: main]
+#   configuration_branch:             set a branch to download colcon.meta from this repository [Default: main]
 #
 #   artifacts_name_postfix:           set the postfix name for the uploading artifact [Default: _manual]
 #                                     Note: do not use "_nightly" in this argument, or other workflows may be affected
@@ -63,7 +63,7 @@ on:
         type: boolean
         default: true
 
-      built_configuration_branch:
+      configuration_branch:
         description: >
           Branch or tag of eProsima-CI repository to get colcon.meta with which the workflow will be executed.
         required: false
@@ -129,7 +129,7 @@ on:
         type: boolean
         default: true
 
-      built_configuration_branch:
+      configuration_branch:
         description: >
           Branch or tag of eProsima-CI repository to get colcon.meta with which the workflow will be executed.
         required: false
@@ -199,7 +199,7 @@ jobs:
     if: inputs.build_fastdds
     with:
       single_version_build: ${{ inputs.single_version_build }}
-      built_configuration_branch: ${{ inputs.built_configuration_branch }}
+      configuration_branch: ${{ inputs.configuration_branch }}
       artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
       foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
       fastcdr_branch: ${{ inputs.fastcdr_branch }}
@@ -260,7 +260,7 @@ jobs:
       - name: Get colcon.meta and .repos files to build artifact
         uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@feature/artifact-build
         with:
-          source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
+          source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
           repos_file_path: .github/workflows/configurations/dev_utils/dependencies.repos
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
@@ -344,7 +344,7 @@ jobs:
       - name: Get colcon.meta to build artifact
         uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@feature/artifact-build
         with:
-          source_repository_branch: ${{ inputs.built_configuration_branch || env.default_configuration_branch }}
+          source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
           repos_file_path: .github/workflows/configurations/dev_utils/deps_${{ matrix.fastdds_version }}.repos
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
