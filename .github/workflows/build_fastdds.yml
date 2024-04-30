@@ -48,7 +48,7 @@ on:
 
       single_version_build:
         description: >
-          Flag to build only the custom version taken from inputs or .repos file.
+          Flag to build only the custom version taken from inputs.
           If set to false, all versions of Fast DDS (v2 and v3) will be built.
         required: true
         type: boolean
@@ -160,7 +160,7 @@ env:
 
 jobs:
 
-  build_fastdds_manual:
+  build_fastdds_single_version:
 
     name: build_fastdds_manual
     runs-on: ${{ matrix.os }}

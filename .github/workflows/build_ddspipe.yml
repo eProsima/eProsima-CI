@@ -35,14 +35,8 @@
 #   ddspipe_branch:                   branch, tag or commit of eProsima/DDS-Pipe repository.
 #                                     Check available branches in https://github.com/eProsima/DDS-Pipe.
 #
-#   build_dev_utils:                  Flag to re-build eProsima/dev-utils.
-#                                     This will run build_dev_utils workflow and wait for the results.
-#
 #   dev_utils_branch:                 branch, tag or commit of eProsima/dev-utils repository.
 #                                     Check available branches in https://github.com/eProsima/dev-utils.
-#
-#   build_fastdds:                    Flag to re-build Fast DDS.
-#                                     This will run build_fastdds workflow and wait for the results.
 #
 #   foonathan_memory_vendor_branch:   branch, tag or commit of eProsima/foonathan_memory_vendor repository.
 #                                     Check available branches in https://github.com/eProsima/foonathan_memory_vendor.
@@ -64,7 +58,7 @@ on:
 
       single_version_build:
         description: >
-          Flag to build only the custom version taken from inputs or .repos file.
+          Flag to build only the custom version taken from inputs.
           If set to false, all versions of Fast DDS (v2 and v3) will be built.
         required: true
         type: boolean
@@ -87,14 +81,6 @@ on:
         required: false
         default: main
 
-      build_dev_utils:
-        description: >
-          Flag to re-build eProsima/dev-utils.
-          This will run build_dev_utils workflow and wait for the results.
-        required: false
-        type: boolean
-        default: false
-
       dev_utils_branch:
         description: >
           Branch, tag or commit of eProsima/dev-utils repository.
@@ -102,14 +88,6 @@ on:
         required: false
         type: string
         default: main
-
-      build_fastdds:
-        description: >
-          Flag to re-build Fast DDS.
-          This will run build_fastdds workflow and wait for the results.
-        required: false
-        type: boolean
-        default: false
 
       foonathan_memory_vendor_branch:
         description: >
@@ -153,36 +131,21 @@ jobs:
 
     name: build_dev_utils
     uses: eProsima/eProsima-CI/.github/workflows/build_dev_utils.yml@feature/artifact-build
-    if: inputs.build_dev_utils
     with:
       single_version_build: ${{ inputs.single_version_build }}
       configuration_branch: ${{ inputs.configuration_branch }}
       artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
       dev_utils_branch: ${{ inputs.dev_utils_branch }}
-      build_fastdds: ${{ inputs.build_fastdds }}
       foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
       fastcdr_branch: ${{ inputs.fastcdr_branch }}
       fastdds_branch: ${{ inputs.fastdds_branch }}
 
 
-  check_build_dev_utils:
-
-    name: check_build_dev_utils
-    if: ${{ always() }}
-    needs: build_dev_utils
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Check eProsima dev-utils build
-        shell: bash
-        run: |
-          echo "eProsima dev-utils build finished"
-
-
-  build_ddspipe_manual:
+  build_ddspipe_single_version:
 
     name: build_ddspipe
     if: ${{ contains(inputs.single_version_build, 'true') }}
-    needs: check_build_dev_utils
+    needs: build_dev_utils
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -219,23 +182,11 @@ jobs:
 
       - name: Get dev-utils artifact
         uses: eProsima/eProsima-CI/external/download-artifact@feature/artifact-build
-        if: inputs.build_dev_utils
         with:
           name: built_dev_utils_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
-      - name: Get dev-utils artifact
-        uses: eProsima/eProsima-CI/multiplatform/download_dependency@feature/artifact-build
-        if: (!inputs.build_dev_utils)
-        with:
-          artifact_name: built_dev_utils_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
-          workflow_source: build_dev_utils.yml
-          target_workspace: install
-          workflow_source_repository: ${{ github.repository }}
-          secret_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_conclusion: completed
-
-      - name: Get colcon.meta and .repos files to build artifact
+      - name: Get colcon.meta to build artifact
         uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@feature/artifact-build
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
@@ -269,7 +220,7 @@ jobs:
 
     name: build_ddspipe
     if: ${{ github.event_name == 'schedule' || contains(inputs.single_version_build, 'false') }}
-    needs: check_build_dev_utils
+    needs: build_dev_utils
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -309,21 +260,9 @@ jobs:
 
       - name: Get dev-utils artifact
         uses: eProsima/eProsima-CI/external/download-artifact@feature/artifact-build
-        if: inputs.build_dev_utils
         with:
           name: built_dev_utils_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
-
-      - name: Get dev-utils artifact
-        uses: eProsima/eProsima-CI/multiplatform/download_dependency@feature/artifact-build
-        if: (!inputs.build_dev_utils)
-        with:
-          artifact_name: built_dev_utils_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
-          workflow_source: build_dev_utils.yml
-          target_workspace: install
-          workflow_source_repository: ${{ github.repository }}
-          secret_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_conclusion: completed
 
       - name: Get colcon.meta and .repos files to build artifact
         uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@feature/artifact-build
