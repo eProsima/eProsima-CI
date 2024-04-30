@@ -37,6 +37,20 @@
             ]
         },
 
+        "fastdds":
+        {
+            "cmake-args":
+            [
+               "-DTHIRDPARTY=ON",
+               "-DSECURITY=ON",
+               "-DCOMPILE_EXAMPLES=OFF",
+               "-DEPROSIMA_BUILD_TESTS=OFF",
+               "-DINTERNAL_DEBUG=ON",
+               "-Ax64",
+               "-T host=x64"
+            ]
+        },
+
         "cmake_utils":
         {
             "cmake-args":
