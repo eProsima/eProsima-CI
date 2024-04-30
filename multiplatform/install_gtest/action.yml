@@ -18,14 +18,14 @@ runs:
   steps:
 
     - name: Run in ubuntu or macOS
-      uses: eProsima/eProsima-CI/ubuntu/install_gtest@main
+      uses: eProsima/eProsima-CI/ubuntu/install_gtest@feature/artifact-build
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
         version: ${{ inputs.version }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@feature/artifact-build
       if: runner.os == 'Windows'
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
