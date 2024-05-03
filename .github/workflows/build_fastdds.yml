@@ -218,7 +218,7 @@ jobs:
       - name: Upload binaries
         uses: eProsima/eProsima-CI/external/upload-artifact@feature/artifact-build
         with:
-          name: ${{ env.artifact_prefix }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          name: ${{ env.artifact_prefix }}_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: ${{ github.workspace }}/artifact/install
 
 
