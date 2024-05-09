@@ -47,7 +47,7 @@ runs:
   steps:
 
     - name: Build
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@feature/artifact-build
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
@@ -58,7 +58,7 @@ runs:
 
     - name: Test
       id: test
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@feature/artifact-build
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
       with:
         workspace: ${{ inputs.workspace }}
         packages_names: ${{ inputs.packages_names }}

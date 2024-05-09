@@ -54,7 +54,7 @@ runs:
   steps:
 
     - name: Install lxml
-      uses: eProsima/eProsima-CI/windows/install_python_packages@feature/artifact-build
+      uses: eProsima/eProsima-CI/windows/install_python_packages@main
       with:
         packages: lxml
 
@@ -121,7 +121,7 @@ runs:
         Exit $exitCode
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@feature/artifact-build
+      uses: eProsima/eProsima-CI/external/upload-artifact@main
       if: ${{ ! cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}

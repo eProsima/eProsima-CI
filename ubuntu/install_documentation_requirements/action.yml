@@ -12,7 +12,7 @@ runs:
   steps:
 
     - name: Install docs requirements with pip
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/artifact-build
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       if: ${{ inputs.path_to_requirements == '' }}
       with:
         packages: \
@@ -33,7 +33,7 @@ runs:
           xmlschema==2.1.1
 
     - name: Install docs requirements with pip
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/artifact-build
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       if: ${{ inputs.path_to_requirements != '' }}
       with:
         requirements_file_name: ${{ inputs.path_to_requirements }}
