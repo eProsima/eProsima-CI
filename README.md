@@ -239,15 +239,6 @@ Run the `manual_build` workflow with these arguments:
 
 > :warning: Do not generate custom artifacts with postfix `_nightly`, as this is the main name other repos will use.
 
-> :page_facing_up: Fast DDS manual build allows to specify Fast DDS and its eProsima dependencies version as inputs of the workflow.
-  In order to use the manually set versions instead of the ones taken from the `.repos` file, just disable `use_repos_file` option.
-
-> :page_facing_up: eProsima/dev-utils build allows to specify the version as inputs of the workflow.
-  In order to use the manually set versions instead of the one taken from the `.repos` file, just disable `use_repos_file` option.
-
-> :page_facing_up: eProsima/DDS-Pipe build allows to specify the version as inputs of the workflow.
-  In order to use the manually set versions instead of the one taken from the `.repos` file, just disable `use_repos_file` option.
-
 ## Custom artifact generation
 
 The workflow [manual_build](.github/workflows/manual_build.yml) supports to create any artifact giving a `.repos` and `colcon.meta` files.

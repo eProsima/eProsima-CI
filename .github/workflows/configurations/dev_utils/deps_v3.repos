@@ -1,0 +1,6 @@
+repositories:
+
+    dev_utils:
+        type: git
+        url: https://github.com/eProsima/dev-utils.git
+        version: integration/bump-3.0.0
