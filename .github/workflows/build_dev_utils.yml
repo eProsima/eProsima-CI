@@ -178,7 +178,7 @@ jobs:
     name: build_fastdds
     uses: eProsima/eProsima-CI/.github/workflows/build_fastdds.yml@main
     with:
-      single_version_build: ${{ inputs.single_version_build }}
+      single_version_build: ${{ inputs.single_version_build || false }}
       configuration_branch: ${{ inputs.configuration_branch }}
       artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
       foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
