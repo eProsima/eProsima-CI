@@ -132,7 +132,7 @@ jobs:
     name: build_dev_utils
     uses: eProsima/eProsima-CI/.github/workflows/build_dev_utils.yml@main
     with:
-      single_version_build: ${{ inputs.single_version_build }}
+      single_version_build: ${{ inputs.single_version_build || false }}
       configuration_branch: ${{ inputs.configuration_branch }}
       artifacts_name_postfix: ${{ inputs.artifacts_name_postfix }}
       dev_utils_branch: ${{ inputs.dev_utils_branch }}
