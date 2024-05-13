@@ -15,6 +15,12 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/install_fastdds_dependencies@main
       if: runner.os == 'Linux'
 
+    - name: Install in macos
+      uses: eProsima/eProsima-CI/macos/install_fastdds_dependencies@hotfix/sustainml_mac_ci
+      with:
+        cmake_build_type: ${{ inputs.cmake_build_type }}
+      if: runner.os == 'macOS'
+
     - name: Install in windows
       uses: eProsima/eProsima-CI/windows/install_fastdds_dependencies@main
       with:

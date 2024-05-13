@@ -1,0 +1,38 @@
+name: 'install_fastdds_dependencies'
+description: 'Install Fast DDS dependencies in macOS'
+
+inputs:
+  # Set CMake version inputs
+  cmakeVersion:
+    required: false
+    description: |
+      Optional CMake version, expressed with the semantic version syntax,
+      e.g. '~3.25.0' for the most recent 3.25.x, `ˆ3.25.0` for the most
+      recent 3.x version, or a specific version `3.25.2'. Or `latest` or
+      `latestrc` for the latest stable or release candidate version. If not
+      specified the `latest` is installed.
+    default: '3.22.x'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Set CMake version
+      uses: eProsima/eProsima-CI/external/get-cmake@main
+      with:
+        cmakeVersion: ${{ inputs.cmakeVersion }}
+
+    - name: Install brew packages
+      uses: eProsima/eProsima-CI/macos/install_brew_packages@main
+      with:
+          packages: llvm asio tinyxml2 openssl@3.0
+          update: false
+          upgrade: false
+
+    - name: Install colcon
+      uses: eProsima/eProsima-CI/macos/install_colcon@main
+
+    - name: Install python packages
+      uses: eProsima/eProsima-CI/macos/install_python_packages@main
+      with:
+        packages: 'vcstool setuptools xmlschema'
