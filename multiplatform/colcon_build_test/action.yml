@@ -22,6 +22,13 @@ inputs:
     required: false
     default: ''
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format. It shall be unique within the workflow run.
+      Default: test_report_<github.workflow>_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
   cmake_build_type:
     description: 'Set the cmake build type'
     required: false
@@ -52,6 +59,7 @@ runs:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
         cmake_args: ' ${{ inputs.cmake_args }}'
+        test_report_artifact: ${{ inputs.test_report_artifact }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}
@@ -62,6 +70,7 @@ runs:
       with:
         workspace: ${{ inputs.workspace }}
         packages_names: ${{ inputs.packages_names }}
+        test_report_artifact: ${{ inputs.test_report_artifact }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
         ctest_args: ' ${{ inputs.ctest_args }}'
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
