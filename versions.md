@@ -40,7 +40,7 @@ The upcoming release will include the following **features**:
 ## v0.17.0
 
 - Fix conditional statement in `colcon_test`` action in windows.
-- Fix fastdds verstion to `2.x`.
+- Fix fastdds version to `2.x`.
 - Fix user installation path when installing with `pip` in macOS and Ubuntu.
 
 ## v0.16.1
