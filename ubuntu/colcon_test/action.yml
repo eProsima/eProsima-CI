@@ -40,7 +40,7 @@ inputs:
   test_report_artifact:
     description: >
       Name of the artifact to be uploaded containing the test report in JUnit format. It shall be unique within the workflow run.
-      Default: test_report_<github.job>_<matrix.*>
+      Default: test_report_<github.workflow>_<github.job>_<matrix.*>
     required: false
     default: ''
 
@@ -121,5 +121,5 @@ runs:
       uses: eProsima/eProsima-CI/external/upload-artifact@main
       if: ${{ ! cancelled() }}
       with:
-          name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}', github.job, join(matrix.*, '_')) }}
+          name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}_{2}', github.workflow, github.job, join(matrix.*, '_')) }}
           path: ${{ inputs.workspace }}/test_results
