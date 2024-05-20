@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.18.1](#v0.18.1)
 - [v0.18.0](#v0.18.0)
 - [v0.17.0](#v0.17.0)
 - [v0.16.1](#v0.16.1)
@@ -28,6 +29,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.18.1
+
+- Fix `colcon` installation on macOS when used in combination with `setup-python` action byt not passing the `--user` flag to `pip`.
 
 ## v0.18.0
 
