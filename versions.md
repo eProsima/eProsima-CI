@@ -33,6 +33,7 @@ The upcoming release will include the following **features**:
 ## v0.18.1
 
 - Fix `colcon` installation on macOS when used in combination with `setup-python` action byt not passing the `--user` flag to `pip`.
+- `change_actions_reference.sh` also updates references within the `.github` directory.
 
 ## v0.18.0
 

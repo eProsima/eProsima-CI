@@ -22,4 +22,8 @@ new_ref=$2
 
 echo -e "Changing current reference ${yellow}@$current_ref${textreset} to ${yellow}@$new_ref${textreset}."
 
+# Substitute the reference in the provided actions
 git grep -lz "@$current_ref" -- :^external :^.github :^README.md | xargs -0 sed -i "s+@$current_ref+@$new_ref+g"
+
+# Substitute the reference in the eProsima-CI workflows
+git grep -lz "eProsima-CI.*@$current_ref" .github | xargs -0 sed -i "/eProsima-CI/s/@$current_ref/@$new_ref/g"
