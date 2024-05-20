@@ -9,7 +9,7 @@ runs:
       uses: eProsima/eProsima-CI/macos/install_python_packages@main
       with:
         packages: 'setuptools==58.3.0 colcon-common-extensions colcon-mixin'
-        upgrade: false
+        upgrade: true
 
     - name: Download default colcon mixin
       shell: bash
