@@ -59,7 +59,6 @@ runs:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
         cmake_args: ' ${{ inputs.cmake_args }}'
-        test_report_artifact: ${{ inputs.test_report_artifact }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}
