@@ -35,6 +35,13 @@ inputs:
     required: false
     default: '--label-exclude "xfail"'
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format. It shall be unique within the workflow run.
+      Default: test_report_<github.workflow>_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
   exclude_tags:
     description: 'arguments to exclude files or directories for gcovr'
     required: false
@@ -64,6 +71,7 @@ runs:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         cmake_args: '-DBUILD_TESTS=ON -DCODE_COVERAGE=ON ${{ inputs.cmake_args }}'
         ctest_args: ${{ inputs.ctest_args }}
+        test_report_artifact: ${{ inputs.test_report_artifact }}
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: Debug
