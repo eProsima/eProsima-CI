@@ -31,6 +31,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Fix upload artifact action to allow branch names in the name (by removing forbidden characters).
+
 ## v0.18.2
 
 - Fix warning in `colcon_build_test` action
