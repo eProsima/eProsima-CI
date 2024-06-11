@@ -32,6 +32,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Remove `cat colcon.meta` command from windows colcon build action.
+
 ## v0.19.0
 
 - Fix upload artifact action to allow branch names in the name (by removing forbidden characters).
