@@ -65,7 +65,6 @@ runs:
         }
 
         echo "Using colcon.meta file <$env:COLCON_BUILD_META_>"
-        cat $env:COLCON_BUILD_META_
 
         cd ${{ inputs.workspace }}
 
