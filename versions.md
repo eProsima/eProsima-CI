@@ -32,6 +32,7 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - Fix upload artifact action to allow branch names in the name (by removing forbidden characters).
+- Add previous method to download artifact action to ensure name consistency.
 
 ## v0.18.2
 

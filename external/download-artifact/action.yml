@@ -52,11 +52,21 @@ runs:
   using: composite
   steps:
 
+    - name: Normalize artifact name
+      id: normalize
+      shell: bash
+      run: |
+        echo "::group::Normalize name"
+        normalized_name=$(echo "${{ inputs.name }}" | sed 's/["\\/:<>|*?"]/_/g')
+        echo "$normalized_name"
+        echo "normalized_name=$normalized_name" >> $GITHUB_ENV
+        echo "::endgroup::"
+
     - name: Download artifacts
       id: download_artifact
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.name }}
+        name: ${{ env.normalized_name }}
         path: ${{ inputs.path }}
         pattern: ${{ inputs.pattern }}
         merge-multiple: ${{ inputs.merge-multiple }}
