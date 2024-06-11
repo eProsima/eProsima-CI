@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.19.0](#v0.19.0)
 - [v0.18.2](#v0.18.2)
 - [v0.18.1](#v0.18.1)
 - [v0.18.0](#v0.18.0)
@@ -30,6 +31,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.19.0
 
 - Fix upload artifact action to allow branch names in the name (by removing forbidden characters).
 - Add previous method to download artifact action to ensure name consistency.
