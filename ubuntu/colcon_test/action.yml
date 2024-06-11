@@ -3,6 +3,11 @@ description: 'Execute colcon test command with arguments given'
 
 inputs:
 
+  colcon_meta_file:
+    description: colcon.meta file to set ctest options. If empty, it uses an empty file
+    required: false
+    default: ''
+
   colcon_test_args:
     description: 'args to pass to colcon test command (use ctest_args to set ctest arguments)'
     required: false
@@ -76,12 +81,20 @@ runs:
         set +e
         exit_code=0
 
+        if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
+          touch colcon.meta
+          export COLCON_TEST_META_="colcon.meta"
+        else
+          export COLCON_TEST_META_="${{ inputs.colcon_meta_file }}"
+        fi
+
         for package in ${{ inputs.packages_names }}; do
           echo "::group::Testing ${package} ..."
 
           test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results.xml"
 
           colcon test \
+            --metas ${COLCON_TEST_META_} \
             ${{ inputs.colcon_test_args_default }} \
             ${{ inputs.colcon_test_args }} \
             --packages-select ${package} \

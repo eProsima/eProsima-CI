@@ -54,6 +54,7 @@ runs:
       id: test
       uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
       with:
+        colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}
         packages_names: ${{ inputs.packages_names }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
