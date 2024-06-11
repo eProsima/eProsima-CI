@@ -29,10 +29,20 @@ runs:
   using: composite
   steps:
 
+    - name: Normalize artifact name
+      id: normalize
+      shell: bash
+      run: |
+        echo "::group::Normalize name"
+        normalized_name=$(echo "${{ inputs.name }}" | sed 's/["\\/:<>|*?"]/_/g')
+        echo "$normalized_name"
+        echo "normalized_name=$normalized_name" >> $GITHUB_ENV
+        echo "::endgroup::"
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name:               ${{ inputs.name }}
+        name:               ${{ env.normalized_name }}
         path:               ${{ inputs.path }}
         if-no-files-found:  ${{ inputs.if-no-files-found }}
         retention-days:     ${{ inputs.retention-days }}
