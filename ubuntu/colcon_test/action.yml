@@ -88,10 +88,13 @@ runs:
           export COLCON_TEST_META_="${{ inputs.colcon_meta_file }}"
         fi
 
+        FILENAME_TIMESTAMP=$(date +'%Y-%m-%dT%H-%M-%S')
+        JUNIT_TIMESTAMP=$(date +'%Y-%m-%dT%H:%M:%S')
+
         for package in ${{ inputs.packages_names }}; do
           echo "::group::Testing ${package} ..."
 
-          test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results.xml"
+          test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results_${FILENAME_TIMESTAMP}.xml"
 
           colcon test \
             --metas ${COLCON_TEST_META_} \
@@ -122,6 +125,7 @@ runs:
             python3 ${{ github.action_path }}/../../resources/ctest2junit.py \
               --build-dir ${{ inputs.workspace }}/build/${package} \
               --xslt ${{ github.action_path }}/../../resources/ctest-to-junit.xsl \
+              --timestamp "${JUNIT_TIMESTAMP}" \
               --output-junit ${test_results_file}
 
             echo "::endgroup::"

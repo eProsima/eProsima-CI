@@ -57,7 +57,13 @@ def parse_options():
         required=True,
         help='Path to output jUnit file. If the file exists, the script takes no action'
     )
-
+    required_args.add_argument(
+        '-t',
+        '--timestamp',
+        type=str,
+        required=True,
+        help='Timestamp'
+    )
     return parser.parse_args()
 
 
@@ -94,20 +100,22 @@ def find_ctest_report(build_dir):
     return ret
 
 
-def translate(original_xml, xsl_file):
+def translate(original_xml, xsl_file, timestamp):
     """
     Translate an XML from one spec to another using an XSLT file.
 
     :param original_xml: The XML to translate
     :param xsl_file: The XSLT transformation file
+    :param timestamp: The timestamp to use in the transformation
 
     :return: A stream containing the translated XML
     """
     xml = etree.parse(original_xml)
     xslt = etree.parse(xsl_file)
     transform = etree.XSLT(xslt)
+
     try:
-        return str(transform(xml))
+        return str(transform(xml, input_timestamp=etree.XSLT.strparam(timestamp)))
     except Exception as e:
         for error in transform.error_log:
             print(error.message, error.line)
@@ -139,7 +147,7 @@ if __name__ == '__main__':
         ctest_report = find_ctest_report(args.build_dir)
 
         if ctest_report:
-            junit = translate(ctest_report, args.xslt)
+            junit = translate(ctest_report, args.xslt, args.timestamp)
             write_to_file(junit, args.output_junit)
             exit_code = 0
 
