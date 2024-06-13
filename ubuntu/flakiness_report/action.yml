@@ -54,10 +54,10 @@ runs:
       run: |
         WINDOW_SIZE_OPTION="--window-size ${{ inputs.window_size }}"
 
-        OUTPUT_FILE_OPTION=""
+        MD_FILE_OPTION=""
         if [[ "${{ inputs.print_report }}" == "True" ]]
         then
-          OUTPUT_FILE_OPTION="--output-file $GITHUB_STEP_SUMMARY"
+          MD_FILE_OPTION="--markdown-file $GITHUB_STEP_SUMMARY"
         fi
 
         mkdir -p historical_data_archive
@@ -68,7 +68,7 @@ runs:
           --junit-files historical_data_archive \
           ${WINDOW_SIZE_OPTION} \
           --delete-old-files \
-          ${OUTPUT_FILE_OPTION}
+          ${MD_FILE_OPTION}
 
         EXIT_CODE=$((${EXIT_CODE} + $?))
 

@@ -52,9 +52,11 @@ runs:
       id: flakiness_report
       shell: pwsh
       run: |
-        $OUTPUT_FILE_OPTION = $null
+        $MD_FILE_OPTION = $null
+        $SUMMARY = $null
         if ("${{ inputs.print_report }}" -eq "True") {
-          $OUTPUT_FILE_OPTION="--output-file $GITHUB_STEP_SUMMARY"
+          $MD_FILE_OPTION = "--markdown-file"
+          $SUMMARY_FILE = "$GITHUB_STEP_SUMMARY"
         }
 
         mkdir -p historical_data_archive
@@ -65,7 +67,8 @@ runs:
           --junit-files historical_data_archive `
           --window-size ${{ inputs.window_size }} `
           --delete-old-files `
-          $OUTPUT_FILE_OPTION
+          $MD_FILE_OPTION `
+          $SUMMARY_FILE
 
         $EXIT_CODE = $LASTEXITCODE
 
