@@ -87,15 +87,16 @@ runs:
     - name: Upload jUnit archive
       id: upload_junit_archive
       if: always()
-      uses: eProsima/eProsima-CI/external/upload-artifact@v0
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
       with:
         name: ${{ inputs.junit_archive_artifact }}
         path: junit_archive
+        overwrite: true
 
     - name: Upload JSON report
       id: upload_json_report
       if: always()
-      uses: eProsima/eProsima-CI/external/upload-artifact@v0
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
       with:
         name: ${{ inputs.junit_archive_artifact }}_json
         path: flaky_tests.json
