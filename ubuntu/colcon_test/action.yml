@@ -109,6 +109,10 @@ runs:
             exit_code=$last_exit_code
           fi
 
+          if [[ -z "${{ inputs.colcon_meta_file }}" ]]; then
+            rm colcon.meta
+          fi
+
           # Translate CTest XML reports to jUnit in case CTest does not support '--output-junit'
 
           if [ ! -f ${test_results_file} ]

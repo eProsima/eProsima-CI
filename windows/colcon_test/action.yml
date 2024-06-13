@@ -119,6 +119,10 @@ runs:
             $exitCode = $lastexitcode
           }
 
+          if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+            Remove-Item -Path "${{ inputs.workspace }}\colcon.meta"
+          }
+
           # Translate CTest XML reports to jUnit in case CTest does not support '--output-junit'
           $testResultsExist = Test-Path $testResultsFile
           if (! $testResultsExist) {
