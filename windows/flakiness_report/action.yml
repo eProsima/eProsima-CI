@@ -1,0 +1,85 @@
+name: 'flakiness_report'
+description: 'Generate a flakiness report from test results and historical data'
+
+inputs:
+  junit_reports_dir:
+    description: 'Path to dir with new jUnit reports'
+    required: true
+
+  historical_data_artifact:
+    description: 'Name of the artifact containing the historical data'
+    required: true
+
+  print_report:
+    description: 'Whether to print the report (Default: True)'
+    required: false
+    default: 'True'
+
+  window_size:
+    description: 'Number of days to consider for the flakiness report'
+    required: false
+    default: '30'
+
+  fail_on_flaky_tests:
+    description: 'Whether to fail the workflow if there are flaky tests'
+    required: false
+    default: 'True'
+
+  github_token:
+    description: 'GitHub token'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install python dependencies
+      id: install_python_dependencies
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
+      with:
+        packages: lxml junitparser pandas
+
+    - name: Download historical data
+      id: download_historical_data
+      uses: eProsima/eProsima-CI/external/action-download-artifact@v0
+      with:
+        name: ${{ inputs.historical_data_artifact }}
+        path: historical_data_archive
+        github_token: ${{ inputs.github_token }}
+        workflow_conclusion: completed
+        if_no_artifact_found: ignore
+
+    - name: Flakiness Report
+      id: flakiness_report
+      shell: pwsh
+      run: |
+        $OUTPUT_FILE_OPTION = $null
+        if ("${{ inputs.print_report }}" -eq "True") {
+          $OUTPUT_FILE_OPTION="--output-file $GITHUB_STEP_SUMMARY"
+        }
+
+        mkdir -p historical_data_archive
+        cp ${{ inputs.junit_reports_dir }}/*.xml historical_data_archive
+
+        $EXIT_CODE=0
+        python3 ${{ github.action_path }}/../../resources/flakiness_report.py `
+          --junit-files historical_data_archive `
+          --window-size ${{ inputs.window_size }} `
+          --delete-old-files `
+          $OUTPUT_FILE_OPTION
+
+        $EXIT_CODE = $LASTEXITCODE
+
+        if ("${{ inputs.fail_on_flaky_tests }}" -ne "True") {
+          $EXIT_CODE = 0
+        }
+
+        exit ${EXIT_CODE}
+
+    - name: Upload historical data
+      id: upload_historical_data
+      if: always()
+      uses: eProsima/eProsima-CI/external/upload-artifact@v0
+      with:
+        name: ${{ inputs.historical_data_artifact }}
+        path: historical_data_archive
+        github_token: ${{ inputs.github_token }}

@@ -1,0 +1,56 @@
+name: 'flakiness_report'
+description: 'Generate a flakiness report from test results and historical data'
+
+inputs:
+  junit_reports_dir:
+    description: 'Path to dir with new jUnit reports'
+    required: true
+
+  historical_data_artifact:
+    description: 'Name of the artifact containing the historical data'
+    required: true
+
+  print_report:
+    description: 'Whether to print the report (Default: True)'
+    required: false
+    default: 'True'
+
+  window_size:
+    description: 'Number of days to consider for the flakiness report'
+    required: false
+    default: '30'
+
+  fail_on_flaky_tests:
+    description: 'Whether to fail the workflow if there are flaky tests'
+    required: false
+    default: 'True'
+
+  github_token:
+    description: 'GitHub token'
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu or macOS
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      uses: eProsima/eProsima-CI/ubuntu/flakiness_report@feature/detect_flaky_tests
+      with:
+        junit_reports_dir: ${{ inputs.junit_reports_dir }}
+        historical_data_artifact: ${{ inputs.historical_data_artifact }}
+        print_report: ${{ inputs.print_report }}
+        window_size: ${{ inputs.window_size }}
+        fail_on_flaky_tests: ${{ inputs.fail_on_flaky_tests }}
+        github_token: ${{ inputs.github_token }}
+
+    - name: Run in windows
+      if: runner.os == 'Windows'
+      uses: eProsima/eProsima-CI/windows/flakiness_report@feature/detect_flaky_tests
+      with:
+        junit_reports_dir: ${{ inputs.junit_reports_dir }}
+        historical_data_artifact: ${{ inputs.historical_data_artifact }}
+        print_report: ${{ inputs.print_report }}
+        window_size: ${{ inputs.window_size }}
+        fail_on_flaky_tests: ${{ inputs.fail_on_flaky_tests }}
+        github_token: ${{ inputs.github_token }}
