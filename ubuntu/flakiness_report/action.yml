@@ -6,7 +6,7 @@ inputs:
     description: 'Path to dir with new jUnit reports'
     required: true
 
-  historical_data_artifact:
+  junit_archive_artifact:
     description: 'Name of the artifact containing the historical data'
     required: true
 
@@ -38,12 +38,12 @@ runs:
       with:
         packages: lxml junitparser pandas
 
-    - name: Download historical data
-      id: download_historical_data
+    - name: Download jUnit archive
+      id: download_junit_archive
       uses: eProsima/eProsima-CI/external/action-download-artifact@v0
       with:
-        name: ${{ inputs.historical_data_artifact }}
-        path: historical_data_archive
+        name: ${{ inputs.junit_archive_artifact }}
+        path: junit_archive
         github_token: ${{ inputs.github_token }}
         workflow_conclusion: completed
         if_no_artifact_found: ignore
@@ -60,14 +60,15 @@ runs:
           MD_FILE_OPTION="--markdown-file $GITHUB_STEP_SUMMARY"
         fi
 
-        mkdir -p historical_data_archive
-        cp ${{ inputs.junit_reports_dir }}/*.xml historical_data_archive
+        mkdir -p junit_archive
+        cp ${{ inputs.junit_reports_dir }}/*.xml junit_archive
 
         EXIT_CODE=0
         python3 ${{ github.action_path }}/../../resources/flakiness_report.py \
-          --junit-files historical_data_archive \
+          --junit-archive junit_archive \
           ${WINDOW_SIZE_OPTION} \
           --delete-old-files \
+          --json-file flaky_tests.json \
           ${MD_FILE_OPTION}
 
         EXIT_CODE=$((${EXIT_CODE} + $?))
@@ -79,11 +80,20 @@ runs:
 
         exit ${EXIT_CODE}
 
-    - name: Upload historical data
-      id: upload_historical_data
+    - name: Upload jUnit archive
+      id: upload_junit_archive
       if: always()
       uses: eProsima/eProsima-CI/external/upload-artifact@v0
       with:
-        name: ${{ inputs.historical_data_artifact }}
-        path: historical_data_archive
+        name: ${{ inputs.junit_archive_artifact }}
+        path: junit_archive
+        github_token: ${{ inputs.github_token }}
+
+    - name: Upload JSON report
+      id: upload_json_report
+      if: always()
+      uses: eProsima/eProsima-CI/external/upload-artifact@v0
+      with:
+        name: ${{ inputs.junit_archive_artifact }}_json
+        path: flaky_tests.json
         github_token: ${{ inputs.github_token }}

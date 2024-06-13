@@ -30,7 +30,7 @@ def parse_options() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
-        "--junit-files",
+        "--junit-archive",
         help="Path for a folder with JUnit xml test history files",
         type=str
     )
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     args = parse_options()
 
     archive = FlakyTestsArchive(
-        args.junit_files,
+        args.junit_archive,
         args.window_size,
         args.delete_old_files
     )

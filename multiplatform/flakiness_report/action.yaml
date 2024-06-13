@@ -6,7 +6,7 @@ inputs:
     description: 'Path to dir with new jUnit reports'
     required: true
 
-  historical_data_artifact:
+  junit_archive_artifact:
     description: 'Name of the artifact containing the historical data'
     required: true
 
@@ -38,7 +38,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/flakiness_report@feature/detect_flaky_tests
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
-        historical_data_artifact: ${{ inputs.historical_data_artifact }}
+        junit_archive_artifact: ${{ inputs.junit_archive_artifact }}
         print_report: ${{ inputs.print_report }}
         window_size: ${{ inputs.window_size }}
         fail_on_flaky_tests: ${{ inputs.fail_on_flaky_tests }}
@@ -49,7 +49,7 @@ runs:
       uses: eProsima/eProsima-CI/windows/flakiness_report@feature/detect_flaky_tests
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
-        historical_data_artifact: ${{ inputs.historical_data_artifact }}
+        junit_archive_artifact: ${{ inputs.junit_archive_artifact }}
         print_report: ${{ inputs.print_report }}
         window_size: ${{ inputs.window_size }}
         fail_on_flaky_tests: ${{ inputs.fail_on_flaky_tests }}
