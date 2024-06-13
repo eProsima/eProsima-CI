@@ -69,6 +69,9 @@ runs:
 
         echo "Generating flakiness report..."
 
+        # Prevent the action from failing if there are flaky tests
+        set +e
+
         EXIT_CODE=0
         python3 ${{ github.action_path }}/../../resources/flakiness_report.py \
           --junit-archive junit_archive \
@@ -78,6 +81,9 @@ runs:
           ${MD_FILE_OPTION}
 
         EXIT_CODE=$?
+
+        # Restore the action to fail on error
+        set -e
 
         echo "Flakiness report generated"
 
