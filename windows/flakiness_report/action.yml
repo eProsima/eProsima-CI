@@ -52,6 +52,8 @@ runs:
       id: flakiness_report
       shell: pwsh
       run: |
+        Write-Host "::group::Flakiness report"
+
         $MD_FILE_OPTION = $null
         $SUMMARY = $null
         if ("${{ inputs.print_report }}" -eq "True") {
@@ -76,6 +78,7 @@ runs:
           $EXIT_CODE = 0
         }
 
+        Write-Host "::endgroup::"
         exit ${EXIT_CODE}
 
     - name: Upload jUnit archive

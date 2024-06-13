@@ -52,6 +52,8 @@ runs:
       id: flakiness_report
       shell: bash
       run: |
+        echo "::group::Flakiness report"
+
         WINDOW_SIZE_OPTION="--window-size ${{ inputs.window_size }}"
 
         MD_FILE_OPTION=""
@@ -71,13 +73,15 @@ runs:
           --json-file flaky_tests.json \
           ${MD_FILE_OPTION}
 
-        EXIT_CODE=$((${EXIT_CODE} + $?))
+        EXIT_CODE=$?
 
         if [[ "${{ inputs.fail_on_flaky_tests }}" != "True" ]]
         then
           EXIT_CODE=0
         fi
 
+        echo "Flakiness report exit code: ${EXIT_CODE}"
+        echo "::endgroup::"
         exit ${EXIT_CODE}
 
     - name: Upload jUnit archive
