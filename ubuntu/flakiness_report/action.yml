@@ -62,8 +62,12 @@ runs:
           MD_FILE_OPTION="--markdown-file $GITHUB_STEP_SUMMARY"
         fi
 
+        echo "Creating flakiness report..."
+
         mkdir -p junit_archive
         cp ${{ inputs.junit_reports_dir }}/*.xml junit_archive
+
+        echo "Generating flakiness report..."
 
         EXIT_CODE=0
         python3 ${{ github.action_path }}/../../resources/flakiness_report.py \
@@ -75,8 +79,11 @@ runs:
 
         EXIT_CODE=$?
 
+        echo "Flakiness report generated"
+
         if [[ "${{ inputs.fail_on_flaky_tests }}" != "True" ]]
         then
+          echo "Ignoring flaky tests failures"
           EXIT_CODE=0
         fi
 
