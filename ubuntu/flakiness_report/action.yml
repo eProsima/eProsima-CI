@@ -87,7 +87,6 @@ runs:
       with:
         name: ${{ inputs.junit_archive_artifact }}
         path: junit_archive
-        github_token: ${{ inputs.github_token }}
 
     - name: Upload JSON report
       id: upload_json_report
@@ -96,4 +95,3 @@ runs:
       with:
         name: ${{ inputs.junit_archive_artifact }}_json
         path: flaky_tests.json
-        github_token: ${{ inputs.github_token }}
