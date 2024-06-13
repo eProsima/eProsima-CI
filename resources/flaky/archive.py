@@ -65,7 +65,7 @@ class FlakyTestsArchive:
 
     @property
     def flaky_test_count(self) -> int:
-        return len(self._analysis)
+        return len(self._analysis['flaky_tests'])
 
     @staticmethod
     def _find_test_results(directory: str) -> list:
