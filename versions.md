@@ -33,6 +33,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add colcon meta argument to colcon test actions.
+
 ## v0.19.1
 
 - Remove `cat colcon.meta` command from windows colcon build action.

@@ -3,6 +3,11 @@ description: 'Execute colcon test command with arguments given'
 
 inputs:
 
+  colcon_meta_file:
+    description: colcon.meta file to set ctest options. If empty, it uses an empty file
+    required: false
+    default: ''
+
   colcon_test_args:
     description: 'args to pass to colcon test command (use ctest_args to set ctest arguments)'
     required: false
@@ -71,6 +76,14 @@ runs:
           ${{ inputs.workspace_dependencies }}/setup.ps1
         }
 
+        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+          New-Item -ItemType File "${{ inputs.workspace }}\colcon.meta"
+          $env:COLCON_TEST_META_ = "${{ inputs.workspace }}\colcon.meta"
+        } else {
+          $env:COLCON_TEST_META_ = "${{ inputs.colcon_meta_file }}"
+        }
+        echo "Using colcon.meta file <$env:COLCON_TEST_META_>"
+
         cd ${{ inputs.workspace }}
         $resultsPath = "${{ inputs.workspace }}\test_results\"
         New-Item -ItemType Directory -Path $resultsPath
@@ -88,6 +101,7 @@ runs:
 
           $testCommand = @"
             colcon test
+              --metas $env:COLCON_TEST_META_
               ${{ inputs.colcon_test_args_default }}
               ${{ inputs.colcon_test_args }}
               --packages-select $package
@@ -103,6 +117,10 @@ runs:
 
           if ($lastexitcode -ne 0) {
             $exitCode = $lastexitcode
+          }
+
+          if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
+            Remove-Item -Path "${{ inputs.workspace }}\colcon.meta"
           }
 
           # Translate CTest XML reports to jUnit in case CTest does not support '--output-junit'
