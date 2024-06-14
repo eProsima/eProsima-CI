@@ -30,20 +30,20 @@ runs:
   steps:
 
     - name: Set CMake version
-      uses: eProsima/eProsima-CI/external/get-cmake@main
+      uses: eProsima/eProsima-CI/external/get-cmake@feature/detect_flaky_tests
       with:
         cmakeVersion: ${{ inputs.cmakeVersion }}
         ninjaVersion: ${{ inputs.ninjaVersion }}
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@feature/detect_flaky_tests
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@feature/detect_flaky_tests
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Install Open SSL
-      uses: eProsima/eprosima-CI/windows/install_openssl@main
+      uses: eProsima/eprosima-CI/windows/install_openssl@feature/detect_flaky_tests
       with:
         version: '3.1.1'

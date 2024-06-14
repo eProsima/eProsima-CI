@@ -5,6 +5,6 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/detect_flaky_tests
       with:
         packages: libssl-dev

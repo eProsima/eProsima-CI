@@ -59,7 +59,7 @@ runs:
   steps:
 
     - name: Install lxml
-      uses: eProsima/eProsima-CI/windows/install_python_packages@main
+      uses: eProsima/eProsima-CI/windows/install_python_packages@feature/detect_flaky_tests
       with:
         packages: lxml
 
@@ -142,7 +142,7 @@ runs:
         Exit $exitCode
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
       if: ${{ ! cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}_{2}', github.workflow, github.job, join(matrix.*, '_')) }}
