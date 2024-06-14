@@ -87,7 +87,8 @@ runs:
 
         echo "Flakiness report generated"
 
-        if [[ "${{ inputs.fail_on_flaky_tests }}" != "True" ]]
+        # A 255 exit code indicates that an exception occurred in the script, we want to fail in that case
+        if [ "${{ inputs.fail_on_flaky_tests }}" != "True" ] && [ "$EXIT_CODE" != "255" ]
         then
           echo "Ignoring flaky tests failures"
           EXIT_CODE=0

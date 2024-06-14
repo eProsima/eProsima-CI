@@ -64,19 +64,25 @@ def parse_options() -> argparse.Namespace:
 
 if __name__ == "__main__":
 
-    args = parse_options()
+    try:
+        args = parse_options()
 
-    archive = FlakyTestsArchive(
-        args.junit_archive,
-        args.window_size,
-        args.delete_old_files
-    )
+        archive = FlakyTestsArchive(
+            args.junit_archive,
+            args.window_size,
+            args.delete_old_files
+        )
 
-    if args.markdown_file:
-        FlakyTestsMdPublisher.publish(archive, args.markdown_file)
+        if args.markdown_file:
+            FlakyTestsMdPublisher.publish(archive, args.markdown_file)
 
-    if args.json_file:
-        FlakyTestsJSONPublisher.publish(archive, args.json_file)
+        if args.json_file:
+            FlakyTestsJSONPublisher.publish(archive, args.json_file)
 
-    ret = 0 if archive.flaky_test_count == 0 else 1
-    exit(ret)
+        ret = 0 if archive.flaky_test_count == 0 else 1
+        exit(ret)
+
+    except Exception as e:
+        # Exit with 255 error so that the action can fail
+        print(e)
+        exit(255)

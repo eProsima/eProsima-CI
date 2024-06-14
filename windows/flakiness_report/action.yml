@@ -74,7 +74,9 @@ runs:
 
         $EXIT_CODE = $LASTEXITCODE
 
-        if ("${{ inputs.fail_on_flaky_tests }}" -ne "True") {
+        # A 255 exit code indicates that an exception occurred in the script, we want to fail in that case
+        if ("${{ inputs.fail_on_flaky_tests }}" -ne "True" -and $EXIT_CODE -ne 255) {
+          Write-Output "Ignoring flaky tests failures"
           $EXIT_CODE = 0
         }
 
