@@ -7,7 +7,9 @@ inputs:
     required: true
 
   junit_archive_artifact:
-    description: 'Name of the artifact containing the historical data'
+    description: >
+      Name of the artifact containing the historical data. Also used for uploading a JSON report
+      with the flaky tests as an artifact. name ${junit_archive_artifact}_json.
     required: true
 
   print_report:
