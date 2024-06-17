@@ -34,6 +34,12 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add a `flakiness_report` action to generate a summary of flaky tests using historical data.
+- Add an option `flaky_json_report` to `junit_summary` action to use the flaky tests report for comparing failing
+  test with flakiness data and only fail on true regressions.
+- Extend `ctest2junit.py` to support applying an external timestamp to the translated JUnit XML files.
+- Extend `upload-artifact` with an option to overwrite existing artifacts (default: false).
+
 ## v0.20.0
 
 - Add colcon meta argument to colcon test actions.
