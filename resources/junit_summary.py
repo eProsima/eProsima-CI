@@ -22,10 +22,12 @@ DESCRIPTION = """Script to parse the jUnit test results and create a summary"""
 USAGE = ('python3 junit_summary.py')
 
 
-def parse_options():
+def parse_options() -> argparse.Namespace:
     """
     Parse arguments.
-    :return: The arguments parsed.
+
+    Returns:
+        argparse.Namespace: Parsed arguments.
     """
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -82,8 +84,16 @@ def parse_options():
 
     return parser.parse_args()
 
-def junit_report_to_dict(junit_report):
-    """Convert a jUnit report to a dictionary."""
+def junit_report_to_dict(junit_report: str) -> list:
+    """
+    Parse a junit report to a dictionary.
+
+    Args:
+        junit_report (str): Path to junit report.
+
+    Returns:
+        list: List of dictionaries with the parsed information.
+    """
     result = []
     tree = ET.parse(junit_report)
     root = tree.getroot()
@@ -98,8 +108,17 @@ def junit_report_to_dict(junit_report):
     return result
 
 
-def parse_testsuite(test_suite, result):
-    """Parse a testsuite tag."""
+def parse_testsuite(test_suite: ET.Element, result: list) -> list:
+    """
+    Parse a test suite tag.
+
+    Args:
+        test_suite (Element): Element with the test suite information.
+        result (list): List with the parsed information.
+
+    Returns:
+        list: List with the parsed information.
+    """
     suite_result = {
         'name': '',
         'tests': '',
@@ -153,8 +172,26 @@ def parse_testsuite(test_suite, result):
 
     return result
 
-def create_md_summary(results, show_failed, show_disabled, show_skipped, flaky_tests):
-    """Create Markdown summary from results."""
+def create_md_summary(
+        results: list,
+        show_failed: bool,
+        show_disabled: bool,
+        show_skipped: bool,
+        flaky_tests: list
+    ) -> str:
+    """
+    Create Markdown summary from results.
+
+    Args:
+        results (list): List of dictionaries with the parsed information.
+        show_failed (bool): Show failed tests.
+        show_disabled (bool): Show disabled tests.
+        show_skipped (bool): Show skipped tests.
+        flaky_tests (list): List of flaky tests.
+
+    Returns:
+        str: Markdown summary.
+    """
     flaky_failures = 0
     if len(flaky_tests) != 0:
         for suite in results:
@@ -166,7 +203,15 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped, flaky_t
     summary = '## Test summary\n'
 
     # Table header
-    summary += '|Suite|Total number of tests|Test failures|Disabled test|Skipped test|Flaky failures|Spent time [s]|Timestamp|\n'
+    summary += '|Suite'
+    summary += '|Total number of tests'
+    summary += '|Test failures'
+    summary += '|Disabled test'
+    summary += '|Skipped test'
+    summary += '|Flaky failures'
+    summary += '|Spent time [s]'
+    summary += '|Timestamp'
+    summary += '|\n'
     summary += '|-|-|-|-|-|-|-|-|\n'
 
     # Entries
@@ -210,7 +255,7 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped, flaky_t
     return summary
 
 
-def get_flaky_tests(flaky_json_report):
+def get_flaky_tests(flaky_json_report: str) -> list:
     """
     Get flaky tests from a flaky json report.
 
