@@ -27,7 +27,7 @@ inputs:
   overwrite:
     description: >
       If true, an artifact with a matching name will be deleted before a new one is uploaded.
-      If false, the action will fail if an artifact for the given name already exists.
+      If false, the action will fail if an artifact with the given name already exists.
       Does not fail if the artifact does not exist.
       Optional. Default is 'false'
     default: 'false'

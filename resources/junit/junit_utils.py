@@ -45,8 +45,8 @@ class JUnitSuite:
 
             status = testcase.attrib.get('status')
 
-            # Convert status to "pass" if it's "passed"
-            if status == "passed":
+            # Convert status to "pass" if it's "passed" or "run"
+            if status == "passed" or status == "run":
                 test_status = "pass"
             else:
                 test_status = status

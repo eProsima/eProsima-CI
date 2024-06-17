@@ -35,7 +35,13 @@ class FlakyTestsMdPublisher:
 
         # Table header
         # TODO(eduponz): Add a column for the failures/runs ratio
-        report += '|#|Flaky tests|Fliprate score %|Consecutive failures|Consecutive passes|Total failures|\n'
+        # |#|Flaky tests|Fliprate score %|Consecutive failures|Consecutive passes|Total failures|\n
+        report += '|#'
+        report += '|Flaky tests'
+        report += '|Fliprate score %'
+        report += '|Last consecutive failures'
+        report += '|Last consecutive passes'
+        report += '|Total failures|\n'
         report += '|-|-|-|-|-|-|\n'
 
         analysis = dict(test_archive)
