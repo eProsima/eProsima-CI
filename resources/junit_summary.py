@@ -15,6 +15,7 @@
 """Script to parse the jUnit test results and create a summary."""
 
 import argparse
+import json
 import xml.etree.ElementTree as ET
 
 DESCRIPTION = """Script to parse the jUnit test results and create a summary"""
@@ -71,6 +72,12 @@ def parse_options():
         '--show-skipped',
         action='store_true',
         help='Show a list of skipped tests'
+    )
+    parser.add_argument(
+        '--flaky-json-report',
+        type=str,
+        required=False,
+        help='Path to flaky json report file'
     )
 
     return parser.parse_args()
@@ -146,14 +153,21 @@ def parse_testsuite(test_suite, result):
 
     return result
 
-def create_md_summary(results, show_failed, show_disabled, show_skipped):
+def create_md_summary(results, show_failed, show_disabled, show_skipped, flaky_tests):
     """Create Markdown summary from results."""
+    flaky_failures = 0
+    if len(flaky_tests) != 0:
+        for suite in results:
+            for failed_test in suite['failed_tests']:
+                if failed_test in flaky_tests:
+                    flaky_failures += 1
+
     # Test summary
     summary = '## Test summary\n'
 
     # Table header
-    summary += '|Suite|Total number of tests|Test failures|Disabled test|Skipped test|Spent time [s]|Timestamp|\n'
-    summary += '|-|-|-|-|-|-|-|\n'
+    summary += '|Suite|Total number of tests|Test failures|Disabled test|Skipped test|Flaky failures|Spent time [s]|Timestamp|\n'
+    summary += '|-|-|-|-|-|-|-|-|\n'
 
     # Entries
     for suite in results:
@@ -162,6 +176,7 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped):
         summary += f'|{suite["failures"]}'
         summary += f'|{suite["disabled"]}'
         summary += f'|{suite["skipped"]}'
+        summary += f'|{flaky_failures}'
         summary += f'|{suite["time"]}'
         summary += f'|{suite["timestamp"]}'
         summary += '|\n'
@@ -195,17 +210,49 @@ def create_md_summary(results, show_failed, show_disabled, show_skipped):
     return summary
 
 
+def get_flaky_tests(flaky_json_report):
+    """
+    Get flaky tests from a flaky json report.
+
+    Args:
+        flaky_json_report (str): Path to flaky json report.
+
+    Returns:
+        list: List of flaky tests. Empty list if no flaky tests found.
+    """
+    flaky_tests = []
+    try:
+        with open(flaky_json_report, 'r') as file:
+            flaky_json = json.load(file)
+            if 'version' in flaky_json and flaky_json['version'] == '1.0':
+                assert('flaky_tests' in flaky_json)
+                assert(type(flaky_json['flaky_tests']) == dict)
+                flaky_tests = list(flaky_json['flaky_tests'].keys())
+    except FileNotFoundError:
+        pass
+
+    return flaky_tests
+
+
 if __name__ == '__main__':
     # Parse arguments
     args = parse_options()
+
+    # Parse junit report
     results = junit_report_to_dict(args.junit_report)
+
+    # Get flaky tests names
+    flaky_tests = []
+    if args.flaky_json_report:
+        flaky_tests = get_flaky_tests(args.flaky_json_report)
 
     # Create summary
     summary = create_md_summary(
         results,
         args.show_failed,
         args.show_disabled,
-        args.show_skipped
+        args.show_skipped,
+        flaky_tests
     )
 
     # Print summary if required
@@ -217,8 +264,11 @@ if __name__ == '__main__':
         with open(args.output_file, 'a') as file:
             file.write(summary)
 
-    # Exit code is the number of failed tests
+    # Exit code is the number of non-flaky failed tests
     exit_code = 0
     for suite in results:
-        exit_code += int(suite['failures'])
+        for failed_test in suite['failed_tests']:
+            if failed_test not in flaky_tests:
+                exit_code += 1
+
     exit(exit_code)
