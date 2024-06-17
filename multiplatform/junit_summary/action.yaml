@@ -26,6 +26,11 @@ inputs:
     required: false
     default: 'False'
 
+  flaky_json_report:
+    description: 'Path to a JSON file with the flaky tests report'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -39,6 +44,7 @@ runs:
         show_failed: ${{ inputs.show_failed }}
         show_disabled: ${{ inputs.show_disabled }}
         show_skipped: ${{ inputs.show_skipped }}
+        flaky_json_report: ${{ inputs.flaky_json_report }}
 
     - name: Run in windows
       if: runner.os == 'Windows'
@@ -49,3 +55,4 @@ runs:
         show_failed: ${{ inputs.show_failed }}
         show_disabled: ${{ inputs.show_disabled }}
         show_skipped: ${{ inputs.show_skipped }}
+        flaky_json_report: ${{ inputs.flaky_json_report }}

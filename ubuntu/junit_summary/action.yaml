@@ -26,6 +26,11 @@ inputs:
     required: false
     default: 'False'
 
+  flaky_json_report:
+    description: 'Path to a JSON file with the flaky tests report'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -59,6 +64,12 @@ runs:
           SHOW_SKIPPED_OPTION="--show-skipped"
         fi
 
+        FLAKY_JSON_REPORT_OPTION=""
+        if [[ -f "${{ inputs.flaky_json_report }}" ]]
+        then
+          FLAKY_JSON_REPORT_OPTION="--flaky-json-report ${{ inputs.flaky_json_report }}"
+        fi
+
         EXIT_CODE=0
         for JUNIT_REPORT in ${{ inputs.junit_reports_dir }}/*.xml
         do
@@ -68,7 +79,8 @@ runs:
             ${PRINT_SUMMARY_OPTION} \
             ${SHOW_FAILED_OPTION} \
             ${SHOW_DISABLED_OPTION} \
-            ${SHOW_SKIPPED_OPTION}
+            ${SHOW_SKIPPED_OPTION} \
+            ${FLAKY_JSON_REPORT_OPTION}
 
           EXIT_CODE=$((${EXIT_CODE} + $?))
         done
