@@ -59,7 +59,7 @@ runs:
   steps:
 
     - name: Install lxml
-      uses: eProsima/eProsima-CI/windows/install_python_packages@main
+      uses: eProsima/eProsima-CI/windows/install_python_packages@feature/detect_flaky_tests
       with:
         packages: lxml
 
@@ -94,10 +94,13 @@ runs:
         $exitCode = 0
         $packages_names = "${{ inputs.packages_names }}" -split '\s+'
 
+        $FILENAME_TIMESTAMP = Get-Date -Format "yyyy-MM-ddTHH-mm-ss"
+        $JUNIT_TIMESTAMP = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
+
         foreach ($package in $packages_names) {
           Write-Host "::group::Testing $package ..."
 
-          $testResultsFile = "$resultsPath\${package}_test_results.xml"
+          $testResultsFile = "$resultsPath\${package}_test_results_$FILENAME_TIMESTAMP.xml"
 
           $testCommand = @"
             colcon test
@@ -128,7 +131,7 @@ runs:
           if (! $testResultsExist) {
             Write-Host  "::group::Translating ${package} test report to jUnit..."
 
-            python3 ${{ github.action_path }}\..\..\resources\ctest2junit.py --build-dir "${{ inputs.workspace }}\build\${package}" --xslt ${{ github.action_path }}\..\..\resources\ctest-to-junit.xsl --output-junit $testResultsFile
+            python3 ${{ github.action_path }}\..\..\resources\ctest2junit.py --build-dir "${{ inputs.workspace }}\build\${package}" --xslt ${{ github.action_path }}\..\..\resources\ctest-to-junit.xsl --timestamp "$JUNIT_TIMESTAMP" --output-junit $testResultsFile
 
             Write-Host "::endgroup::"
           }
@@ -139,7 +142,7 @@ runs:
         Exit $exitCode
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
       if: ${{ ! cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}_{2}', github.workflow, github.job, join(matrix.*, '_')) }}

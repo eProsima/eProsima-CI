@@ -1,0 +1,103 @@
+name: 'flakiness_report'
+description: 'Generate a flakiness report from test results and historical data'
+
+inputs:
+  junit_reports_dir:
+    description: 'Path to dir with new jUnit reports'
+    required: true
+
+  junit_archive_artifact:
+    description: >
+      Name of the artifact containing the historical data. Also used for uploading a JSON report
+      with the flaky tests as an artifact. name ${junit_archive_artifact}_json.
+    required: true
+
+  print_report:
+    description: 'Whether to print the report (Default: True)'
+    required: false
+    default: 'True'
+
+  window_size:
+    description: 'Number of days to consider for the flakiness report'
+    required: false
+    default: '30'
+
+  fail_on_flaky_tests:
+    description: 'Whether to fail the workflow if there are flaky tests'
+    required: false
+    default: 'True'
+
+  github_token:
+    description: 'GitHub token'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install python dependencies
+      id: install_python_dependencies
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0
+      with:
+        packages: lxml junitparser pandas
+
+    - name: Download jUnit archive
+      id: download_junit_archive
+      uses: eProsima/eProsima-CI/external/action-download-artifact@v0
+      with:
+        name: ${{ inputs.junit_archive_artifact }}
+        path: junit_archive
+        github_token: ${{ inputs.github_token }}
+        workflow_conclusion: completed
+        if_no_artifact_found: ignore
+
+    - name: Flakiness Report
+      id: flakiness_report
+      shell: pwsh
+      run: |
+        Write-Host "::group::Flakiness report"
+
+        $MD_FILE_OPTION = $null
+        $SUMMARY = $null
+        if ("${{ inputs.print_report }}" -eq "True") {
+          $MD_FILE_OPTION = "--markdown-file"
+          $SUMMARY_FILE = "$GITHUB_STEP_SUMMARY"
+        }
+
+        mkdir -p junit_archive
+        cp ${{ inputs.junit_reports_dir }}/*.xml junit_archive
+
+        $EXIT_CODE=0
+        python3 ${{ github.action_path }}/../../resources/flakiness_report.py `
+          --junit-archive junit_archive `
+          --window-size ${{ inputs.window_size }} `
+          --delete-old-files `
+          --json-file flaky_tests.json `
+          $MD_FILE_OPTION $SUMMARY_FILE
+
+        $EXIT_CODE = $LASTEXITCODE
+
+        # A 255 exit code indicates that an exception occurred in the script, we want to fail in that case
+        if ("${{ inputs.fail_on_flaky_tests }}" -ne "True" -and $EXIT_CODE -ne 255) {
+          Write-Output "Ignoring flaky tests failures"
+          $EXIT_CODE = 0
+        }
+
+        Write-Host "::endgroup::"
+        exit ${EXIT_CODE}
+
+    - name: Upload jUnit archive
+      id: upload_junit_archive
+      if: always()
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
+      with:
+        name: ${{ inputs.junit_archive_artifact }}
+        path: junit_archive
+        overwrite: true
+
+    - name: Upload JSON report
+      id: upload_json_report
+      if: always()
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
+      with:
+        name: ${{ inputs.junit_archive_artifact }}_json
+        path: flaky_tests.json

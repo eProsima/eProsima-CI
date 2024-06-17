@@ -2,6 +2,7 @@
 <!-- Taken from https://github.com/rpavlik/jenkins-ctest-plugin/blob/master/ctest-to-junit.xsl -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" indent="yes" />
+    <xsl:param name="input_timestamp"/>
     <xsl:template match="/">
         <testsuites>
             <xsl:variable name="buildName" select="//Site/@BuildName"/>
@@ -15,7 +16,8 @@
                 failures="{$numberOfFailures}"
                 errors="{$numberOfErrors}"
                 skipped="{$numberOfSkipped}"
-                time="{$buildTime}">
+                time="{$buildTime}"
+                timestamp="{$input_timestamp}">
             <xsl:for-each select="//Site/Testing/Test">
                     <xsl:variable name="testName" select="translate(Name, '-', '_')"/>
                     <xsl:variable name="duration" select="Results/NamedMeasurement[@name='Execution Time']/Value"/>

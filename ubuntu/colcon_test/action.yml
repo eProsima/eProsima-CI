@@ -59,7 +59,7 @@ runs:
   steps:
 
     - name: Install lxml
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@feature/detect_flaky_tests
       with:
         packages: lxml
 
@@ -88,10 +88,13 @@ runs:
           export COLCON_TEST_META_="${{ inputs.colcon_meta_file }}"
         fi
 
+        FILENAME_TIMESTAMP=$(date +'%Y-%m-%dT%H-%M-%S')
+        JUNIT_TIMESTAMP=$(date +'%Y-%m-%dT%H:%M:%S')
+
         for package in ${{ inputs.packages_names }}; do
           echo "::group::Testing ${package} ..."
 
-          test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results.xml"
+          test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results_${FILENAME_TIMESTAMP}.xml"
 
           colcon test \
             --metas ${COLCON_TEST_META_} \
@@ -122,6 +125,7 @@ runs:
             python3 ${{ github.action_path }}/../../resources/ctest2junit.py \
               --build-dir ${{ inputs.workspace }}/build/${package} \
               --xslt ${{ github.action_path }}/../../resources/ctest-to-junit.xsl \
+              --timestamp "${JUNIT_TIMESTAMP}" \
               --output-junit ${test_results_file}
 
             echo "::endgroup::"
@@ -135,7 +139,7 @@ runs:
       shell: bash
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@feature/detect_flaky_tests
       if: ${{ ! cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}_{2}', github.workflow, github.job, join(matrix.*, '_')) }}

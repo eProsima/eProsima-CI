@@ -88,6 +88,9 @@ For more information about versioning handle of this project, check following [f
 - [fetch_fastdds_manual](multiplatform/fetch_fastdds_manual/action.yml)
   - Download Fast DDS and its eProsima dependencies setting the specific version of each repository.
 
+- [flakiness_report](multiplatform/flakiness_report/action.yml)
+  - Generate a flakiness report from historical tests results.
+
 - [generate_dependency_artifact](multiplatform/generate_dependency_artifact/action.yml)
   - Build a project and upload the installed objects as an artifact.
 

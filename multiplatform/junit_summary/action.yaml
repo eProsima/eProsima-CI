@@ -26,26 +26,33 @@ inputs:
     required: false
     default: 'False'
 
+  flaky_json_report:
+    description: 'Path to a JSON file with the flaky tests report'
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
 
     - name: Run in ubuntu or macOS
       if: runner.os == 'Linux' || runner.os == 'macOS'
-      uses: eProsima/eProsima-CI/ubuntu/junit_summary@main
+      uses: eProsima/eProsima-CI/ubuntu/junit_summary@feature/detect_flaky_tests
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
         print_summary: ${{ inputs.print_summary }}
         show_failed: ${{ inputs.show_failed }}
         show_disabled: ${{ inputs.show_disabled }}
         show_skipped: ${{ inputs.show_skipped }}
+        flaky_json_report: ${{ inputs.flaky_json_report }}
 
     - name: Run in windows
       if: runner.os == 'Windows'
-      uses: eProsima/eProsima-CI/windows/junit_summary@main
+      uses: eProsima/eProsima-CI/windows/junit_summary@feature/detect_flaky_tests
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
         print_summary: ${{ inputs.print_summary }}
         show_failed: ${{ inputs.show_failed }}
         show_disabled: ${{ inputs.show_disabled }}
         show_skipped: ${{ inputs.show_skipped }}
+        flaky_json_report: ${{ inputs.flaky_json_report }}
