@@ -34,6 +34,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Parse input string as environment variables
+
 ## v0.20.0
 
 - Add colcon meta argument to colcon test actions.
