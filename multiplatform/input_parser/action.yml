@@ -6,9 +6,9 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/input_parser@main
+      uses: eProsima/eProsima-CI/ubuntu/input_parser@feature/input_parser
       if: runner.os == 'Linux' or runner.os == 'macOS'
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/input_parser@main
+      uses: eProsima/eProsima-CI/windows/input_parser@feature/input_parser
       if: runner.os == 'Windows'
