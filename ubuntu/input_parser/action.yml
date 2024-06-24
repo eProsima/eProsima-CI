@@ -1,0 +1,40 @@
+name: 'input_parser'
+description: 'Parse string input'
+
+inputs:
+
+  input_string:
+    description: 'String with the input to parse'
+    type: string
+    required: true
+
+  input_separator:
+    description: 'String with the input separator'
+    type: string
+    required: true
+
+  key_value_separator:
+    description: 'String with the key-value separator'
+    type: string
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: parse input
+      run: |
+
+        echo "::group::Parse input ${{ inputs.input_string }}"
+
+        IFS="${{ inputs.input_separator }}" read -ra pairs <<< "${{ inputs.input_string }}"
+
+        for pair in "${pairs[@]}"; do
+            IFS="${{ inputs.key_value_separator }}" read -r key value <<< "$pair"
+
+            echo "$key=$value" >> $GITHUB_ENV
+        done
+
+        echo "::endgroup::"
+
+      shell: bash

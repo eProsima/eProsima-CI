@@ -1,0 +1,38 @@
+name: 'input_parser'
+description: 'Parse string input'
+
+inputs:
+
+  input_string:
+    description: 'String with the input to parse'
+    type: string
+    required: true
+
+  input_separator:
+    description: 'String with the input separator'
+    type: string
+    required: true
+
+  key_value_separator:
+    description: 'String with the key-value separator'
+    type: string
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: parse input
+      run: |
+
+        "::group::Parse input ${{ inputs.input_string }}"
+        $pairs = ${{ inputs.input_string }} -split [regex]::Escape(${{ inputs.input_separator }})
+
+        foreach ($pair in $pairs) {
+            $key, $value = $pair -split [regex]::Escape(${{ inputs.key_value_separator }}), 2
+
+            "$key=$value" | Out-File $env:GITHUB_ENV -Append
+        }
+        "::endgroup::"
+
+      shell: pwsh

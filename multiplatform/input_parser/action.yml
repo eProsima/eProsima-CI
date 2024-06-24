@@ -1,0 +1,14 @@
+name: input_parser
+description: Parse string input
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/input_parser@main
+      if: runner.os == 'Linux' or runner.os == 'macOS'
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/input_parser@main
+      if: runner.os == 'Windows'
