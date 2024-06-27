@@ -34,6 +34,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add external (multi-platform) action to install doxygen.
+- Add get related branch multi-platform action.
+- Add Windows action to merge a set of yaml meta files into a single meta file.
+
 ## v0.20.0
 
 - Add colcon meta argument to colcon test actions.
