@@ -37,3 +37,7 @@ runs:
 
         # Write the combined content to the output meta file
         $combined_content | Out-File -FilePath ${{ inputs.path }} -Encoding UTF8
+
+        # Display the combined content
+        echo "Merged .meta content"
+        echo $combined_content
