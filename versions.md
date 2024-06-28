@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.21.0](#v0.21.0)
 - [v0.20.0](#v0.20.0)
 - [v0.19.1](#v0.19.1)
 - [v0.19.0](#v0.19.0)
@@ -33,6 +34,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.21.0
 
 - Add external (multi-platform) action to install doxygen.
 - Add get related branch multi-platform action.
