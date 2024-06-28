@@ -97,9 +97,6 @@ For more information about versioning handle of this project, check following [f
 - [get_file_from_repo](multiplatform/get_file_from_repo/action.yml)
   - Download a file from a repository.
 
-- [get_related_branch_from_repo](multiplatform/get_related_branch_from_repo/action.yml)
-  - Get the related branch from a remote repository.
-
 - [get_workflow_id](multiplatform/get_workflow_id/action.yml)
   - Get the ID of a specific workflow run.
 
@@ -154,10 +151,9 @@ For more information about versioning handle of this project, check following [f
 - [setup_cmake](ubuntu/setup_cmake/action.yml)
   - Set a specific CMake version
 
-### Windows
-
-- [merge_yaml_metas](windows/merge_yaml_metas/action.yml)
-  - Merge a set of yaml meta files into a single meta file
+- [get_related_branch_from_repo](ubuntu/get_related_branch_from_repo/action.yml)
+  - Get the related branch or tag from a remote repository.
+---
 
 ### macOS
 
@@ -270,7 +266,6 @@ Find below the external actions listed:
 | [codecov-action](external/codecov-action/action.yml) | Upload coverage report to codecov.io | MIT license |
 | [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
 | [get-cmake](external/get-cmake/action.yml) | Installs desired versions of CMake and Ninja | Mit license |
-| [install_doxygen](external/install_doxygen/action.yml) | Multi-platform action that installs doxygen | Mit license |
 | [mirror-branch-action](external/mirror-branch-action/action.yml) | Mirror branch within the same repository | Apache-2.0 license |
 | [remove_labels](external/remove_labels/action.yml) | Remove labels from an issue or PR | Apache-2.0 license |
 | [setup-ccache-action](external/setup-ccache-action/action.yml) | Setup CCache in a workflow | MIT license |
