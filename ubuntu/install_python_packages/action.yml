@@ -36,13 +36,13 @@ runs:
 
         # Install python packages if any
         if [[ ! -z "${{ inputs.packages }}" ]] ; then
-          pip3 install ${UPGRADE_FLAG} --user --break-system-packages \
+          pip3 install ${UPGRADE_FLAG} \
             ${{ inputs.packages }}
         fi
 
         # Install requirements file if any
         if [[ ! -z "${{ inputs.requirements_file_name }}" ]] ; then
-          pip3 install ${UPGRADE_FLAG} --user --break-system-packages \
+          pip3 install ${UPGRADE_FLAG} \
             -r ${{ inputs.requirements_file_name }}
         fi
 
