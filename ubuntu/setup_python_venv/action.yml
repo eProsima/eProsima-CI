@@ -15,7 +15,6 @@ runs:
         source .venv/bin/activate
         echo PATH=$PATH >> $GITHUB_ENV
 
-
         echo "::endgroup::"
 
       shell: bash
