@@ -1,0 +1,21 @@
+name: 'setup_python_venv'
+description: 'Setup a Python virtual environment and add it to the PATH'
+
+runs:
+  using: composite
+  steps:
+
+    - name: 'setup_python_venv'
+      run: |
+
+        echo "::group::Setup Python virtual environment"
+
+        # Create a virtual environment
+        python3 -m venv .venv
+        source .venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
+
+        echo "::endgroup::"
+
+      shell: bash

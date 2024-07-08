@@ -1,0 +1,14 @@
+name: setup_python_venv
+description: Setup a Python virtual environment and add it to the PATH
+
+runs:
+  using: composite
+  steps:
+
+    - name: Run in ubuntu
+      uses: eProsima/eProsima-CI/ubuntu/setup_python_venv@feature/ubuntu-24
+      if: runner.os == 'Linux'
+
+    - name: Run in windows
+      uses: eProsima/eProsima-CI/windows/setup_python_venv@feature/ubuntu-24
+      if: runner.os == 'Windows'
