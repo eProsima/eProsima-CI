@@ -8,12 +8,12 @@
 #  Finally it takes the install directory generated from colcon build and uploads it as an artifact.
 #  The result artifact also contains Fast DDS installed project.
 #  This is done for several OS and cmake built types:
-#    - ubuntu-22.04 | ubuntu-20.04 | windows-2019 | windows-2022
+#    - ubuntu-22.04 | ubuntu-24.04 | windows-2019 | windows-2022
 #    - Debug | Release
 #
 # ARTIFACT RESULT:
 #  The artifact generated is called "built_ddspipe_<os>_<cmake_build_type><postfix>"
-#    - <os> is "ubuntu-20.04", "ubuntu-22.04", "windows-2019", or "windows-2022"
+#    - <os> is "ubuntu-22.04", "ubuntu-24.04", "windows-2019", or "windows-2022"
 #    - <cmake_build_type> is "Debug", or "Release"
 #    - <postfix> is "_nightly" for schedule runs every night, or is set manually by the user.
 #
@@ -154,8 +154,8 @@ jobs:
           - Release
           - Debug
         os:
-          - ubuntu-20.04
           - ubuntu-22.04
+          - ubuntu-24.04
           - windows-2019
           - windows-2022
 
@@ -169,6 +169,10 @@ jobs:
         uses: eProsima/eProsima-CI/external/checkout@feature/ubuntu-24
         with:
           path: src/eprosima-CI
+
+      - name: Setup Python Virtual Environment
+        uses: eProsima/eProsima-CI/multiplatform/setup_python_venv@feature/ubuntu-24
+        if: runner.os == 'Linux'
 
       - name: Install Fast DDS dependencies
         uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@feature/ubuntu-24
@@ -232,8 +236,8 @@ jobs:
           - Release
           - Debug
         os:
-          - ubuntu-20.04
           - ubuntu-22.04
+          - ubuntu-24.04
           - windows-2019
           - windows-2022
 
@@ -247,6 +251,9 @@ jobs:
         uses: eProsima/eProsima-CI/external/checkout@feature/ubuntu-24
         with:
           path: src/eprosima-CI
+
+      - name: Setup Python Virtual Environment
+        uses: eProsima/eProsima-CI/multiplatform/setup_python_venv@feature/ubuntu-24
 
       - name: Install Fast DDS dependencies
         uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@feature/ubuntu-24
