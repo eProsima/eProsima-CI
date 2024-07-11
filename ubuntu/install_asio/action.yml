@@ -5,6 +5,6 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@feature/ubuntu-24
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
       with:
         packages: libasio-dev
