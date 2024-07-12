@@ -187,30 +187,30 @@ So far, the following workflows are running to upload artifacts:
 These are the artifacts that are generated every night with the latest versions of each project:
 
 - Fast DDS
-  - built_fastdds_ubuntu-20.04_Debug_nightly
-  - built_fastdds_ubuntu-20.04_Release_nightly
   - built_fastdds_ubuntu-22.04_Debug_nightly
   - built_fastdds_ubuntu-22.04_Release_nightly
+  - built_fastdds_ubuntu-24.04_Debug_nightly
+  - built_fastdds_ubuntu-24.04_Release_nightly
   - built_fastdds_windows-2019_Debug_nightly
   - built_fastdds_windows-2019_Release_nightly
   - built_fastdds_windows-2022_Debug_nightly
   - built_fastdds_windows-2022_Release_nightly
 
 - dev-utils
-  - built_dev_utils_ubuntu-20.04_Debug_nightly
-  - built_dev_utils_ubuntu-20.04_Release_nightly
   - built_dev_utils_ubuntu-22.04_Debug_nightly
   - built_dev_utils_ubuntu-22.04_Release_nightly
+  - built_dev_utils_ubuntu-24.04_Debug_nightly
+  - built_dev_utils_ubuntu-24.04_Release_nightly
   - built_dev_utils_windows-2019_Debug_nightly
   - built_dev_utils_windows-2019_Release_nightly
   - built_dev_utils_windows-2022_Debug_nightly
   - built_dev_utils_windows-2022_Release_nightly
 
 - DDS Pipe
-  - built_ddspipe_ubuntu-20.04_Debug_nightly
-  - built_ddspipe_ubuntu-20.04_Release_nightly
   - built_ddspipe_ubuntu-22.04_Debug_nightly
   - built_ddspipe_ubuntu-22.04_Release_nightly
+  - built_ddspipe_ubuntu-24.04_Debug_nightly
+  - built_ddspipe_ubuntu-24.04_Release_nightly
   - built_ddspipe_windows-2019_Debug_nightly
   - built_ddspipe_windows-2019_Release_nightly
   - built_ddspipe_windows-2022_Debug_nightly

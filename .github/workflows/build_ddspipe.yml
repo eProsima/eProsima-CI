@@ -170,6 +170,8 @@ jobs:
         with:
           path: src/eprosima-CI
 
+      # (TODO) Extend this step to apply to all OS (currently fails on Windows)
+      # This is only needed for Ubuntu 24.04 but has been added for all Linux OS for consistency
       - name: Setup Python Virtual Environment
         uses: eProsima/eProsima-CI/multiplatform/setup_python_venv@main
         if: runner.os == 'Linux'
@@ -252,6 +254,8 @@ jobs:
         with:
           path: src/eprosima-CI
 
+      # (TODO) Extend this step to apply to all OS (currently fails on Windows)
+      # This is only needed for Ubuntu 24.04 but has been added for all Linux OS for consistency
       - name: Setup Python Virtual Environment
         uses: eProsima/eProsima-CI/multiplatform/setup_python_venv@main
 
