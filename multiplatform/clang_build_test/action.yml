@@ -32,7 +32,7 @@ runs:
   steps:
 
     - name: Build
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@feature/ubuntu-24
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
@@ -41,6 +41,6 @@ runs:
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
 
     - name: Test clang
-      uses: eProsima/eProsima-CI/multiplatform/clang_tidy_check@main
+      uses: eProsima/eProsima-CI/multiplatform/clang_tidy_check@feature/ubuntu-24
       with:
         packages_names: ${{ inputs.packages_names }}

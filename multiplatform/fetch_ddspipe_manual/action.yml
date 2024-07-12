@@ -20,14 +20,14 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/fetch_ddspipe_manual@main
+      uses: eProsima/eProsima-CI/ubuntu/fetch_ddspipe_manual@feature/ubuntu-24
       if: runner.os == 'Linux'
       with:
         ddspipe_branch: ${{ inputs.ddspipe_branch }}
         destination_workspace: ${{ inputs.destination_workspace }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/fetch_ddspipe_manual@main
+      uses: eProsima/eProsima-CI/windows/fetch_ddspipe_manual@feature/ubuntu-24
       if: runner.os == 'Windows'
       with:
         ddspipe_branch: ${{ inputs.ddspipe_branch }}
