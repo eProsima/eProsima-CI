@@ -18,9 +18,25 @@ inputs:
     required: false
     default: ''
 
+  path:
+    description: 'Path to virtual environment'
+    required: false
+    default: '.venv'
+
+  activate_global:
+    description: 'Activate the virtual environment globally'
+    required: false
+    default: true
+
 runs:
   using: composite
   steps:
+
+    - name: setup_python_venv
+      uses: eProsima/eProsima-CI/ubuntu/setup_python_venv@feature/ubuntu-24
+      with:
+        path: ${{ inputs.path }}
+        activate_global: ${{ inputs.activate_global }}
 
     - name: install_python_packages
       run: |
