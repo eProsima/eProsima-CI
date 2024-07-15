@@ -33,7 +33,7 @@ runs:
   steps:
 
     - name: setup_python_venv
-      uses: eProsima/eProsima-CI/ubuntu/setup_python_venv@feature/ubuntu-24
+      uses: eProsima/eProsima-CI/ubuntu/setup_python_venv@main
       with:
         path: ${{ inputs.path }}
         activate_global: ${{ inputs.activate_global }}
