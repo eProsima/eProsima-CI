@@ -62,8 +62,8 @@ runs:
             -r ${{ inputs.requirements_file_name }}
         fi
 
-        python -m ensurepip --upgrade
-        python -m pip install --upgrade setuptools
+        python3 -m ensurepip --upgrade
+        python3 -m pip3 install --upgrade setuptools
 
         echo "::endgroup::"
 
