@@ -14,10 +14,10 @@ runs:
   steps:
 
     - name: Get ubuntu version
-      uses: eProsima/eProsima-CI/ubuntu/get_platform@feature/ubuntu-24
+      uses: eProsima/eProsima-CI/ubuntu/get_platform@main
 
     - name: Upgrade CMake in Ubuntu 20.04
-      uses: eProsima/eProsima-CI/external/get-cmake@feature/ubuntu-24
+      uses: eProsima/eProsima-CI/external/get-cmake@main
       with:
         cmakeVersion: '3.22.x'
       if: contains( ${{ env.EPROSIMA_UBUNTU_VERSION }} , '20.04' )
