@@ -36,8 +36,9 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - Update nightly builds to compile on Ubuntu 24.04.
-- Remove nightly builds for Ubuntu 22.04.
+- Remove nightly builds for Ubuntu 20.04.
 - Extended the action for installing python packages to setup a virtual environment.
+- Added new Ubuntu action (`setup_python_venv`) for setting up a python virtual environment.
 
 ## v0.21.0
 
