@@ -37,7 +37,7 @@ runs:
     # Both Windows, MacOS and Ubuntu can run this bash script
     - name: Get related branch from remote repository
       id: deduce_branch
-      uses: eProsima/eProsima-CI/ubuntu/get_related_branch_from_repo@main
+      uses: eProsima/eProsima-CI/ubuntu/get_related_branch_from_repo@feature/ubuntu-24
       with:
         remote_repository: ${{ inputs.remote_repository }}
         fallback_branch: ${{ inputs.fallback_branch }}
