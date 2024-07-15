@@ -12,7 +12,7 @@
 #    - Debug | Release
 #
 # ARTIFACT RESULT:
-#  The artifact generated is called "built_dev_utils_<os>_<cmake_build_type><postfix>"
+#  The artifact generated is called "build_dev_utils_<os>_<cmake_build_type><postfix>"
 #    - <os> is "ubuntu-22.04", "ubuntu-24.04", "windows-2019", or "windows-2022"
 #    - <cmake_build_type> is "Debug", or "Release"
 #    - <postfix> is "_nightly" for schedule runs every night, or is set manually from user.
@@ -168,7 +168,7 @@ on:
 env:
   default_configuration_branch: main
   default_artifact_postfix: _nightly
-  artifact_prefix: built_dev_utils
+  artifact_prefix: build_dev_utils
   default_dev_utils_branch: main
 
 jobs:
@@ -223,7 +223,7 @@ jobs:
       - name: Get Fast DDS artifact
         uses: eProsima/eProsima-CI/external/download-artifact@feature/ubuntu-24
         with:
-          name: built_fastdds_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          name: build_fastdds_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
       - name: Get colcon.meta and .repos files to build artifact
@@ -296,7 +296,7 @@ jobs:
       - name: Get Fast DDS artifact
         uses: eProsima/eProsima-CI/external/download-artifact@feature/ubuntu-24
         with:
-          name: built_fastdds_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          name: build_fastdds_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
       - name: Get colcon.meta to build artifact
