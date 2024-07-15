@@ -154,6 +154,9 @@ For more information about versioning handle of this project, check following [f
 - [setup_cmake](ubuntu/setup_cmake/action.yml)
   - Set a specific CMake version
 
+- [setup_python_venv](ubuntu/setup_python_venv/action.yml)
+  - Setup a Python virtual environment and add it to the PATH.
+
 ### Windows
 
 - [merge_yaml_metas](windows/merge_yaml_metas/action.yml)
@@ -184,34 +187,34 @@ So far, the following workflows are running to upload artifacts:
 These are the artifacts that are generated every night with the latest versions of each project:
 
 - Fast DDS
-  - built_fastdds_ubuntu-20.04_Debug_nightly
-  - built_fastdds_ubuntu-20.04_Release_nightly
-  - built_fastdds_ubuntu-22.04_Debug_nightly
-  - built_fastdds_ubuntu-22.04_Release_nightly
-  - built_fastdds_windows-2019_Debug_nightly
-  - built_fastdds_windows-2019_Release_nightly
-  - built_fastdds_windows-2022_Debug_nightly
-  - built_fastdds_windows-2022_Release_nightly
+  - build_fastdds_ubuntu-22.04_Debug_nightly
+  - build_fastdds_ubuntu-22.04_Release_nightly
+  - build_fastdds_ubuntu-24.04_Debug_nightly
+  - build_fastdds_ubuntu-24.04_Release_nightly
+  - build_fastdds_windows-2019_Debug_nightly
+  - build_fastdds_windows-2019_Release_nightly
+  - build_fastdds_windows-2022_Debug_nightly
+  - build_fastdds_windows-2022_Release_nightly
 
 - dev-utils
-  - built_dev_utils_ubuntu-20.04_Debug_nightly
-  - built_dev_utils_ubuntu-20.04_Release_nightly
-  - built_dev_utils_ubuntu-22.04_Debug_nightly
-  - built_dev_utils_ubuntu-22.04_Release_nightly
-  - built_dev_utils_windows-2019_Debug_nightly
-  - built_dev_utils_windows-2019_Release_nightly
-  - built_dev_utils_windows-2022_Debug_nightly
-  - built_dev_utils_windows-2022_Release_nightly
+  - build_dev_utils_ubuntu-22.04_Debug_nightly
+  - build_dev_utils_ubuntu-22.04_Release_nightly
+  - build_dev_utils_ubuntu-24.04_Debug_nightly
+  - build_dev_utils_ubuntu-24.04_Release_nightly
+  - build_dev_utils_windows-2019_Debug_nightly
+  - build_dev_utils_windows-2019_Release_nightly
+  - build_dev_utils_windows-2022_Debug_nightly
+  - build_dev_utils_windows-2022_Release_nightly
 
 - DDS Pipe
-  - built_ddspipe_ubuntu-20.04_Debug_nightly
-  - built_ddspipe_ubuntu-20.04_Release_nightly
-  - built_ddspipe_ubuntu-22.04_Debug_nightly
-  - built_ddspipe_ubuntu-22.04_Release_nightly
-  - built_ddspipe_windows-2019_Debug_nightly
-  - built_ddspipe_windows-2019_Release_nightly
-  - built_ddspipe_windows-2022_Debug_nightly
-  - built_ddspipe_windows-2022_Release_nightly
+  - build_ddspipe_ubuntu-22.04_Debug_nightly
+  - build_ddspipe_ubuntu-22.04_Release_nightly
+  - build_ddspipe_ubuntu-24.04_Debug_nightly
+  - build_ddspipe_ubuntu-24.04_Release_nightly
+  - build_ddspipe_windows-2019_Debug_nightly
+  - build_ddspipe_windows-2019_Release_nightly
+  - build_ddspipe_windows-2022_Debug_nightly
+  - build_ddspipe_windows-2022_Release_nightly
 
 In order to use one of these artifacts, use the following action as a step:
 
@@ -219,7 +222,7 @@ In order to use one of these artifacts, use the following action as a step:
 - name: Get fastdds artifact
   uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
   with:
-    artifact_name: built_fastdds_ubuntu-20.04_Debug_nightly
+    artifact_name: build_fastdds_ubuntu-20.04_Debug_nightly
     workflow_source: build_fastdds.yml
     workflow_source_repository: eProsima/eProsima-CI
     # Path where to download the installs from the artifact
@@ -238,7 +241,7 @@ set [dependencies.repos](.github/workflows/configurations/<artifact>/dependencie
 In order to change CMake options when building the artifact, set files in files in `.github/workflows/configurations/metas`.
 Run the `manual_build` workflow with these arguments:
 
-- `built_configuration_branch`: Branch created with `.repos` and `colcon.meta` files.
+- `build_configuration_branch`: Branch created with `.repos` and `colcon.meta` files.
 - `artifacts_name_postfix`: Postfix of the name of the artifact used to download and link, and also postfix of the name of the generated artifact.
 
 > :warning: Do not generate custom artifacts with postfix `_nightly`, as this is the main name other repos will use.
@@ -250,7 +253,7 @@ In order to run this workflow, create a branch in this repository,
 set [dependencies.repos](.github/workflows/configurations/manual/dependencies.repos) file with the repositories needed to build the project and set `colcon.meta` files in `.github/workflows/configurations/metas`.
 Then, run the `manual_build` workflow with these arguments:
 
-- `built_configuration_branch`: Branch created with `.repos` and `colcon.meta` files.
+- `build_configuration_branch`: Branch created with `.repos` and `colcon.meta` files.
 - `artifacts_name_prefix`: Prefix of the name of the artifact to generate.
 - `artifacts_name_postfix`: Postfix of the name of the artifact to generate.
 
