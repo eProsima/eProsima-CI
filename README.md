@@ -127,9 +127,6 @@ For more information about versioning handle of this project, check following [f
 - [tsan_build_test](multiplatform/tsan_build_test/action.yml)
   - Build a project using colcon and TSAN flags and execute tests.
 
-- [setup_python_venv](multiplatform/setup_python_venv/action.yml)
-  - Setup a Python virtual environment and add it to the PATH.
-
 - [vcs_import](multiplatform/vcs_import/action.yml)
   - Import several repositories from a Yaml file using `vcs`.
 
@@ -156,6 +153,9 @@ For more information about versioning handle of this project, check following [f
 
 - [setup_cmake](ubuntu/setup_cmake/action.yml)
   - Set a specific CMake version
+
+- [setup_python_venv](ubuntu/setup_python_venv/action.yml)
+  - Setup a Python virtual environment and add it to the PATH.
 
 ### Windows
 
