@@ -23,7 +23,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/clang_tidy_check@main
+      uses: eProsima/eProsima-CI/ubuntu/clang_tidy_check@v0
       if: runner.os == 'Linux'
       with:
         build_directory: ${{ inputs.build_directory }}
@@ -31,7 +31,7 @@ runs:
         result_file_name: ${{ inputs.result_file_name }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/clang_tidy_check@main
+      uses: eProsima/eProsima-CI/windows/clang_tidy_check@v0
       if: runner.os == 'Windows'
       with:
         build_directory: ${{ inputs.build_directory }}
