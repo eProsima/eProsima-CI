@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.23.0](#v0.23.0)
 - [v0.22.0](#v0.22.0)
 - [v0.21.0](#v0.21.0)
 - [v0.20.0](#v0.20.0)
@@ -35,6 +36,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.23.0
 
 - Check if python venv already exists in `setup_python_venv` action.
 - Set cmake-utils version to download in `sphinx_docs` action.
