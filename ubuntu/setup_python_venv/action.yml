@@ -22,9 +22,15 @@ runs:
 
         echo "::group::Setup Python virtual environment"
 
-        # Create a virtual environment
-        python3 -m venv ${{ inputs.path }}
-        source .venv/bin/activate
+        if [ -d "${{ inputs.path }}" ] && [ -f "${{ inputs.path }}/bin/activate" ]; then
+          echo "Virtual environment exists."
+        else
+          # Create a virtual environment
+          python3 -m venv ${{ inputs.path }}
+        fi
+
+        # Activate the virtual environment
+        source ${{ inputs.path }}/bin/activate
 
         if [ "${{ inputs.activate_global }}" = "true" ]; then
           echo PATH=$PATH >> $GITHUB_ENV
