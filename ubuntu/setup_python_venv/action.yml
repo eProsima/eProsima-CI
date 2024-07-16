@@ -27,11 +27,13 @@ runs:
         else
           # Create a virtual environment
           python3 -m venv ${{ inputs.path }}
-          source ${{ inputs.path }}/bin/activate
+        fi
 
-          if [ "${{ inputs.activate_global }}" = "true" ]; then
-            echo PATH=$PATH >> $GITHUB_ENV
-          fi
+        # Activate the virtual environment
+        source ${{ inputs.path }}/bin/activate
+
+        if [ "${{ inputs.activate_global }}" = "true" ]; then
+          echo PATH=$PATH >> $GITHUB_ENV
         fi
 
         echo "::endgroup::"
