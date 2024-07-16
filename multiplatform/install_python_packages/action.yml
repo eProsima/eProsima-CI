@@ -23,7 +23,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@hotfix/setup-python-venv
       if: runner.os == 'Linux'
       with:
         packages: ${{ inputs.packages }}
@@ -31,7 +31,7 @@ runs:
         requirements_file_name: ${{ inputs.requirements_file_name }}
 
     - name: Run in macOS
-      uses: eProsima/eProsima-CI/macos/install_python_packages@main
+      uses: eProsima/eProsima-CI/macos/install_python_packages@hotfix/setup-python-venv
       if: runner.os == 'macOS'
       with:
         packages: ${{ inputs.packages }}
@@ -39,7 +39,7 @@ runs:
         requirements_file_name: ${{ inputs.requirements_file_name }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_python_packages@main
+      uses: eProsima/eProsima-CI/windows/install_python_packages@hotfix/setup-python-venv
       if: runner.os == 'Windows'
       with:
         packages: ${{ inputs.packages }}

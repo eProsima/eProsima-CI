@@ -48,7 +48,7 @@ runs:
         # These issues were fixed in GCC 12 so we upgrade to that version.
         CC: gcc-12
         CXX: g++-12
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build_test@hotfix/setup-python-venv
       with:
         packages_names: ${{ inputs.packages_names }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}

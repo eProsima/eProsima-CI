@@ -24,7 +24,7 @@ runs:
 
         if [ -d "${{ inputs.path }}" ] && [ -f "${{ inputs.path }}/bin/activate" ]; then
           echo "Virtual environment exists."
-
+        else
           # Create a virtual environment
           python3 -m venv ${{ inputs.path }}
           source ${{ inputs.path }}/bin/activate
