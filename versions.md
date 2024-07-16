@@ -36,6 +36,9 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Check if python venv already exists in `setup_python_venv` action.
+- Set cmake-utils version to download in `sphinx_docs` action.
+
 ## v0.22.0
 
 - Update nightly builds to compile on Ubuntu 24.04.
