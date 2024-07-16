@@ -187,34 +187,34 @@ So far, the following workflows are running to upload artifacts:
 These are the artifacts that are generated every night with the latest versions of each project:
 
 - Fast DDS
-  - build_fastdds_ubuntu-22.04_Debug_nightly
-  - build_fastdds_ubuntu-22.04_Release_nightly
-  - build_fastdds_ubuntu-24.04_Debug_nightly
-  - build_fastdds_ubuntu-24.04_Release_nightly
-  - build_fastdds_windows-2019_Debug_nightly
-  - build_fastdds_windows-2019_Release_nightly
-  - build_fastdds_windows-2022_Debug_nightly
-  - build_fastdds_windows-2022_Release_nightly
+  - build_fastdds_<fastdds-version>_ubuntu-22.04_Debug_nightly
+  - build_fastdds_<fastdds-version>_ubuntu-22.04_Release_nightly
+  - build_fastdds_<fastdds-version>_ubuntu-24.04_Debug_nightly
+  - build_fastdds_<fastdds-version>_ubuntu-24.04_Release_nightly
+  - build_fastdds_<fastdds-version>_windows-2019_Debug_nightly
+  - build_fastdds_<fastdds-version>_windows-2019_Release_nightly
+  - build_fastdds_<fastdds-version>_windows-2022_Debug_nightly
+  - build_fastdds_<fastdds-version>_windows-2022_Release_nightly
 
 - dev-utils
-  - build_dev_utils_ubuntu-22.04_Debug_nightly
-  - build_dev_utils_ubuntu-22.04_Release_nightly
-  - build_dev_utils_ubuntu-24.04_Debug_nightly
-  - build_dev_utils_ubuntu-24.04_Release_nightly
-  - build_dev_utils_windows-2019_Debug_nightly
-  - build_dev_utils_windows-2019_Release_nightly
-  - build_dev_utils_windows-2022_Debug_nightly
-  - build_dev_utils_windows-2022_Release_nightly
+  - build_dev_utils_<fastdds-version>_ubuntu-22.04_Debug_nightly
+  - build_dev_utils_<fastdds-version>_ubuntu-22.04_Release_nightly
+  - build_dev_utils_<fastdds-version>_ubuntu-24.04_Debug_nightly
+  - build_dev_utils_<fastdds-version>_ubuntu-24.04_Release_nightly
+  - build_dev_utils_<fastdds-version>_windows-2019_Debug_nightly
+  - build_dev_utils_<fastdds-version>_windows-2019_Release_nightly
+  - build_dev_utils_<fastdds-version>_windows-2022_Debug_nightly
+  - build_dev_utils_<fastdds-version>_windows-2022_Release_nightly
 
 - DDS Pipe
-  - build_ddspipe_ubuntu-22.04_Debug_nightly
-  - build_ddspipe_ubuntu-22.04_Release_nightly
-  - build_ddspipe_ubuntu-24.04_Debug_nightly
-  - build_ddspipe_ubuntu-24.04_Release_nightly
-  - build_ddspipe_windows-2019_Debug_nightly
-  - build_ddspipe_windows-2019_Release_nightly
-  - build_ddspipe_windows-2022_Debug_nightly
-  - build_ddspipe_windows-2022_Release_nightly
+  - build_ddspipe_<fastdds-version>_ubuntu-22.04_Debug_nightly
+  - build_ddspipe_<fastdds-version>_ubuntu-22.04_Release_nightly
+  - build_ddspipe_<fastdds-version>_ubuntu-24.04_Debug_nightly
+  - build_ddspipe_<fastdds-version>_ubuntu-24.04_Release_nightly
+  - build_ddspipe_<fastdds-version>_windows-2019_Debug_nightly
+  - build_ddspipe_<fastdds-version>_windows-2019_Release_nightly
+  - build_ddspipe_<fastdds-version>_windows-2022_Debug_nightly
+  - build_ddspipe_<fastdds-version>_windows-2022_Release_nightly
 
 In order to use one of these artifacts, use the following action as a step:
 
