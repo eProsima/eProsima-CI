@@ -57,20 +57,20 @@ runs:
   steps:
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/external/checkout@main
       with:
         path: '${{ github.workspace }}/check'
 
     - name: Fetch all branches and tags
-      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
       with:
         workspace: '${{ github.workspace }}/check'
 
     - name: Install uncrustify
-      uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)
@@ -94,7 +94,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
       with:
         result_env_var: MODIFIED_FILES
         head_ref: origin/${GITHUB_HEAD_REF}

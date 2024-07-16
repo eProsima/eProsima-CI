@@ -22,7 +22,7 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/vcs_import@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/ubuntu/vcs_import@main
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
@@ -30,7 +30,7 @@ runs:
         skip_existing: ${{ inputs.skip_existing }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/vcs_import@hotfix/setup-python-venv
+      uses: eProsima/eProsima-CI/windows/vcs_import@main
       if: runner.os == 'Windows'
       with:
         vcs_repos_file: ${{ inputs.vcs_repos_file }}
