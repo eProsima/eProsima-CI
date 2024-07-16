@@ -50,6 +50,13 @@ inputs:
     required: false
     default: ''
 
+  custom_version_build:
+    description: >
+      Version of Fast DDS build from eProsima-CI.
+    required: false
+    type: string
+    default: 'v2'
+
 runs:
   using: composite
   steps:
@@ -70,7 +77,7 @@ runs:
     - name: Download cmake_utils artifact
       uses: eProsima/eProsima-CI/multiplatform/download_dependency@hotfix/setup-python-venv
       with:
-        artifact_name: build_dev_utils_ubuntu-22.04_Release_nightly
+        artifact_name: build_dev_utils_${{ inputs.custom_version_build }}_ubuntu-22.04_Release_nightly
         workflow_source: build_dev_utils.yml
         workflow_source_repository: eProsima/eProsima-CI
         target_workspace: '${{ github.workspace }}/install'
