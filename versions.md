@@ -37,6 +37,9 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Fix the windows action colcon build to accept multiple colcon meta files.
+- Remove the windows action merge yaml meta files.
+
 ## v0.23.0
 
 - Check if python venv already exists in `setup_python_venv` action.

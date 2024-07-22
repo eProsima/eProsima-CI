@@ -4,9 +4,9 @@ description: Use colcon build command to build multiple packages
 inputs:
 
   colcon_meta_file:
-    description: colcon.meta file to set cmake options. If empty, it uses an empty file
+    description: colcon.meta file to set cmake options. If empty, it uses a non-existing file
     required: false
-    default: ''
+    default: '__invalid.meta'
 
   colcon_build_args:
     description: Arguments to pass to colcon build command (use cmake_args input for CMake options)
@@ -57,14 +57,7 @@ runs:
           ${{ inputs.workspace_dependencies }}/setup.ps1
         }
 
-        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
-          New-Item -ItemType File "${{ inputs.workspace }}\colcon.meta"
-          $env:COLCON_BUILD_META_ = "${{ inputs.workspace }}\colcon.meta"
-        } else {
-          $env:COLCON_BUILD_META_ = "${{ inputs.colcon_meta_file }}"
-        }
-
-        echo "Using colcon.meta file <$env:COLCON_BUILD_META_>"
+        echo "Using colcon.meta file(s) <${{ inputs.colcon_meta_file }}>"
 
         cd ${{ inputs.workspace }}
 
@@ -77,16 +70,10 @@ runs:
           -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
 
         colcon build `
-          --metas $env:COLCON_BUILD_META_ `
+          --metas ${{ inputs.colcon_meta_file }} `
           ${{ inputs.colcon_build_args_default }} `
           ${{ inputs.colcon_build_args }} `
           --cmake-args `
             -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} ${{ inputs.cmake_args_default }} ${{ inputs.cmake_args }}
-
-        cd -
-
-        if ([string]::IsNullOrEmpty("${{ inputs.colcon_meta_file }}")) {
-          Remove-Item -Path "${{ inputs.workspace }}\colcon.meta"
-        }
 
         "::endgroup::"

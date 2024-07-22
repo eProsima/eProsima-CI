@@ -157,11 +157,6 @@ For more information about versioning handle of this project, check following [f
 - [setup_python_venv](ubuntu/setup_python_venv/action.yml)
   - Setup a Python virtual environment and add it to the PATH.
 
-### Windows
-
-- [merge_yaml_metas](windows/merge_yaml_metas/action.yml)
-  - Merge a set of yaml meta files into a single meta file
-
 ### macOS
 
 - [install_brew_packages](macos/install_brew_packages/action.yml)
