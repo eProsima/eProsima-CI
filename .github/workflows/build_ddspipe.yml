@@ -130,7 +130,7 @@ jobs:
   build_dev_utils:
 
     name: build_dev_utils
-    uses: eProsima/eProsima-CI/.github/workflows/build_dev_utils.yml@main
+    uses: eProsima/eProsima-CI/.github/workflows/build_dev_utils.yml@v0
     with:
       single_version_build: ${{ inputs.single_version_build || false }}
       configuration_branch: ${{ inputs.configuration_branch }}
@@ -166,28 +166,28 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: eProsima/eProsima-CI/external/checkout@main
+        uses: eProsima/eProsima-CI/external/checkout@v0
         with:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@v0
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Install yaml cpp dependency
-        uses: eProsima/eProsima-CI/multiplatform/install_yamlcpp@main
+        uses: eProsima/eProsima-CI/multiplatform/install_yamlcpp@v0
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Get dev-utils artifact
-        uses: eProsima/eProsima-CI/external/download-artifact@main
+        uses: eProsima/eProsima-CI/external/download-artifact@v0
         with:
           name: build_dev_utils_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
       - name: Get colcon.meta to build artifact
-        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@v0
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
@@ -196,13 +196,13 @@ jobs:
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
       - name: Fetch DDS Pipe repositories
-        uses: eProsima/eProsima-CI/multiplatform/fetch_ddspipe_manual@main
+        uses: eProsima/eProsima-CI/multiplatform/fetch_ddspipe_manual@v0
         with:
           ddspipe_branch: ${{ inputs.ddspipe_branch || env.default_ddspipe_branch }}
           destination_workspace: ${{ github.workspace }}/src
 
       - name: Build workspace
-        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@v0
         with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}
@@ -210,7 +210,7 @@ jobs:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Upload binaries
-        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        uses: eProsima/eProsima-CI/external/upload-artifact@v0
         with:
           name: ${{ env.artifact_prefix }}_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: ${{ github.workspace }}/install
@@ -244,28 +244,28 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: eProsima/eProsima-CI/external/checkout@main
+        uses: eProsima/eProsima-CI/external/checkout@v0
         with:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@v0
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Install yaml cpp dependency
-        uses: eProsima/eProsima-CI/multiplatform/install_yamlcpp@main
+        uses: eProsima/eProsima-CI/multiplatform/install_yamlcpp@v0
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Get dev-utils artifact
-        uses: eProsima/eProsima-CI/external/download-artifact@main
+        uses: eProsima/eProsima-CI/external/download-artifact@v0
         with:
           name: build_dev_utils_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
       - name: Get colcon.meta and .repos files to build artifact
-        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@v0
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
@@ -274,13 +274,13 @@ jobs:
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
       - name: Fetch DDS Pipe repositories with vcs-tool
-        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@v0
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
           destination_workspace: ${{ github.workspace }}/src
 
       - name: Build workspace
-        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@v0
         with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}
@@ -288,7 +288,7 @@ jobs:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Upload binaries
-        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        uses: eProsima/eProsima-CI/external/upload-artifact@v0
         with:
           name: ${{ env.artifact_prefix }}_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: ${{ github.workspace }}/install
