@@ -25,6 +25,13 @@ inputs:
       This is the only branch that is checked for existence in the remote repository in events other that "pull_request".
     required: true
 
+  skip_base:
+    description: >
+      Skip the base branch deduction in case the PR's source branch is not found.
+      This is useful when the base branch is not relevant for the workflow.
+    required: false
+    default: false
+
 outputs:
   deduced_branch:
     description: "Deduced branch"
@@ -41,3 +48,4 @@ runs:
       with:
         remote_repository: ${{ inputs.remote_repository }}
         fallback_branch: ${{ inputs.fallback_branch }}
+        skip_base: ${{ inputs.skip_base }}

@@ -25,6 +25,13 @@ inputs:
       This is the only branch that is checked for existence in the remote repository in events other that "pull_request".
     required: true
 
+  skip_base:
+    description: >
+      Skip the base branch deduction in case the PR's source branch is not found.
+      This is useful when the base branch is not relevant for the workflow.
+    required: false
+    default: false
+
 outputs:
   deduced_branch:
     description: "Deduced branch"
@@ -75,7 +82,7 @@ runs:
           fi
 
           # Attempt to use PR's base branch
-          if [ ${exit_code} == "1" ] && [ $(branch_exists ${remote_repo} ${{ github.base_ref }}) == "true" ]
+          if [ ${exit_code} == "1" ] && [${{ inputs.skip_base }} == "false"] && [ $(branch_exists ${remote_repo} ${{ github.base_ref }}) == "true" ]
           then
             result_branch=${{ github.base_ref }}
             exit_code=0
