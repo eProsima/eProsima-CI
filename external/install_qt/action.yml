@@ -1,0 +1,39 @@
+name: 'install_qt'
+description: 'https://github.com/jurplel/install-qt-action'
+
+inputs:
+  version:
+    description: "The desired version of Qt to install"
+    type: string
+    default: '5.15.2'
+  target:
+    description: "The target platform to install Qt on"
+    type: string
+    default: 'desktop'
+  dir:
+    description: "The directory to install Qt in"
+  install-deps:
+    description: "Whether to install dependencies"
+    type: boolean
+    default: true
+  modules:
+    description: "The Qt modules to install"
+    type: string
+    default: ''
+  setup-python:
+    description: "Whether to setup Python"
+    type: boolean
+    default: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4.0.0
+      with:
+          version: ${{ inputs.version }}
+          target: ${{ inputs.target }}
+          dir: ${{ inputs.dir }}
+          install-deps: ${{ inputs.install-deps }}
+          modules: ${{ inputs.modules }}
+          setup-python: ${{ inputs.setup-python }}
