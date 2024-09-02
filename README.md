@@ -269,6 +269,7 @@ Find below the external actions listed:
 | [create-pull-request](external/create-pull-request/action.yml) | Create PR | MIT license |
 | [get-cmake](external/get-cmake/action.yml) | Installs desired versions of CMake and Ninja | Mit license |
 | [install_doxygen](external/install_doxygen/action.yml) | Multi-platform action that installs doxygen | Mit license |
+| [install_qt](external/install_qt/action.yml) | Multi-platform action that installs Qt | MIT license |
 | [mirror-branch-action](external/mirror-branch-action/action.yml) | Mirror branch within the same repository | Apache-2.0 license |
 | [remove_labels](external/remove_labels/action.yml) | Remove labels from an issue or PR | Apache-2.0 license |
 | [setup-ccache-action](external/setup-ccache-action/action.yml) | Setup CCache in a workflow | MIT license |

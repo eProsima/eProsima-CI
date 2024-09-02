@@ -39,6 +39,7 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - Add `skip_base` option to the `get_related_branch_from_repo` action so base branch is not considered.
+- Add external (multi-platform) action to install Qt.
 
 ## v0.24.0
 
