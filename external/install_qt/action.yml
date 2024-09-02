@@ -16,6 +16,10 @@ inputs:
     description: "Whether to install dependencies"
     type: boolean
     default: true
+  arch:
+    description: "The architecture to install Qt for"
+    type: string
+    default: 'gcc_64'
   modules:
     description: "The Qt modules to install"
     type: string
