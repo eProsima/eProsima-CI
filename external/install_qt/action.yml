@@ -1,5 +1,8 @@
 name: 'install_qt'
-description: 'https://github.com/jurplel/install-qt-action'
+description: >
+  https://github.com/jurplel/install-qt-action
+  There are more possible inputs used in the original action, but these are the most used by eProsima.
+  Please, refer to the original action for more information.
 
 inputs:
   version:
@@ -10,16 +13,16 @@ inputs:
     description: "The target platform to install Qt on"
     type: string
     default: 'desktop'
+  arch:
+    description: "The architecture to install Qt for"
+    type: string
+    default: 'gcc_64'
   dir:
     description: "The directory to install Qt in"
   install-deps:
     description: "Whether to install dependencies"
     type: boolean
     default: true
-  arch:
-    description: "The architecture to install Qt for"
-    type: string
-    default: 'gcc_64'
   modules:
     description: "The Qt modules to install"
     type: string
@@ -28,7 +31,7 @@ inputs:
     description: "Whether to setup Python"
     type: boolean
     default: true
-
+ # Other inputs as tools, source, documentation, examples, etc. are not included here, but can be added if needed.
 runs:
   using: composite
   steps:
@@ -37,7 +40,9 @@ runs:
       with:
           version: ${{ inputs.version }}
           target: ${{ inputs.target }}
+          arch: ${{ inputs.arch }}
           dir: ${{ inputs.dir }}
           install-deps: ${{ inputs.install-deps }}
           modules: ${{ inputs.modules }}
           setup-python: ${{ inputs.setup-python }}
+          # Other inputs as tools, source, documentation, examples, etc. are not included, but can be added if needed.
