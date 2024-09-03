@@ -24,6 +24,12 @@ inputs:
 
       Minimum 1 day.
       Maximum 90 days unless changed from the repository settings page.
+  include-hidden-files:
+    description: >
+      Whether to include hidden files in the provided path in the artifact
+      The file contents of any hidden files in the path should be validated before
+      enabled this to avoid uploading sensitive information.
+    default: 'true'
 
 runs:
   using: composite
@@ -40,9 +46,10 @@ runs:
         echo "::endgroup::"
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.4
       with:
-        name:               ${{ env.normalized_name }}
-        path:               ${{ inputs.path }}
-        if-no-files-found:  ${{ inputs.if-no-files-found }}
-        retention-days:     ${{ inputs.retention-days }}
+        name:                 ${{ env.normalized_name }}
+        path:                 ${{ inputs.path }}
+        if-no-files-found:    ${{ inputs.if-no-files-found }}
+        retention-days:       ${{ inputs.retention-days }}
+        include-hidden-files: ${{ inputs.include-hidden-files }}
