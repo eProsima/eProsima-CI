@@ -39,6 +39,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add `include-hidden-files` input as `true` by default to the [upload-artifact](/external/upload-artifact/action.yml) action.
+
 ## v0.25.0
 
 - Add `skip_base` option to the `get_related_branch_from_repo` action so base branch is not considered.
