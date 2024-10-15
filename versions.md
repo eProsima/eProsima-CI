@@ -41,6 +41,9 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Change default value for workspace in multiplatform [colcon-build](/multiplatform/colcon_build/action.yml) action.
+- Pass workspace_dependencies in [sphinx-docs](/ubuntu/sphinx_docs/action.yml) action.
+
 ## v0.27.0
 
 - Upgrade setuptools to 74.1.3.

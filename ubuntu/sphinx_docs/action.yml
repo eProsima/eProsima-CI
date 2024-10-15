@@ -85,16 +85,17 @@ runs:
         workflow_conclusion: completed
 
     - name: Build documentation with colcon
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_build@main
       with:
         colcon_build_args: '--packages-select ${{ inputs.docs_subpackage_name }}'
         cmake_args: '${{ inputs.specific_cmake_args }}'
         workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Run colcon test of documentation
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
       with:
-        colcon_test_args: --packages-select ${{ inputs.docs_subpackage_name }}
+        packages_names: ${{ inputs.docs_subpackage_name }}
+        workspace_dependencies: '${{ github.workspace }}/install'
 
     - name: Upload documentation
       uses: eProsima/eProsima-CI/external/upload-artifact@main
