@@ -44,6 +44,7 @@ The upcoming release will include the following **features**:
 
 ## v0.28.0
 
+- Fix [upload-artifact](/external/upload-artifact/action) action version to ``v4.4.0``.
 - Change default value for workspace in multiplatform [colcon-build](/multiplatform/colcon_build/action.yml) action.
 - Pass workspace_dependencies in [sphinx-docs](/ubuntu/sphinx_docs/action.yml) action.
 
