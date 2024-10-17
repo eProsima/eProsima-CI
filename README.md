@@ -3,6 +3,12 @@
 This is a github CI auxiliary repo that contains common github steps, actions, and workflows shared along multiple eProsima libraries and tools.
 The main idea is to collect every repeated or generic step of any CI to have a single more maintainable generic point.
 
+## Commercial support
+
+Looking for commercial support? Write us to info@eprosima.com
+
+Find more about us at [eProsima’s webpage](https://eprosima.com/).
+
 ## Index
 
 - [User manual](#user-manual)
