@@ -35,7 +35,8 @@ inputs:
         - jest-junit
         - mocha-json
         - mochawesome-json
-    required: true
+    required: false
+    default: 'java-junit'
 
   list-suites:
     description: |
@@ -127,16 +128,16 @@ runs:
       id: generate_test_report
       uses: phoenix-actions/test-reporting@v15
       with:
-          artifact: ${{ inputs.artifact}}
-          name: ${{ inputs.name}}
-          path: ${{ inputs.path}}
-          path-replace-backslashes: ${{ inputs.path-replace-backslashes}}
-          reporter: ${{ inputs.reporter}}
-          list-suites: ${{ inputs.list-suites}}
-          list-tests: ${{ inputs.list-tests}}
-          max-annotations: ${{ inputs.max-annotations}}
-          fail-on-error: ${{ inputs.fail-on-error}}
-          working-directory: ${{ inputs.working-directory}}
-          only-summary: ${{ inputs.only-summary}}
-          output-to: ${{ inputs.output-to}}
-          token: ${{ inputs.token}}
+          artifact: ${{ inputs.artifact }}
+          name: ${{ inputs.name }}
+          path: ${{ inputs.path }}
+          path-replace-backslashes: ${{ inputs.path-replace-backslashes }}
+          reporter: ${{ inputs.reporter }}
+          list-suites: ${{ inputs.list-suites }}
+          list-tests: ${{ inputs.list-tests }}
+          max-annotations: ${{ inputs.max-annotations }}
+          fail-on-error: ${{ inputs.fail-on-error }}
+          working-directory: ${{ inputs.working-directory }}
+          only-summary: ${{ inputs.only-summary }}
+          output-to: ${{ inputs.output-to }}
+          token: ${{ inputs.token }}
