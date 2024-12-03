@@ -57,6 +57,20 @@ inputs:
     type: string
     default: 'v2'
 
+  upload_artifact_name:
+    description: >
+      Name of the artifact to upload.
+    required: false
+    type: string
+    default: 'Documentation'
+
+  upload_artifact:
+    description: >
+      Whether to upload the generated documentation as an artifact or not.
+    required: false
+    type: boolean
+    default: true
+
 runs:
   using: composite
   steps:
@@ -99,6 +113,7 @@ runs:
 
     - name: Upload documentation
       uses: eProsima/eProsima-CI/external/upload-artifact@main
+      if: ${{ inputs.upload_artifact }}
       with:
-        name: Documentation HTML ${{ inputs.docs_subpackage_name }}
+        name: ${{ inputs.upload_artifact_name }}
         path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/
