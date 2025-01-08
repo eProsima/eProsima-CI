@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.30.0](#v0.30.0)
 - [v0.29.0](#v0.29.0)
 - [v0.28.0](#v0.28.0)
 - [v0.27.0](#v0.27.0)
@@ -42,6 +43,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.30.0
+
+- Upgrade [upload-artifact](/external/upload-artifact/action) action version to ``v4.4.1``.
 
 ## v0.29.0
 
