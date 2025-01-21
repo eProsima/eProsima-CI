@@ -54,7 +54,7 @@ runs:
   steps:
 
     - name: Build
-      uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_build@hotfix/upgrade-setuptools
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
@@ -65,7 +65,7 @@ runs:
 
     - name: Test
       id: test
-      uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
+      uses: eProsima/eProsima-CI/multiplatform/colcon_test@hotfix/upgrade-setuptools
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}

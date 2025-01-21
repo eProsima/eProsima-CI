@@ -176,7 +176,7 @@ jobs:
   build_fastdds:
 
     name: build_fastdds
-    uses: eProsima/eProsima-CI/.github/workflows/build_fastdds.yml@main
+    uses: eProsima/eProsima-CI/.github/workflows/build_fastdds.yml@hotfix/upgrade-setuptools
     with:
       single_version_build: ${{ inputs.single_version_build || false }}
       configuration_branch: ${{ inputs.configuration_branch }}
@@ -211,23 +211,23 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: eProsima/eProsima-CI/external/checkout@main
+        uses: eProsima/eProsima-CI/external/checkout@hotfix/upgrade-setuptools
         with:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@hotfix/upgrade-setuptools
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Get Fast DDS artifact
-        uses: eProsima/eProsima-CI/external/download-artifact@main
+        uses: eProsima/eProsima-CI/external/download-artifact@hotfix/upgrade-setuptools
         with:
           name: build_fastdds_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
       - name: Get colcon.meta and .repos files to build artifact
-        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@hotfix/upgrade-setuptools
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
@@ -236,13 +236,13 @@ jobs:
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
       - name: Fetch dev-utils repositories
-        uses: eProsima/eProsima-CI/multiplatform/fetch_dev_utils_manual@main
+        uses: eProsima/eProsima-CI/multiplatform/fetch_dev_utils_manual@hotfix/upgrade-setuptools
         with:
           dev_utils_branch: ${{ inputs.dev_utils_branch || env.default_dev_utils_branch }}
           destination_workspace: ${{ github.workspace }}/src
 
       - name: Build workspace
-        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@hotfix/upgrade-setuptools
         with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}
@@ -250,7 +250,7 @@ jobs:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Upload binaries
-        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        uses: eProsima/eProsima-CI/external/upload-artifact@hotfix/upgrade-setuptools
         with:
           name: ${{ env.artifact_prefix }}_custom_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: ${{ github.workspace }}/install
@@ -284,23 +284,23 @@ jobs:
     steps:
 
       - name: Sync this repository
-        uses: eProsima/eProsima-CI/external/checkout@main
+        uses: eProsima/eProsima-CI/external/checkout@hotfix/upgrade-setuptools
         with:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@hotfix/upgrade-setuptools
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Get Fast DDS artifact
-        uses: eProsima/eProsima-CI/external/download-artifact@main
+        uses: eProsima/eProsima-CI/external/download-artifact@hotfix/upgrade-setuptools
         with:
           name: build_fastdds_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: install
 
       - name: Get colcon.meta to build artifact
-        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@hotfix/upgrade-setuptools
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/${{ matrix.os }}/colcon.meta
@@ -309,13 +309,13 @@ jobs:
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
       - name: Fetch dev-utils repositories with vcs-tool
-        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@hotfix/upgrade-setuptools
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
           destination_workspace: ${{ github.workspace }}/src
 
       - name: Build workspace
-        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@hotfix/upgrade-setuptools
         with:
           colcon_meta_file: ${{ github.workspace }}/colcon.meta
           workspace: ${{ github.workspace }}
@@ -323,7 +323,7 @@ jobs:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
       - name: Upload binaries
-        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        uses: eProsima/eProsima-CI/external/upload-artifact@hotfix/upgrade-setuptools
         with:
           name: ${{ env.artifact_prefix }}_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
           path: ${{ github.workspace }}/install
