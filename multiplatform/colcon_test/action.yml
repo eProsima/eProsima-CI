@@ -49,6 +49,13 @@ inputs:
     required: false
     default: ''
 
+  upload_test_report_artifact:
+    description: >
+      Whether to upload the tests results as an artifact or not.
+    required: false
+    default: true
+
+
 outputs:
   ctest_results_path:
     description: "Path to test results"
@@ -72,6 +79,7 @@ runs:
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         test_report_artifact: ${{ inputs.test_report_artifact }}
+        upload_test_report_artifact: ${{ inputs.upload_test_report_artifact }}
 
     - name: Run in windows
       id: test_windows
@@ -87,3 +95,4 @@ runs:
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         test_report_artifact: ${{ inputs.test_report_artifact }}
+        upload_test_report_artifact: ${{ inputs.upload_test_report_artifact }}

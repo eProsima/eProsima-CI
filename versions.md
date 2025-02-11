@@ -45,6 +45,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add an option whether to upload the test aritfact or not.
+
 ## v0.31.0
 
 - Upgrade [upload-artifact](/external/upload-artifact/action) action version to ``v4.6.0``.

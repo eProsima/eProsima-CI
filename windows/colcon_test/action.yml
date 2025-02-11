@@ -49,6 +49,13 @@ inputs:
     required: false
     default: ''
 
+  upload_test_report_artifact:
+    description: >
+      Whether to upload the tests results as an artifact or not.
+    required: false
+    default: 'true'
+
+
 outputs:
   ctest_results_path:
     description: "Path to test results"
@@ -140,7 +147,7 @@ runs:
 
     - name: Upload test report in JUnit format
       uses: eProsima/eProsima-CI/external/upload-artifact@main
-      if: ${{ ! cancelled() }}
+      if: ${{ inputs.upload_test_report_artifact == 'true' && !cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}_{2}', github.workflow, github.job, join(matrix.*, '_')) }}
           path: "${{ inputs.workspace }}\\test_results"

@@ -57,6 +57,19 @@ inputs:
     type: string
     default: 'v2'
 
+  test_report_artifact:
+    description: >
+      Name of the artifact to be uploaded containing the test report in JUnit format. It shall be unique within the workflow run.
+      Default: test_report_<github.workflow>_<github.job>_<matrix.*>
+    required: false
+    default: ''
+
+  upload_test_report_artifact:
+    description: >
+      Whether to upload the tests results as an artifact or not.
+    required: false
+    default: 'true'
+
   upload_artifact_name:
     description: >
       Name of the artifact to upload.
@@ -68,8 +81,7 @@ inputs:
     description: >
       Whether to upload the generated documentation as an artifact or not.
     required: false
-    type: boolean
-    default: true
+    default: 'true'
 
 runs:
   using: composite
@@ -110,10 +122,12 @@ runs:
       with:
         packages_names: ${{ inputs.docs_subpackage_name }}
         workspace_dependencies: '${{ github.workspace }}/install'
+        test_report_artifact: ${{ inputs.test_report_artifact }}
+        upload_test_report_artifact: ${{ inputs.upload_test_report_artifact }}
 
     - name: Upload documentation
       uses: eProsima/eProsima-CI/external/upload-artifact@main
-      if: ${{ inputs.upload_artifact }}
+      if: ${{ inputs.upload_artifact == 'true' }}
       with:
         name: ${{ inputs.upload_artifact_name }}
         path: install/${{ inputs.docs_subpackage_name }}/docs/${{ inputs.docs_subpackage_name }}/sphinx/html/
