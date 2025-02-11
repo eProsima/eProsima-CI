@@ -29,6 +29,12 @@ inputs:
     required: false
     default: ''
 
+  upload_test_report_artifact:
+    description: >
+      Whether to upload the tests results as an artifact or not.
+    required: false
+    default: true
+
   cmake_build_type:
     description: 'Set the cmake build type'
     required: false
@@ -71,6 +77,7 @@ runs:
         workspace: ${{ inputs.workspace }}
         packages_names: ${{ inputs.packages_names }}
         test_report_artifact: ${{ inputs.test_report_artifact }}
+        upload_test_report_artifact: ${{ inputs.upload_test_report_artifact }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
         ctest_args: ' ${{ inputs.ctest_args }}'
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
