@@ -70,6 +70,7 @@ runs:
 
         remote_repo=https://github.com/${{ inputs.remote_repository }}.git
         result_branch=${{ inputs.fallback_branch }}
+        skip_base=${{ inputs.skip_base }}
 
         # This is a PR event -> deduce which branch to use
         if [[ ${{ github.event_name }} == "pull_request" ]]
@@ -82,7 +83,7 @@ runs:
           fi
 
           # Attempt to use PR's base branch
-          if [ ${exit_code} == "1" ] && [${{ inputs.skip_base }} == "false"] && [ $(branch_exists ${remote_repo} ${{ github.base_ref }}) == "true" ]
+          if [ ${exit_code} == "1" ] && [ ${skip_base} == "false" ] && [ $(branch_exists ${remote_repo} ${{ github.base_ref }}) == "true" ]
           then
             result_branch=${{ github.base_ref }}
             exit_code=0
