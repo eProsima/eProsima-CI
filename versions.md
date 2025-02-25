@@ -48,7 +48,7 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
-## v0.33.0
+## v0.34.0
 
 - Improve branch filter on ``get_related_branch_from_repo``.
 
