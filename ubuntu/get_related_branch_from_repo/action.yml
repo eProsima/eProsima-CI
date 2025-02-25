@@ -57,7 +57,7 @@ runs:
         {
           ret="false";
 
-          if [[ $(git ls-remote ${1} ${2} | wc -l) != 0 ]]
+          if [[ $(git ls-remote ${1} refs/heads/${2} | wc -l) != 0 ]]
           then
             ret="true"
           fi
