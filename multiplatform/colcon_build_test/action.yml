@@ -12,6 +12,19 @@ inputs:
     required: false
     default: ''
 
+  set_eprosima_flags:
+    description: |
+      This flag sets the compilation flags (CMAKE_CXX_FLAGS) for eProsima product testing.
+      These are:
+        - Warnigs as errors
+          - Linux: -Werror -Wall
+          - Windows: /WX /W4
+        - Multithreaded compilation
+          - Windows: /MP
+    type: boolean
+    required: false
+    default: true
+
   cmake_args:
     description: 'Cmake arguments'
     required: false
@@ -65,6 +78,7 @@ runs:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
         cmake_args: ' ${{ inputs.cmake_args }}'
+        set_eprosima_flags: ' ${{ inputs.set_eprosima_flags }}'
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
         cmake_build_type: ${{ inputs.cmake_build_type }}
