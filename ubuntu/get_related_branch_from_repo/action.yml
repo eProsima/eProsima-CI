@@ -60,6 +60,9 @@ runs:
           if [[ $(git ls-remote ${1} refs/heads/${2} | wc -l) != 0 ]]
           then
             ret="true"
+          elif [[ $(git ls-remote ${1} refs/tags/${2} | wc -l) != 0 ]]
+          then
+            ret="true"
           fi
 
           echo "$ret";
