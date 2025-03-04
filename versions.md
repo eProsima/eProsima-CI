@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.35.0](#v0.35.0)
 - [v0.34.0](#v0.34.0)
 - [v0.33.0](#v0.33.0)
 - [v0.32.0](#v0.32.0)
@@ -47,6 +48,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.35.0
 
 - Fix getting tags on ``get_related_branch_from_repo``.
 
