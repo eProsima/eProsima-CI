@@ -57,10 +57,10 @@ runs:
         {
           ret="false";
 
-          if [[ $(git ls-remote ${1} refs/heads/${2} | wc -l) != 0 ]]
+          if [[ $(git ls-remote ${1} refs/heads/${2} | wc -l | sed 's/ //g') != 0 ]]
           then
             ret="true"
-          elif [[ $(git ls-remote ${1} refs/tags/${2} | wc -l) != 0 ]]
+          elif [[ $(git ls-remote ${1} refs/tags/${2} | wc -l | sed 's/ //g') != 0 ]]
           then
             ret="true"
           fi
