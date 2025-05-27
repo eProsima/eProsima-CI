@@ -56,6 +56,20 @@ inputs:
     required: false
     default: 'false'
 
+    # Allows you to generate reports for Actions Summary
+    # https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
+  use-actions-summary:
+    description: |
+      Allows you to generate reports for Actions Summary
+      https://github.com/orgs/github/teams/engineering/discussions/871
+    default: 'true'
+    required: false
+
+  badge-title:
+    description: Customize badge title
+    required: false
+    default: 'tests'
+
   list-suites:
     description: >
       Limits which test suites are listed:
@@ -140,7 +154,7 @@ runs:
 
     - name: Generate Test Report
       id: generate_test_report
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v2
       with:
         artifact: ${{ inputs.artifact }}
         name: ${{ inputs.name }}
@@ -148,6 +162,8 @@ runs:
         path-replace-backslashes: ${{ inputs.path-replace-backslashes }}
         reporter: ${{ inputs.reporter }}
         only-summary: ${{ inputs.only-summary }}
+        use-actions-summary: ${{ inputs.use-actions-summary }}
+        badge-title: ${{ inputs.badge-title }}
         list-suites: ${{ inputs.list-suites }}
         list-tests: ${{ inputs.list-tests }}
         max-annotations: ${{ inputs.max-annotations }}
