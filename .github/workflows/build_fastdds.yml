@@ -60,7 +60,7 @@ on:
 
         required: false
         type: string
-        default: main
+        default: build_w_tsan
 
       artifacts_name_postfix:
         description: >
@@ -68,7 +68,7 @@ on:
           arguments).
         required: false
         type: string
-        default: _manual
+        default: _w_tsan
 
       foonathan_memory_vendor_branch:
         description: >
@@ -92,7 +92,7 @@ on:
           Check available branches in https://github.com/eProsima/Fast-DDS.
         required: false
         type: string
-        default: master
+        default: fix_router_tsan_domain_mutex
 
   workflow_dispatch:
 
@@ -119,7 +119,7 @@ on:
           arguments).
         required: false
         type: string
-        default: _manual
+        default: _w_tsan
 
       foonathan_memory_vendor_branch:
         description: >
@@ -143,7 +143,7 @@ on:
           Check available branches in https://github.com/eProsima/Fast-DDS.
         required: false
         type: string
-        default: master
+        default: fix_router_tsan_domain_mutex
 
   schedule:
     # Every night at 00:00
@@ -151,11 +151,13 @@ on:
 
 env:
   default_configuration_branch: main
-  default_artifact_postfix: _nightly
+  default_artifact_postfix: _w_tsan
   artifact_prefix: build_fastdds
   default_foonathan_memory_vendor_branch: master
   default_fastcdr_branch: master
-  default_fastdds_branch: master
+  default_fastdds_branch: fix_router_tsan_domain_mutex
+  CC: gcc-12
+  CXX: g++-12
 
 
 jobs:
@@ -168,13 +170,9 @@ jobs:
     strategy:
       matrix:
         cmake_build_type:
-          - Release
           - Debug
         os:
           - ubuntu-22.04
-          - ubuntu-24.04
-          - windows-2019
-          - windows-2022
 
       # Not cancel workflow if any matrix job fails
       fail-fast: false
@@ -230,16 +228,11 @@ jobs:
     strategy:
       matrix:
         fastdds_version:
-          - v2
           - v3
         cmake_build_type:
-          - Release
           - Debug
         os:
           - ubuntu-22.04
-          - ubuntu-24.04
-          - windows-2019
-          - windows-2022
       # Not cancel workflow if any matrix job fails
       fail-fast: false
 
