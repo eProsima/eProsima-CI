@@ -33,3 +33,21 @@
             - "-DBUILD_TESTS=OFF"
             - "-DTSAN_BUILD=ON"
             - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "ddspipe_participants":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "ddspipe_core":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "ddspipe_yaml":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
