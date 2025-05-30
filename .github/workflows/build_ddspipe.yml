@@ -111,7 +111,7 @@ on:
           Check available branches in https://github.com/eProsima/Fast-DDS.
         required: false
         type: string
-        default: fix_router_tsan_domain_mutex
+        default: master
 
   schedule:
 
