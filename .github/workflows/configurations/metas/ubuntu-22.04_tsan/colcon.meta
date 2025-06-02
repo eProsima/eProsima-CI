@@ -1,0 +1,53 @@
+"names":
+    "fastcdr":
+        "cmake-args":
+            - "-DCMAKE_C_FLAGS='-fsanitize=thread -O2 -g -fno-omit-frame-pointer'"
+            - "-DCMAKE_CXX_FLAGS='-fsanitize=thread -O2 -g -fno-omit-frame-pointer'"
+    "fastdds":
+        "cmake-args":
+            - "-DCOMPILE_EXAMPLES=ON"
+            - "-DEPROSIMA_BUILD_TESTS=OFF"
+            - "-DRTPS_API_TESTS=OFF"
+            - "-DFASTDDS_PIM_API_TESTS=OFF"
+            - "-DPERFORMANCE_TESTS=OFF"
+            - "-DNO_TLS=OFF"
+            - "-DSECURITY=ON"
+            - "-DFASTDDS_STATISTICS=ON"
+            - "-DCMAKE_C_FLAGS='-fsanitize=thread -O2 -g -fno-omit-frame-pointer'"
+            - "-DCMAKE_CXX_FLAGS='-fsanitize=thread -O2 -g -fno-omit-frame-pointer'"
+
+    "cmake_utils":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "cpp_utils":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "dev-utils":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "ddspipe_participants":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "ddspipe_core":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
+
+    "ddspipe_yaml":
+        "cmake-args":
+            - "-DBUILD_TESTS=OFF"
+            - "-DTSAN_BUILD=ON"
+            - "-DCMAKE_BUILD_TYPE=Debug"
