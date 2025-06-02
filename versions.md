@@ -50,6 +50,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- New option to build TSAN binaries
+
 ## v0.36.0
 
 - Make ``get_related_branch_from_repo`` compatible with MacOS.
