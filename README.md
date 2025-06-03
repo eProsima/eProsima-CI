@@ -189,6 +189,7 @@ These are the artifacts that are generated every night with the latest versions 
 
 - Fast DDS
   - build_fastdds_<fastdds-version>_ubuntu-22.04_Debug_nightly
+  - build_fastdds_<fastdds-version>_ubuntu-22.04_Debug_nightly_tsan
   - build_fastdds_<fastdds-version>_ubuntu-22.04_Release_nightly
   - build_fastdds_<fastdds-version>_ubuntu-24.04_Debug_nightly
   - build_fastdds_<fastdds-version>_ubuntu-24.04_Release_nightly
@@ -199,6 +200,7 @@ These are the artifacts that are generated every night with the latest versions 
 
 - dev-utils
   - build_dev_utils_<fastdds-version>_ubuntu-22.04_Debug_nightly
+  - build_dev_utils_<fastdds-version>_ubuntu-22.04_Debug_nightly_tsan
   - build_dev_utils_<fastdds-version>_ubuntu-22.04_Release_nightly
   - build_dev_utils_<fastdds-version>_ubuntu-24.04_Debug_nightly
   - build_dev_utils_<fastdds-version>_ubuntu-24.04_Release_nightly
@@ -209,6 +211,7 @@ These are the artifacts that are generated every night with the latest versions 
 
 - DDS Pipe
   - build_ddspipe_<fastdds-version>_ubuntu-22.04_Debug_nightly
+  - build_ddspipe_<fastdds-version>_ubuntu-22.04_Debug_nightly_tsan
   - build_ddspipe_<fastdds-version>_ubuntu-22.04_Release_nightly
   - build_ddspipe_<fastdds-version>_ubuntu-24.04_Debug_nightly
   - build_ddspipe_<fastdds-version>_ubuntu-24.04_Release_nightly
