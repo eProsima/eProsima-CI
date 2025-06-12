@@ -307,7 +307,7 @@ jobs:
 
   build_ddspipe_tsan:
 
-    name: build_ddspipe
+    name: build_ddspipe_tsan
     if: ${{ github.event_name == 'schedule' || contains(inputs.build_with_tsan, 'true') }}
     needs: build_dev_utils
     runs-on: ubuntu-22.04
