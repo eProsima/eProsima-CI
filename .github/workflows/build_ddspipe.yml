@@ -16,6 +16,7 @@
 #    - <os> is "ubuntu-22.04", "ubuntu-24.04", "windows-2019", or "windows-2022"
 #    - <cmake_build_type> is "Debug", or "Release"
 #    - <postfix> is "_nightly" for schedule runs every night, or is set manually by the user.
+#    - Artifact for tsan build appends "_tsan" to the name.
 #
 # SCHEDULE:
 #  This workflow runs every night at 00:00 using latest version of dev-utils (main).
@@ -25,6 +26,8 @@
 #  Running this workflow manually, the following arguments might be set:
 #   single_version_build:             flag to build only the custom version taken from inputs or .repos file.
 #                                     If set to false, all versions of Fast DDS (v2 and v3) will be built.
+#
+#   build_with_tsan:                  flag to build with Thread Sanitizer enabled.
 #
 #   configuration_branch:             set a branch to download dependencies.repos and colcon.meta files from
 #                                     this repository [Default: main]
@@ -61,6 +64,14 @@ on:
           Flag to build only the custom version taken from inputs.
           If set to false, all versions of Fast DDS (v2 and v3) will be built.
         required: true
+        type: boolean
+        default: true
+
+      build_with_tsan:
+        description: >
+          Flag to build with Thread Sanitizer enabled.
+          If set to true, the build will be done with tsan enabled.
+        required: false
         type: boolean
         default: true
 
@@ -139,6 +150,7 @@ jobs:
       foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
       fastcdr_branch: ${{ inputs.fastcdr_branch }}
       fastdds_branch: ${{ inputs.fastdds_branch }}
+      build_with_tsan: ${{ inputs.build_with_tsan }}
 
 
   build_ddspipe_single_version:
@@ -291,4 +303,73 @@ jobs:
         uses: eProsima/eProsima-CI/external/upload-artifact@main
         with:
           name: ${{ env.artifact_prefix }}_${{ matrix.fastdds_version }}_${{ matrix.os }}_${{ matrix.cmake_build_type }}${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}
+          path: ${{ github.workspace }}/install
+
+  build_ddspipe_tsan:
+
+    name: build_ddspipe_tsan
+    if: ${{ github.event_name == 'schedule' || contains(inputs.build_with_tsan, 'true') }}
+    needs: build_dev_utils
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        fastdds_version:
+          - v2
+          - v3
+      fail-fast: false
+    env:
+      CC: gcc-12
+      CXX: g++-12
+      TSAN_OPTIONS: second_deadlock_stack=1 history_size=7 memory_limit_mb=5000
+
+    steps:
+
+      - name: Sync this repository
+        uses: eProsima/eProsima-CI/external/checkout@main
+        with:
+          path: src/eprosima-CI
+
+      - name: Install Fast DDS dependencies
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
+        with:
+          cmake_build_type: Debug
+
+      - name: Install yaml cpp dependency
+        uses: eProsima/eProsima-CI/multiplatform/install_yamlcpp@main
+        with:
+          cmake_build_type: Debug
+
+      - name: Get dev-utils artifact
+        uses: eProsima/eProsima-CI/external/download-artifact@main
+        with:
+          name: build_dev_utils_${{ matrix.fastdds_version }}_ubuntu-22.04_Debug${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}_tsan
+          path: install
+
+      - name: Get colcon.meta and .repos files to build artifact
+        uses: eProsima/eProsima-CI/multiplatform/get_configurations_from_repo@main
+        with:
+          source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
+          colcon_meta_file_path: .github/workflows/configurations/metas/ubuntu-22.04_tsan/colcon.meta
+          repos_file_path: .github/workflows/configurations/ddspipe/deps_${{ matrix.fastdds_version }}.repos
+          colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
+          repos_file_result: ${{ github.workspace }}/dependencies.repos
+
+      - name: Fetch DDS Pipe repositories with vcs-tool
+        uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
+        with:
+          vcs_repos_file: ${{ github.workspace }}/dependencies.repos
+          destination_workspace: ${{ github.workspace }}/src
+
+      - name: Build workspace
+        uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
+        with:
+          colcon_meta_file: ${{ github.workspace }}/colcon.meta
+          workspace: ${{ github.workspace }}
+          workspace_dependencies: install
+          cmake_build_type: Debug
+
+      - name: Upload binaries
+        uses: eProsima/eProsima-CI/external/upload-artifact@main
+        with:
+          name: ${{ env.artifact_prefix }}_${{ matrix.fastdds_version }}_ubuntu-22.04_Debug${{ inputs.artifacts_name_postfix || env.default_artifact_postfix }}_tsan
           path: ${{ github.workspace }}/install
