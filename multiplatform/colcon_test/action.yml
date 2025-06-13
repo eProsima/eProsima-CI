@@ -67,7 +67,7 @@ runs:
 
     - name: Run in ubuntu or macOS
       id: test_ubuntu_mac
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@test/tsan_single_version
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
@@ -83,7 +83,7 @@ runs:
 
     - name: Run in windows
       id: test_windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@main
+      uses: eProsima/eProsima-CI/windows/colcon_test@test/tsan_single_version
       if: runner.os == 'Windows'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}

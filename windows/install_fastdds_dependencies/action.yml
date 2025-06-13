@@ -30,20 +30,20 @@ runs:
   steps:
 
     - name: Set CMake version
-      uses: eProsima/eProsima-CI/external/get-cmake@main
+      uses: eProsima/eProsima-CI/external/get-cmake@test/tsan_single_version
       with:
         cmakeVersion: ${{ inputs.cmakeVersion }}
         ninjaVersion: ${{ inputs.ninjaVersion }}
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@test/tsan_single_version
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@test/tsan_single_version
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Install Open SSL
-      uses: eProsima/eprosima-CI/windows/install_openssl@main
+      uses: eProsima/eprosima-CI/windows/install_openssl@test/tsan_single_version
       with:
         version: '3.1.1'

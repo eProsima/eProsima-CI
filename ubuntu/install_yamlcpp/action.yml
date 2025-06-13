@@ -18,6 +18,6 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@test/tsan_single_version
       with:
         packages: libyaml-cpp-dev
