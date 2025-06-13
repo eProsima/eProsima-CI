@@ -356,14 +356,15 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        fastdds_version:
-          - v2
-          - v3
+        ${{ inputs.single_version_build
+                 && fromJSON('{"fastdds_version":["custom"]}')
+                 || fromJSON('{"fastdds_version":["v2","v3"]}') }}
       fail-fast: false
     env:
       CC: gcc-12
       CXX: g++-12
       TSAN_OPTIONS: second_deadlock_stack=1 history_size=7 memory_limit_mb=5000
+      REPOS_FILE_SINGLE_VERSION: .github/workflows/configurations/dev_utils/dependencies.repos
 
     steps:
 
@@ -388,7 +389,9 @@ jobs:
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/ubuntu-22.04_tsan/colcon.meta
-          repos_file_path: .github/workflows/configurations/dev_utils/deps_${{ matrix.fastdds_version }}.repos
+          repos_file_path: ${{ inputs.single_version_build
+                                    && env.REPOS_FILE_SINGLE_VERSION
+                                    || format('.github/workflows/configurations/dev_utils/deps_{0}.repos', matrix.fastdds_version) }}
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
