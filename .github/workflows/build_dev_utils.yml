@@ -203,7 +203,7 @@ jobs:
       foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch }}
       fastcdr_branch: ${{ inputs.fastcdr_branch }}
       fastdds_branch: ${{ inputs.fastdds_branch }}
-      build_with_tsan: ${{ inputs.build_with_tsan }}
+      build_with_tsan: ${{ inputs.build_with_tsan || true }}
 
 
   build_dev_utils_single_version:
