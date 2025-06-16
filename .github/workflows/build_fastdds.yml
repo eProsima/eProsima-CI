@@ -309,14 +309,15 @@ jobs:
     if: ${{ github.event_name == 'schedule' || contains(inputs.build_with_tsan, 'true') }}
     strategy:
       matrix:
-        fastdds_version:
-          - v2
-          - v3
+        ${{ inputs.single_version_build
+                 && fromJSON('{"fastdds_version":["custom"]}')
+                 || fromJSON('{"fastdds_version":["v2","v3"]}') }}
       fail-fast: false
     env:
       CC: gcc-12
       CXX: g++-12
       TSAN_OPTIONS: second_deadlock_stack=1 history_size=7 memory_limit_mb=5000
+      REPOS_FILE_SINGLE_VERSION: .github/workflows/configurations/fastdds/dependencies.repos
 
     steps:
 
@@ -335,14 +336,29 @@ jobs:
         with:
           source_repository_branch: ${{ inputs.configuration_branch || env.default_configuration_branch }}
           colcon_meta_file_path: .github/workflows/configurations/metas/ubuntu-22.04_tsan/colcon.meta
-          repos_file_path: .github/workflows/configurations/fastdds/deps_${{ matrix.fastdds_version }}.repos
+          # If single version build is set to true, use the single version repos file, otherwise use the versioned repos file
+          repos_file_path: ${{ inputs.single_version_build
+                                    && env.REPOS_FILE_SINGLE_VERSION
+                                    || format('.github/workflows/configurations/fastdds/deps_{0}.repos', matrix.fastdds_version) }}
           colcon_meta_file_result: ${{ github.workspace }}/colcon.meta
           repos_file_result: ${{ github.workspace }}/dependencies.repos
 
+      # If single version build is set to false, fetch the repositories with vcs-tool
       - name: Fetch Fast DDS repositories with vcs-tool
+        if: ${{ contains(inputs.single_version_build, 'false') }}
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@main
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
+          destination_workspace: ${{ github.workspace }}/artifact/src
+
+      # If single version build is set to true, fetch the repositories manually
+      - name: Fetch Fast DDS repositories
+        if: ${{ contains(inputs.single_version_build, 'true') }}
+        uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@main
+        with:
+          foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }}
+          fastcdr_branch: ${{ inputs.fastcdr_branch || env.default_fastcdr_branch }}
+          fastdds_branch: ${{ inputs.fastdds_branch || env.default_fastdds_branch }}
           destination_workspace: ${{ github.workspace }}/artifact/src
 
       - name: Build workspace
