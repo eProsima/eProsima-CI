@@ -344,7 +344,7 @@ jobs:
 
       # If single version build is set to false, fetch the repositories with vcs-tool
       - name: Fetch Fast DDS repositories with vcs-tool
-        if: ${{ inputs.single_version_build == 'false' }}
+        if: ${{ contains(inputs.single_version_build, 'false') }}
         uses: eProsima/eProsima-CI/multiplatform/vcs_import@test/tsan_single_version
         with:
           vcs_repos_file: ${{ github.workspace }}/dependencies.repos
@@ -352,7 +352,7 @@ jobs:
 
       # If single version build is set to true, fetch the repositories manually
       - name: Fetch Fast DDS repositories
-        if: ${{ inputs.single_version_build == 'true' }}
+        if: ${{ contains(inputs.single_version_build, 'true') }}
         uses: eProsima/eProsima-CI/multiplatform/fetch_fastdds_manual@test/tsan_single_version
         with:
           foonathan_memory_vendor_branch: ${{ inputs.foonathan_memory_vendor_branch || env.default_foonathan_memory_vendor_branch }}
