@@ -1,0 +1,63 @@
+name: 'get_branch'
+description: 'Get the branch name of the given repository that fits with the given repo@branch'
+
+inputs:
+
+  result_env_var:
+    description: 'Environment Variable name for result'
+    required: true
+
+  head_ref:
+    description: 'Reference to Git Head to compare with'
+    required: true
+
+  base_ref:
+    description: 'Reference to Git current'
+    required: true
+
+  remote_repository:
+    description: 'Remote Github repository name'
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: get_branch
+      run: |
+        echo "::group::Get the branch name of ${{ inputs.remote_repository }}"
+        echo "using head '${{ inputs.head_ref }}' branch"
+        DOC_REPO=https://github.com/eProsima/${{ remote_repository }}.git
+        RESPONSE_CODE=$(git ls-remote --heads $DOC_REPO ${{ inputs.head_ref }} | wc -l)
+        if [[ ${RESPONSE_CODE} == "0" ]]
+        then
+          echo "head '${{ inputs.head_ref }}' branch DOES NOT exist, using base '${{ github.base_ref }}'"
+          RESPONSE_CODE=$(git ls-remote --heads $DOC_REPO ${{ inputs.base_ref }} | wc -l)
+          if [[ ${RESPONSE_CODE} == "0" ]]
+          then
+            echo "base '${{ inputs.base_ref }}' branch DOES NOT exist, using 'MASTER'"
+            RESPONSE_CODE=$(git ls-remote --heads $DOC_REPO master | wc -l)
+            if [[ ${RESPONSE_CODE} == "0" ]]
+            then
+              echo "'MASTER' branch DOES NOT exist, using 'MAIN'"
+              RESPONSE_CODE=$(git ls-remote --heads $DOC_REPO main | wc -l)
+              if [[ ${RESPONSE_CODE} == "0" ]]
+              then
+                echo "'main' branch DOES NOT exist, using ''"
+                echo "${{ inputs.result_env_var }}=" >> $GITHUB_ENV
+              else
+                echo "${{ inputs.result_env_var }}=main" >> $GITHUB_ENV
+              fi
+            else
+              echo "${{ inputs.result_env_var }}=master" >> $GITHUB_ENV
+            fi
+          else
+            echo "${{ inputs.result_env_var }}=${{ inputs.base_ref }}" >> $GITHUB_ENV
+          fi
+        else
+          echo "${{ inputs.result_env_var }}=${{ inputs.head_ref }}" >> $GITHUB_ENV
+        fi
+
+        echo "::endgroup::"
+
+      shell: bash
