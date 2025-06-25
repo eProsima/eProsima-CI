@@ -154,7 +154,7 @@ runs:
 
     - name: Generate Test Report
       id: generate_test_report
-      uses: dorny/test-reporter@main
+      uses: eProsima/test-reporter@hotfix/list-failed-tests
       with:
         artifact: ${{ inputs.artifact }}
         name: ${{ inputs.name }}
