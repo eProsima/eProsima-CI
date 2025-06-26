@@ -18,13 +18,17 @@ inputs:
     required: false
     default: '--event-handlers=console_direct+'
 
+  set_eprosima_flags:
+    description: |
+      This flag sets the compilation flags (CMAKE_CXX_FLAGS) for eProsima product testing.
+      These are:
+        - Warnigs as errors (/WX /W4)
+    type: boolean
+    required: false
+    default: true
+
   cmake_args:
     description: CMake arguments
-    required: false
-    default: ''
-
-  cmake_args_default:
-    description: Default CMake arguments
     required: false
     default: ''
 
@@ -43,6 +47,10 @@ inputs:
     required: false
     default: ''
 
+env:
+
+    EPROSIMA_CXX_FLAGS: "-DCMAKE_CXX_FLAGS='/WX /W4'"
+
 runs:
   using: composite
   steps:
@@ -52,6 +60,15 @@ runs:
       run: |
 
         "::group::Build using colcon"
+
+        if (${{ inputs.set_eprosima_flags }}) {
+          # EPROSIMA_CXX_FLAGS is set first so that it can be overridden by cmake_args
+          # in case the user wants to set its own flags. If that's the case and the user want's to use both flags,
+          # it should set EPROSIMA_CXX_FLAGS in cmake_args.
+          $env:CMAKE_ARGS = $env:EPROSIMA_CXX_FLAGS + " " + ${{ inputs.cmake_args }}
+        } else {
+          $env:CMAKE_ARGS = ${{ inputs.cmake_args }}
+        }
 
         if (! [string]::IsNullOrEmpty("${{ inputs.workspace_dependencies }}")) {
           ${{ inputs.workspace_dependencies }}/setup.ps1
@@ -74,6 +91,6 @@ runs:
           ${{ inputs.colcon_build_args_default }} `
           ${{ inputs.colcon_build_args }} `
           --cmake-args `
-            -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} ${{ inputs.cmake_args_default }} ${{ inputs.cmake_args }}
+            -DCMAKE_BUILD_TYPE=${{ inputs.cmake_build_type }} $env:CMAKE_ARGS
 
         "::endgroup::"
