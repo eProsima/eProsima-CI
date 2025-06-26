@@ -56,8 +56,8 @@ inputs:
     required: false
     default: 'false'
 
-    # Allows you to generate reports for Actions Summary
-    # https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
+  # Allows you to generate reports for Actions Summary
+  # https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
   use-actions-summary:
     description: |
       Allows you to generate reports for Actions Summary
@@ -154,7 +154,7 @@ runs:
 
     - name: Generate Test Report
       id: generate_test_report
-      uses: eProsima/test-reporter@hotfix/list-failed-tests
+      uses: eProsima/test-reporter@main
       with:
         artifact: ${{ inputs.artifact }}
         name: ${{ inputs.name }}
