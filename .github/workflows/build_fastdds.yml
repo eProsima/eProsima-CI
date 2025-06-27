@@ -6,12 +6,12 @@
 #  Then uses the colcon.meta files in "./.github/workflows/configurations/metas/<os>/colcon.meta" to the build projects.
 #  Finally it takes the install directory generated from colcon build and uploads it as an artifact.
 #  This is done for several OS and cmake built types:
-#    - ubuntu-22.04 | ubuntu-24.04 | windows-2019 | windows-2022
+#    - ubuntu-22.04 | ubuntu-24.04 | windows-2022
 #    - Debug | Release
 #
 # ARTIFACT RESULT:
 #  The artifact generated is called "build_fastdds_<os>_<cmake_build_type><postfix>"
-#    - <os> is "ubuntu-22.04", "ubuntu-24.04", "windows-2019", or "windows-2022"
+#    - <os> is "ubuntu-22.04", "ubuntu-24.04", or "windows-2022"
 #    - <cmake_build_type> is "Debug", or "Release"
 #    - <postfix> is "_nightly" for scheduled runs every night, or is set manually by the user.
 #    - Artifact for tsan build appends "_tsan" to the name.
@@ -192,7 +192,6 @@ jobs:
         os:
           - ubuntu-22.04
           - ubuntu-24.04
-          - windows-2019
           - windows-2022
 
       # Not cancel workflow if any matrix job fails
@@ -257,7 +256,6 @@ jobs:
         os:
           - ubuntu-22.04
           - ubuntu-24.04
-          - windows-2019
           - windows-2022
       # Not cancel workflow if any matrix job fails
       fail-fast: false

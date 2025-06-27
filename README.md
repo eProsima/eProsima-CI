@@ -193,8 +193,6 @@ These are the artifacts that are generated every night with the latest versions 
   - build_fastdds_<fastdds-version>_ubuntu-22.04_Release_nightly
   - build_fastdds_<fastdds-version>_ubuntu-24.04_Debug_nightly
   - build_fastdds_<fastdds-version>_ubuntu-24.04_Release_nightly
-  - build_fastdds_<fastdds-version>_windows-2019_Debug_nightly
-  - build_fastdds_<fastdds-version>_windows-2019_Release_nightly
   - build_fastdds_<fastdds-version>_windows-2022_Debug_nightly
   - build_fastdds_<fastdds-version>_windows-2022_Release_nightly
 
@@ -204,8 +202,6 @@ These are the artifacts that are generated every night with the latest versions 
   - build_dev_utils_<fastdds-version>_ubuntu-22.04_Release_nightly
   - build_dev_utils_<fastdds-version>_ubuntu-24.04_Debug_nightly
   - build_dev_utils_<fastdds-version>_ubuntu-24.04_Release_nightly
-  - build_dev_utils_<fastdds-version>_windows-2019_Debug_nightly
-  - build_dev_utils_<fastdds-version>_windows-2019_Release_nightly
   - build_dev_utils_<fastdds-version>_windows-2022_Debug_nightly
   - build_dev_utils_<fastdds-version>_windows-2022_Release_nightly
 
@@ -215,8 +211,6 @@ These are the artifacts that are generated every night with the latest versions 
   - build_ddspipe_<fastdds-version>_ubuntu-22.04_Release_nightly
   - build_ddspipe_<fastdds-version>_ubuntu-24.04_Debug_nightly
   - build_ddspipe_<fastdds-version>_ubuntu-24.04_Release_nightly
-  - build_ddspipe_<fastdds-version>_windows-2019_Debug_nightly
-  - build_ddspipe_<fastdds-version>_windows-2019_Release_nightly
   - build_ddspipe_<fastdds-version>_windows-2022_Debug_nightly
   - build_ddspipe_<fastdds-version>_windows-2022_Release_nightly
 
