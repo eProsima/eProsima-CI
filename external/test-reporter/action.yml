@@ -154,7 +154,7 @@ runs:
 
     - name: Generate Test Report
       id: generate_test_report
-      uses: eProsima/test-reporter@main
+      uses: eProsima/test-reporter@v0
       with:
         artifact: ${{ inputs.artifact }}
         name: ${{ inputs.name }}
