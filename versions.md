@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.37.0](#v0.37.0)
 - [v0.36.0](#v0.36.0)
 - [v0.35.0](#v0.35.0)
 - [v0.34.0](#v0.34.0)
@@ -50,7 +51,11 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.37.0
+
 - New option to build TSAN binaries
+- Upgrade test reporter action
+- Remove deprecated windows-2019 runner
 - New GitHub action to install TinyXML2 in Windows CI
 
 ## v0.36.0
