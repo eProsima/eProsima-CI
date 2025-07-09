@@ -51,6 +51,7 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - New option to build TSAN binaries
+- New GitHub action to install TinyXML2 in Windows CI
 
 ## v0.36.0
 
