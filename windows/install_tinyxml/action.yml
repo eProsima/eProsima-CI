@@ -1,0 +1,19 @@
+name: Install TinyXML2 on Windows
+
+description: "GitHub Action to install TinyXML2 library on Windows using Chocolatey"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install TinyXML2
+      shell: pwsh
+      run: |
+
+        "::group::Install TinyXML2"
+
+        Invoke-WebRequest -Uri "https://github.com/ros2/choco-packages/releases/download/2020-02-24/tinyxml2.6.0.0.nupkg" -OutFile "tinyxml2.6.0.0.nupkg"
+        choco install tinyxml2 -s . -y
+
+        echo "C:\ProgramData\chocolatey\lib\tinyxml2;C:\ProgramData\chocolatey\lib\tinyxml2\lib;$env:PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+        "::endgroup::"
