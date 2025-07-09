@@ -43,6 +43,9 @@ runs:
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
+    - name: Install Tiny XML
+      uses: eProsima/eProsima-CI/windows/install_tinyxml@main
+
     - name: Install Open SSL
       uses: eProsima/eprosima-CI/windows/install_openssl@main
       with:
