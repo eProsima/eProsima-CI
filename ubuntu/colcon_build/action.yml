@@ -50,10 +50,17 @@ runs:
     - name: Build workspace with colcon
       run: |
 
+        # Use sudo only if available
+        if command -v sudo > /dev/null 2>&1; then
+          command_prefix='sudo'
+        else
+          command_prefix=''
+        fi
+        
         # https://github.com/actions/runner-images/issues/9491
         if [[ ${RUNNER_OS} == "Linux" ]]
         then
-          sudo sysctl vm.mmap_rnd_bits=28
+          $command_prefix sysctl vm.mmap_rnd_bits=28
         fi
 
         echo "::group::Compile using colcon ${{ inputs.workspace }}"

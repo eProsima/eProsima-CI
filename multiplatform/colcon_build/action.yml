@@ -48,7 +48,7 @@ runs:
   steps:
 
     - name: Run in ubuntu or macOS
-      uses: eProsima/eProsima-CI/ubuntu/colcon_build@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_build@feature/fastdds-pro-workflows
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
