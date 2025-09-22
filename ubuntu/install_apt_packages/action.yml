@@ -24,20 +24,26 @@ runs:
     - name: install_apt_packages
       run: |
 
+        # Use sudo only if available
+        if command -v sudo > /dev/null 2>&1; then
+          command_prefix='sudo'
+        else
+          command_prefix=''
+        fi
         echo "::group::Install apt packages ${{ inputs.packages }}"
 
         # Update apt repos
         if [ "${{ inputs.update }}" = "true" ]; then
-          sudo apt update
+          $command_prefix apt update
         fi
 
         # Install custom packages
-        sudo apt -y install \
+        $command_prefix apt -y install \
           ${{ inputs.packages }}
 
         # Upgrade apt repos
         if [ "${{ inputs.upgrade }}" = "true" ] ; then
-          sudo apt upgrade
+          $command_prefix apt upgrade
         fi
 
         echo "::endgroup::"

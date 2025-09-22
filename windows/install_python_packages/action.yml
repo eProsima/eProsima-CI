@@ -29,7 +29,7 @@ runs:
         "::group::Install Python packages"
 
         # Set upgrade flag
-        if (${{ inputs.upgrade }} -eq "true") {
+        if ("${{ inputs.upgrade }}" -eq "true") {
           $UPGRADE_FLAG = "--upgrade"
         } else {
           $UPGRADE_FLAG = ""
@@ -41,7 +41,7 @@ runs:
         }
 
         # Install requirements file if any
-        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.requirements_file_name }} ")) {
+        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.requirements_file_name }}")) {
           pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG
         }
 
