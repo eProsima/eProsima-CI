@@ -16,7 +16,7 @@
 # - file_extensions_grep_args : grep filer for file extensions [-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp']
 #
 # Files structure:
-#   ${{ github.workspace }}
+#   <WORKSPACE>
 #   ├── check
 #   │   ├── Sync repository      <-- execute uncrustify here
 #   │
@@ -56,15 +56,20 @@ runs:
   using: composite
   steps:
 
+    - name: Add WORKSPACE variable to env context
+      run: |
+        echo "WORKSPACE=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+      shell: bash
+
     - name: Sync repository
       uses: eProsima/eProsima-CI/external/checkout@main
       with:
-        path: '${{ github.workspace }}/check'
+        path: '${{ env.WORKSPACE }}/check'
 
     - name: Fetch all branches and tags
       uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
       with:
-        workspace: '${{ github.workspace }}/check'
+        workspace: '${{ env.WORKSPACE }}/check'
 
     - name: Install uncrustify
       uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
@@ -77,8 +82,8 @@ runs:
     - name: Clone and build ament_lint
       run: |
         echo "::group::Build ament_lint"
-        mkdir -p ${{ github.workspace }}/ament_lint_ws
-        cd ${{ github.workspace }}/ament_lint_ws
+        mkdir -p ${{ env.WORKSPACE }}/ament_lint_ws
+        cd ${{ env.WORKSPACE }}/ament_lint_ws
         git clone https://github.com/eProsima/ament_lint.git src/ament_lint
         colcon build --packages-up-to ament_uncrustify
         echo "::endgroup::"
@@ -86,7 +91,7 @@ runs:
 
     - name: Fetch uncrustify config file
       run: |
-        cd ${{ github.workspace }}/ament_lint_ws
+        cd ${{ env.WORKSPACE }}/ament_lint_ws
         curl \
           -l https://raw.githubusercontent.com/eProsima/cpp-style/${{ inputs.uncrustify_configuration_version }}/uncrustify.cfg \
           -o uncrustify.cfg
@@ -100,13 +105,13 @@ runs:
         head_ref: origin/${GITHUB_HEAD_REF}
         base_ref: origin/${GITHUB_BASE_REF}
         grep_args: ${{ inputs.file_extensions_grep_args }}
-        workspace: ${{ github.workspace }}/check
+        workspace: ${{ env.WORKSPACE }}/check
 
     - name: Check difference is not empty
       run: |
         if [[ -z "${MODIFIED_FILES}" ]]
         then
-          touch ${{ github.workspace }}/check/__empty.hpp
+          touch ${{ env.WORKSPACE }}/check/__empty.hpp
           echo "MODIFIED_FILES=__empty.hpp" >> $GITHUB_ENV
         fi
         echo "Files to check: ${MODIFIED_FILES}"
@@ -114,15 +119,15 @@ runs:
 
     - name: Check style
       run: |
-        cd ${{ github.workspace }}/ament_lint_ws
+        cd ${{ env.WORKSPACE }}/ament_lint_ws
         source install/local_setup.bash
-        cd ${{ github.workspace }}/check
+        cd ${{ env.WORKSPACE }}/check
 
         echo "################################################################################################"
         echo "###################################### UNCRUSTIFY RESULT #######################################"
 
         ament_uncrustify \
-          -c ${{ github.workspace }}/ament_lint_ws/uncrustify.cfg \
+          -c ${{ env.WORKSPACE }}/ament_lint_ws/uncrustify.cfg \
           --language CPP \
           --xunit-file ../${{ inputs.result_filename }} \
           ${MODIFIED_FILES}
