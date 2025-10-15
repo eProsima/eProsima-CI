@@ -51,6 +51,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.38.0
+
+- Run actions inside Docker containers
+
 ## v0.37.0
 
 - New option to build TSAN binaries
