@@ -125,9 +125,9 @@ runs:
           then
             echo "::group::Translating ${package} test report to jUnit..."
 
-            python3 ${{ github.action_path }}/../../resources/ctest2junit.py \
+            python3 $GITHUB_ACTION_PATH/../../resources/ctest2junit.py \
               --build-dir ${{ inputs.workspace }}/build/${package} \
-              --xslt ${{ github.action_path }}/../../resources/ctest-to-junit.xsl \
+              --xslt $GITHUB_ACTION_PATH/../../resources/ctest-to-junit.xsl \
               --output-junit ${test_results_file}
 
             echo "::endgroup::"
