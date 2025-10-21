@@ -32,6 +32,11 @@ inputs:
     required: false
     default: false
 
+  token:
+    description: >
+      A personal access token to use with private repositories.
+    required: false
+
 outputs:
   deduced_branch:
     description: "Deduced branch"
@@ -49,3 +54,4 @@ runs:
         remote_repository: ${{ inputs.remote_repository }}
         fallback_branch: ${{ inputs.fallback_branch }}
         skip_base: ${{ inputs.skip_base }}
+        token: ${{ secrets.token }}
