@@ -32,6 +32,11 @@ inputs:
     required: false
     default: false
 
+  token:
+    description: >
+      A personal access token to use with private repositories.
+    required: false
+
 outputs:
   deduced_branch:
     description: "Deduced branch"
@@ -74,6 +79,11 @@ runs:
         remote_repo=https://github.com/${{ inputs.remote_repository }}.git
         result_branch=${{ inputs.fallback_branch }}
         skip_base=${{ inputs.skip_base }}
+
+        OUR_TOKEN=${{ inputs.token }}
+        if [ -n "$OUR_TOKEN" ]; then
+          remote_repo=https://$OUR_TOKEN@github.com/${{ inputs.remote_repository }}.git
+        fi
 
         # This is a PR event -> deduce which branch to use
         if [[ ${{ github.event_name }} == "pull_request" ]]
