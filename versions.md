@@ -51,6 +51,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Optional `token` input in `get_related_branch_from_repo`
+
 ## v0.38.0
 
 - Run actions inside Docker containers
