@@ -62,7 +62,7 @@ runs:
         EXIT_CODE=0
         for JUNIT_REPORT in ${{ inputs.junit_reports_dir }}/*.xml
         do
-          python3 ${{ github.action_path }}/../../resources/junit_summary.py \
+          python3 $GITHUB_ACTION_PATH/../../resources/junit_summary.py \
             --junit-report ${JUNIT_REPORT} \
             ${OUTPUT_FILE_OPTION} \
             ${PRINT_SUMMARY_OPTION} \
