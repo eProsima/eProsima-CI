@@ -69,7 +69,7 @@ runs:
           Import-Module $pwshmodule;Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
           -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
 
-        colcon build `
+        colcon --log-base=nul build `
           --metas ${{ inputs.colcon_meta_file }} `
           ${{ inputs.colcon_build_args_default }} `
           ${{ inputs.colcon_build_args }} `

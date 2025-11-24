@@ -56,7 +56,7 @@ runs:
         else
           command_prefix=''
         fi
-        
+
         # https://github.com/actions/runner-images/issues/9491
         if [[ ${RUNNER_OS} == "Linux" ]]
         then
@@ -78,7 +78,7 @@ runs:
           export COLCON_BUILD_META_="${{ inputs.colcon_meta_file }}"
         fi
 
-        colcon build \
+        colcon --log-base=/dev/null build \
           --metas ${COLCON_BUILD_META_} \
           ${{ inputs.colcon_build_args_default }} \
           ${{ inputs.colcon_build_args }} \

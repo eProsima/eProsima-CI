@@ -107,7 +107,7 @@ runs:
           $testResultsFile = "$resultsPath\${package}_test_results.xml"
 
           $testCommand = @"
-            colcon test
+            colcon --log-base=nul test
               --metas $env:COLCON_TEST_META_
               ${{ inputs.colcon_test_args_default }}
               ${{ inputs.colcon_test_args }}

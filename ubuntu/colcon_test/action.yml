@@ -99,7 +99,7 @@ runs:
 
           test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results.xml"
 
-          colcon test \
+          colcon --log-base=/dev/null test \
             --metas ${COLCON_TEST_META_} \
             ${{ inputs.colcon_test_args_default }} \
             ${{ inputs.colcon_test_args }} \
