@@ -3,6 +3,11 @@ description: Use colcon build command to build multiple packages
 
 inputs:
 
+  colcon_args_default:
+    description: Default arguments to pass to colcon command
+    required: false
+    default: '--log-base=/dev/null'
+
   colcon_meta_file:
     description: colcon.meta file to set cmake options. If empty, it uses an empty file
     required: false
@@ -78,7 +83,7 @@ runs:
           export COLCON_BUILD_META_="${{ inputs.colcon_meta_file }}"
         fi
 
-        colcon --log-base=/dev/null build \
+        colcon ${{ inputs.colcon_args_default }} build \
           --metas ${COLCON_BUILD_META_} \
           ${{ inputs.colcon_build_args_default }} \
           ${{ inputs.colcon_build_args }} \

@@ -3,6 +3,11 @@ description: Use colcon build command to build multiple packages
 
 inputs:
 
+  colcon_args_default:
+    description: Default arguments to pass to colcon command
+    required: false
+    default: '--log-base=nul'
+
   colcon_meta_file:
     description: colcon.meta file to set cmake options. If empty, it uses a non-existing file
     required: false
@@ -69,7 +74,7 @@ runs:
           Import-Module $pwshmodule;Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
           -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
 
-        colcon --log-base=nul build `
+        colcon ${{ inputs.colcon_args_default }} build `
           --metas ${{ inputs.colcon_meta_file }} `
           ${{ inputs.colcon_build_args_default }} `
           ${{ inputs.colcon_build_args }} `

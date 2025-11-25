@@ -3,6 +3,10 @@ description: 'Execute colcon test command with arguments given'
 
 inputs:
 
+  colcon_args_default:
+    description: Default arguments to pass to colcon command
+    required: false
+
   colcon_meta_file:
     description: colcon.meta file to set ctest options. If empty, it uses an empty file
     required: false
@@ -70,6 +74,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
+        colcon_args_default: ${{ inputs.colcon_args_default }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
@@ -86,6 +91,7 @@ runs:
       uses: eProsima/eProsima-CI/windows/colcon_test@main
       if: runner.os == 'Windows'
       with:
+        colcon_args_default: ${{ inputs.colcon_args_default }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
