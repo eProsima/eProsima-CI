@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.39.0](#v0.39.0)
 - [v0.38.0](#v0.38.0)
 - [v0.37.0](#v0.37.0)
 - [v0.36.0](#v0.36.0)
@@ -52,8 +53,12 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.39.0
+
 - Optional `token` input in `get_related_branch_from_repo`
 - Use `GITHUB_ACTION_PATH` in `colcon_test` and `junit_summary`
+- Optional `colcon_args_default` input in `colcon_build` and `colcon_test`.
+  Defaults to using `--log-base` with a value that disables log files.
 
 ## v0.38.0
 
