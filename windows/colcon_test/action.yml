@@ -3,6 +3,11 @@ description: 'Execute colcon test command with arguments given'
 
 inputs:
 
+  colcon_args_default:
+    description: Default arguments to pass to colcon command
+    required: false
+    default: '--log-base=nul'
+
   colcon_meta_file:
     description: colcon.meta file to set ctest options. If empty, it uses an empty file
     required: false
@@ -107,7 +112,7 @@ runs:
           $testResultsFile = "$resultsPath\${package}_test_results.xml"
 
           $testCommand = @"
-            colcon --log-base=nul test
+            colcon ${{ inputs.colcon_args_default }} test
               --metas $env:COLCON_TEST_META_
               ${{ inputs.colcon_test_args_default }}
               ${{ inputs.colcon_test_args }}
