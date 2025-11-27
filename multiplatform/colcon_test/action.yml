@@ -74,7 +74,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
-        colcon_args_default: ${{ inputs.colcon_args_default }}
+        colcon_args_default: ${{ inputs.colcon_args_default || '--log-base=/dev/null' }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}
@@ -91,7 +91,7 @@ runs:
       uses: eProsima/eProsima-CI/windows/colcon_test@main
       if: runner.os == 'Windows'
       with:
-        colcon_args_default: ${{ inputs.colcon_args_default }}
+        colcon_args_default: ${{ inputs.colcon_args_default || '--log-base=nul' }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_test_args: ${{ inputs.colcon_test_args }}
         colcon_test_args_default: ${{ inputs.colcon_test_args_default }}

@@ -7,6 +7,10 @@ inputs:
     description: 'Name of the colcon packages to build and test'
     required: true
 
+  colcon_args_default:
+    description: Default arguments to pass to colcon command
+    required: false
+
   colcon_meta_file:
     description: 'colcon.meta file to set cmake options. If empty, it does not use any file'
     required: false
@@ -44,6 +48,7 @@ runs:
     - name: Build
       uses: eProsima/eProsima-CI/multiplatform/colcon_build@main
       with:
+        colcon_args_default: ${{ inputs.colcon_args_default }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
         cmake_args: ' ${{ inputs.cmake_args }}'
@@ -54,6 +59,7 @@ runs:
       id: test
       uses: eProsima/eProsima-CI/multiplatform/colcon_test@main
       with:
+        colcon_args_default: ${{ inputs.colcon_args_default }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
         workspace: ${{ inputs.workspace }}
         packages_names: ${{ inputs.packages_names }}
