@@ -141,6 +141,9 @@ For more information about versioning handle of this project, check following [f
 - [coverage_build_test_upload](ubuntu/coverage_build_test_upload/action.yml)
   - Build a project using colcon and coverage flags, execute tests and upload results.
 
+- [free_disk_space](ubuntu/free_disk_space/action.yml)
+  - Removes preinstalled packages and other resources usually not required in workflows.
+
 - [get_git_diff_files](ubuntu/get_git_diff_files/action.yml)
   - Get the files that differ from one github reference to another.
     The result can be parsed with `grep`.

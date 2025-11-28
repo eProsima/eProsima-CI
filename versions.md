@@ -54,6 +54,7 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - Fix `colcon_args_default` input in `colcon_build` and `colcon_test` multiplatform actions.
+- New Ubuntu action for freeing disk space
 
 ## v0.39.0
 
