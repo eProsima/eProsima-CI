@@ -53,6 +53,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Fix `colcon_args_default` input in `colcon_build` and `colcon_test` multiplatform actions.
+
 ## v0.39.0
 
 - Optional `token` input in `get_related_branch_from_repo`
