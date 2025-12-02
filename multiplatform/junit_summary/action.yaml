@@ -32,7 +32,7 @@ runs:
 
     - name: Run in ubuntu or macOS
       if: runner.os == 'Linux' || runner.os == 'macOS'
-      uses: eProsima/eProsima-CI/ubuntu/junit_summary@main
+      uses: eProsima/eProsima-CI/ubuntu/junit_summary@v0.40.0
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
         print_summary: ${{ inputs.print_summary }}
@@ -42,7 +42,7 @@ runs:
 
     - name: Run in windows
       if: runner.os == 'Windows'
-      uses: eProsima/eProsima-CI/windows/junit_summary@main
+      uses: eProsima/eProsima-CI/windows/junit_summary@v0.40.0
       with:
         junit_reports_dir: ${{ inputs.junit_reports_dir }}
         print_summary: ${{ inputs.print_summary }}

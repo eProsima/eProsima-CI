@@ -30,23 +30,23 @@ runs:
   steps:
 
     - name: Set CMake version
-      uses: eProsima/eProsima-CI/external/get-cmake@main
+      uses: eProsima/eProsima-CI/external/get-cmake@v0.40.0
       with:
         cmakeVersion: ${{ inputs.cmakeVersion }}
         ninjaVersion: ${{ inputs.ninjaVersion }}
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@v0.40.0
 
     - name: Install GTest
-      uses: eProsima/eProsima-CI/windows/install_gtest@main
+      uses: eProsima/eProsima-CI/windows/install_gtest@v0.40.0
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
 
     - name: Install Tiny XML
-      uses: eProsima/eProsima-CI/windows/install_tinyxml@main
+      uses: eProsima/eProsima-CI/windows/install_tinyxml@v0.40.0
 
     - name: Install Open SSL
-      uses: eProsima/eprosima-CI/windows/install_openssl@main
+      uses: eProsima/eprosima-CI/windows/install_openssl@v0.40.0
       with:
         version: '3.1.1'
