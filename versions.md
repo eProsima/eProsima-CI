@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.40.0](#v0.40.0)
 - [v0.39.0](#v0.39.0)
 - [v0.38.0](#v0.38.0)
 - [v0.37.0](#v0.37.0)
@@ -52,6 +53,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.40.0
 
 - Fix `colcon_args_default` input in `colcon_build` and `colcon_test` multiplatform actions.
 - New Ubuntu action for freeing disk space
