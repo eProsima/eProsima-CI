@@ -8,7 +8,7 @@ inputs:
   version:
     description: "The desired version of Qt to install"
     type: string
-    default: '5.15.2'
+    default: '6.10.1'
   target:
     description: "The target platform to install Qt on"
     type: string
