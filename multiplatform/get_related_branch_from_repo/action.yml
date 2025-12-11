@@ -54,4 +54,4 @@ runs:
         remote_repository: ${{ inputs.remote_repository }}
         fallback_branch: ${{ inputs.fallback_branch }}
         skip_base: ${{ inputs.skip_base }}
-        token: ${{ secrets.token }}
+        token: ${{ inputs.token }}
