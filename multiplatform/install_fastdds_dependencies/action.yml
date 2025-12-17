@@ -12,11 +12,11 @@ runs:
   steps:
 
     - name: Install in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_fastdds_dependencies@main
+      uses: eProsima/eProsima-CI/ubuntu/install_fastdds_dependencies@v0.41.0
       if: runner.os == 'Linux'
 
     - name: Install in windows
-      uses: eProsima/eProsima-CI/windows/install_fastdds_dependencies@main
+      uses: eProsima/eProsima-CI/windows/install_fastdds_dependencies@v0.41.0
       with:
         cmake_build_type: ${{ inputs.cmake_build_type }}
       if: runner.os == 'Windows'

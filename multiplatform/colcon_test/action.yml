@@ -71,7 +71,7 @@ runs:
 
     - name: Run in ubuntu or macOS
       id: test_ubuntu_mac
-      uses: eProsima/eProsima-CI/ubuntu/colcon_test@main
+      uses: eProsima/eProsima-CI/ubuntu/colcon_test@v0.41.0
       if: runner.os == 'Linux' || runner.os == 'macOS'
       with:
         colcon_args_default: ${{ inputs.colcon_args_default || '--log-base=/dev/null' }}
@@ -88,7 +88,7 @@ runs:
 
     - name: Run in windows
       id: test_windows
-      uses: eProsima/eProsima-CI/windows/colcon_test@main
+      uses: eProsima/eProsima-CI/windows/colcon_test@v0.41.0
       if: runner.os == 'Windows'
       with:
         colcon_args_default: ${{ inputs.colcon_args_default || '--log-base=nul' }}
