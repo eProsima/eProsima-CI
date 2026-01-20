@@ -14,3 +14,8 @@ runs:
     - name: Download default colcon mixin
       shell: bash
       run: colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml; colcon mixin update default
+
+    - name: Remove undesired subpackages
+      shell: bash
+      run: |
+        python3 -m pip uninstall -y colcon-powershell
