@@ -76,6 +76,8 @@ runs:
 
     - name: Run tests with colcon
       id: test
+      env:
+        COLCON_EXTENSION_BLOCKLIST: "colcon_core.shell.powershell"
       run: |
         echo "::group::Test colcon ${{ inputs.workspace }}"
 
