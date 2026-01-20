@@ -56,11 +56,10 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
-- Block `colcon-powershell` with `COLCON_EXTENSION_BLOCKLIST` in colcon build and test actions.
-
 ## v0.42.0
 
 - Remove colcon-powershell after colcon-common-extension installation in Ubuntu actions.
+- Block `colcon-powershell` with `COLCON_EXTENSION_BLOCKLIST` in colcon build and test actions.
 
 ## v0.41.0
 

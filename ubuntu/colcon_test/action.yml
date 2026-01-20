@@ -70,7 +70,7 @@ runs:
   steps:
 
     - name: Install lxml
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0.42.0
       with:
         packages: lxml
 
@@ -148,7 +148,7 @@ runs:
       shell: bash
 
     - name: Upload test report in JUnit format
-      uses: eProsima/eProsima-CI/external/upload-artifact@main
+      uses: eProsima/eProsima-CI/external/upload-artifact@v0.42.0
       if: ${{ inputs.upload_test_report_artifact == 'true' && !cancelled() }}
       with:
           name: ${{ inputs.test_report_artifact || format('test_report_{0}_{1}_{2}', github.workflow, github.job, join(matrix.*, '_')) }}

@@ -7,11 +7,11 @@ runs:
 
     # TODO: check if both lcov and gcovr are needed
     - name: Install in ubuntu by apt
-      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_apt_packages@v0.42.0
       with:
         packages: lcov
 
     - name: Install in ubuntu by pip
-      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
+      uses: eProsima/eProsima-CI/ubuntu/install_python_packages@v0.42.0
       with:
         packages: gcovr==5.0
