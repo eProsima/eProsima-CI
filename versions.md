@@ -55,6 +55,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Remove colcon-powershell after colcon-common-extension installation in Ubuntu actions.
+
 ## v0.41.0
 
 - Change secrets to inputs in multiplatform action
