@@ -53,6 +53,8 @@ runs:
   steps:
 
     - name: Build workspace with colcon
+      env:
+        COLCON_EXTENSION_BLOCKLIST: "colcon_core.shell.powershell"
       run: |
 
         # Use sudo only if available
