@@ -4,7 +4,11 @@ description: 'Install generic and required python packages with pip'
 inputs:
 
   packages:
-    description: 'Custom packages to install using pip'
+    description: |
+      Custom packages to install using pip
+      You can provide multiple paths as:
+        - Multiline (recommended)
+        - One single line
     required: false
     default: ''
 
@@ -50,10 +54,14 @@ runs:
           export UPGRADE_FLAG=""
         fi
 
+        # Accept multiline and/or comma-separated lists
+        PACKAGES_LINE="${{ inputs.packages }}"
+        PACKAGES_LINE="$(printf '%s' "$PACKAGES_LINE" | tr '\n' ' ')"
+
         # Install python packages if any
-        if [[ ! -z "${{ inputs.packages }}" ]] ; then
+        if [[ ! -z "$PACKAGES_LINE" ]] ; then
           pip3 install ${UPGRADE_FLAG} \
-            ${{ inputs.packages }}
+            $PACKAGES_LINE
         fi
 
         # Install requirements file if any
