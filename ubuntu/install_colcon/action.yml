@@ -8,7 +8,7 @@ runs:
     - name: Install colcon
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:
-        packages: 'setuptools colcon-common-extensions colcon-mixin'
+        packages: 'setuptools==74.1.3 colcon-common-extensions colcon-mixin'
         upgrade: true
 
     - name: Download default colcon mixin
