@@ -36,7 +36,7 @@ runs:
         ninjaVersion: ${{ inputs.ninjaVersion }}
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@hotfix/vcs-version
 
     - name: Install GTest
       uses: eProsima/eProsima-CI/windows/install_gtest@main
