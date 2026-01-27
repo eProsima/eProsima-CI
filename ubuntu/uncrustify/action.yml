@@ -75,7 +75,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@hotfix/vcs-version
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)

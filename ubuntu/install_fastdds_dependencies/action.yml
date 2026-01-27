@@ -35,7 +35,7 @@ runs:
         packages: 'vcstool setuptools==74.1.3'
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@hotfix/vcs-version
 
     - name: Install GTest
       uses: eProsima/eProsima-CI/ubuntu/install_gtest@main

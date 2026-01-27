@@ -98,7 +98,7 @@ runs:
         path_to_requirements: ${{ inputs.path_to_requirements }}
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@hotfix/vcs-version
 
     - name: Download cmake_utils artifact
       uses: eProsima/eProsima-CI/multiplatform/download_dependency@main
