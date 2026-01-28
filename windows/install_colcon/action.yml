@@ -2,8 +2,6 @@ name: 'install_colcon'
 
 runs:
   using: composite
-  env:
-      SETUPTOOLS_USE_DISTUTILS: local
   steps:
 
     - name: Install colcon
