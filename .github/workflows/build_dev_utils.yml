@@ -235,7 +235,7 @@ jobs:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@hotfix/vcs-version
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
@@ -307,7 +307,7 @@ jobs:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@hotfix/vcs-version
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
         with:
           cmake_build_type: ${{ matrix.cmake_build_type }}
 
@@ -372,7 +372,7 @@ jobs:
           path: src/eprosima-CI
 
       - name: Install Fast DDS dependencies
-        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@hotfix/vcs-version
+        uses: eProsima/eProsima-CI/multiplatform/install_fastdds_dependencies@main
         with:
           cmake_build_type: Debug
 
