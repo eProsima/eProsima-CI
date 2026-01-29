@@ -6,7 +6,7 @@ runs:
   steps:
 
     - name: Install colcon
-      uses: eProsima/eProsima-CI/macos/install_python_packages@main
+      uses: eProsima/eProsima-CI/macos/install_python_packages@v0.43.0
       with:
         packages: 'setuptools==74.1.3 colcon-common-extensions colcon-mixin'
         upgrade: true

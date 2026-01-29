@@ -62,20 +62,20 @@ runs:
       shell: bash
 
     - name: Sync repository
-      uses: eProsima/eProsima-CI/external/checkout@main
+      uses: eProsima/eProsima-CI/external/checkout@v0.43.0
       with:
         path: '${{ env.WORKSPACE }}/check'
 
     - name: Fetch all branches and tags
-      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@main
+      uses: eProsima/eProsima-CI/ubuntu/git_fetch_all@v0.43.0
       with:
         workspace: '${{ env.WORKSPACE }}/check'
 
     - name: Install uncrustify
-      uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@main
+      uses: eProsima/eProsima-CI/ubuntu/install_uncrustify@v0.43.0
 
     - name: Install Colcon
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@v0.43.0
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)
@@ -99,7 +99,7 @@ runs:
 
     - name: Get Git difference
       id: GetGitDifference
-      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
+      uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@v0.43.0
       with:
         result_env_var: MODIFIED_FILES
         head_ref: origin/${GITHUB_HEAD_REF}
