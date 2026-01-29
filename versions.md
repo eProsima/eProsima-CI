@@ -59,6 +59,7 @@ The upcoming release will include the following **features**:
 
 ## v0.43.0
 
+- Update setuptools pip package to version 74.1.3.
 - Block `colcon-powershell` with `COLCON_EXTENSION_BLOCKLIST` in colcon build and test actions.
 
 ## v0.42.0
