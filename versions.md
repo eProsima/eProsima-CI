@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.43.0](#v0.43.0)
 - [v0.42.0](#v0.42.0)
 - [v0.41.0](#v0.41.0)
 - [v0.40.0](#v0.40.0)
@@ -55,6 +56,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.43.0
 
 - Block `colcon-powershell` with `COLCON_EXTENSION_BLOCKLIST` in colcon build and test actions.
 
