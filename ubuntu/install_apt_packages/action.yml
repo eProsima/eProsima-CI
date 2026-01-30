@@ -4,7 +4,11 @@ description: 'Install apt packages'
 inputs:
 
   packages:
-    description: 'Custom packages to install using apt'
+    description: |
+      Custom packages to install using apt
+      You can provide multiple paths as:
+        - Multiline (recommended)
+        - One single line
     required: true
 
   update:
@@ -30,7 +34,12 @@ runs:
         else
           command_prefix=''
         fi
-        echo "::group::Install apt packages ${{ inputs.packages }}"
+
+        # Accept multiline lists
+        PACKAGES_LINE="${{ inputs.packages }}"
+        PACKAGES_LINE="$(printf '%s' "$PACKAGES_LINE" | tr '\n' ' ')"
+
+        echo "::group::Install apt packages $PACKAGES_LINE"
 
         # Update apt repos
         if [ "${{ inputs.update }}" = "true" ]; then
@@ -39,7 +48,7 @@ runs:
 
         # Install custom packages
         $command_prefix apt -y install \
-          ${{ inputs.packages }}
+          $PACKAGES_LINE
 
         # Upgrade apt repos
         if [ "${{ inputs.upgrade }}" = "true" ] ; then
