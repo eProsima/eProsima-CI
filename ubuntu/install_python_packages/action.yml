@@ -54,7 +54,7 @@ runs:
           export UPGRADE_FLAG=""
         fi
 
-        # Accept multiline and/or comma-separated lists
+        # Accept multiline lists
         PACKAGES_LINE="${{ inputs.packages }}"
         PACKAGES_LINE="$(printf '%s' "$PACKAGES_LINE" | tr '\n' ' ')"
 
