@@ -37,7 +37,7 @@ runs:
 
         # Accept multiline lists
         PACKAGES_LINE="${{ inputs.packages }}"
-        PACKAGES_LINE="$(printf '%s' "$PACKAGES_LINE" | tr '\n' ' ')"
+        PACKAGES_LINE="$(printf '%s' "$PACKAGES_LINE" | tr '\n' ' ' | tr -s ' ')"
 
         echo "::group::Install apt packages $PACKAGES_LINE"
 
