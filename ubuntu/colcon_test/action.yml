@@ -37,6 +37,11 @@ inputs:
     description: 'Name of the colcon packages to test'
     required: true
 
+  venv_path:
+    description: 'Path to virtual environment'
+    required: false
+    default: '.venv'
+
   workspace:
     description: 'Workspace where built has been done'
     required: false
@@ -73,6 +78,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/install_python_packages@main
       with:
         packages: lxml
+        path: ${{ inputs.venv_path }}
 
     - name: Run tests with colcon
       id: test

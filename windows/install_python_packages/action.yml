@@ -2,9 +2,8 @@ name: 'install_python_packages'
 description: 'Install generic and required python packages with pip'
 
 inputs:
-
   packages:
-    description: 'Custom packages to install using pip'
+    description: 'Custom packages to install using pip (supports multiline)'
     required: false
     default: ''
 
@@ -21,29 +20,49 @@ inputs:
 runs:
   using: composite
   steps:
-
     - name: install_python_packages
       shell: pwsh
       run: |
-
         "::group::Install Python packages"
 
         # Set upgrade flag
+        $UPGRADE_FLAG = $null
         if ("${{ inputs.upgrade }}" -eq "true") {
           $UPGRADE_FLAG = "--upgrade"
-        } else {
-          $UPGRADE_FLAG = ""
+        }
+
+        # Read packages as a here-string to safely support multiline input
+        $PACKAGES_RAW = @'
+        ${{ inputs.packages }}
+        '@
+
+        # Build pip args from packages:
+        # - remove empty lines
+        # - ignore comment lines (starting with #)
+        # - allow both whitespace and newline separated args
+        $packageArgs = @()
+        if (-not [string]::IsNullOrWhiteSpace($PACKAGES_RAW)) {
+          $lines = $PACKAGES_RAW -split "(`r`n|`n|`r)" |
+            ForEach-Object { $_.Trim() } |
+            Where-Object { $_ -and -not $_.StartsWith('#') }
+
+          if ($lines.Count -gt 0) {
+            $packageArgs = (($lines -join ' ') -split '\s+') | Where-Object { $_ }
+          }
         }
 
         # Install python packages if any
-        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.packages }}" )) {
-          pip3 install ${{ inputs.packages }}
+        if ($packageArgs.Count -gt 0) {
+          if ($UPGRADE_FLAG) {
+            pip3 install $UPGRADE_FLAG @packageArgs
+          } else {
+            pip3 install @packageArgs
+          }
         }
 
         # Install requirements file if any
-        if (-not [string]::IsNullOrWhiteSpace( "${{ inputs.requirements_file_name }}")) {
+        if (-not [string]::IsNullOrWhiteSpace("${{ inputs.requirements_file_name }}")) {
           pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG
         }
 
-        # Thanks to Chat-GPT for the translation from bash
         "::endgroup::"
