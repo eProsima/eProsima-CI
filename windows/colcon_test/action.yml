@@ -71,7 +71,7 @@ runs:
   steps:
 
     - name: Install lxml
-      uses: eProsima/eProsima-CI/windows/install_python_packages@bugfix/install_python_multiline
+      uses: eProsima/eProsima-CI/windows/install_python_packages@main
       with:
         packages: lxml
 
