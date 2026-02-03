@@ -36,33 +36,32 @@ runs:
         ${{ inputs.packages }}
         '@
 
-        # Build pip args from packages:
-        # - remove empty lines
-        # - ignore comment lines (starting with #)
-        # - allow both whitespace and newline separated args
+        # Build pip args from packages (ALWAYS array)
         $packageArgs = @()
         if (-not [string]::IsNullOrWhiteSpace($PACKAGES_RAW)) {
           $lines = $PACKAGES_RAW -split "(`r`n|`n|`r)" |
             ForEach-Object { $_.Trim() } |
             Where-Object { $_ -and -not $_.StartsWith('#') }
 
-          if ($lines.Count -gt 0) {
-            $packageArgs = (($lines -join ' ') -split '\s+') | Where-Object { $_ }
-          }
+          $packageArgs = @(
+            $lines | ForEach-Object { $_ -split '\s+' } | Where-Object { $_ }
+          )
         }
 
         # Install python packages if any
         if ($packageArgs.Count -gt 0) {
-          if ($UPGRADE_FLAG) {
-            pip3 install $UPGRADE_FLAG @packageArgs
-          } else {
-            pip3 install @packageArgs
-          }
+          $pipArgs = @()
+          if ($UPGRADE_FLAG) { $pipArgs += $UPGRADE_FLAG }
+          $pipArgs += $packageArgs
+          pip3 install @pipArgs
         }
 
         # Install requirements file if any
         if (-not [string]::IsNullOrWhiteSpace("${{ inputs.requirements_file_name }}")) {
-          pip3 install -r ${{ inputs.requirements_file_name }} $UPGRADE_FLAG
+          $pipReqArgs = @()
+          if ($UPGRADE_FLAG) { $pipReqArgs += $UPGRADE_FLAG }
+          $pipReqArgs += @("-r", "${{ inputs.requirements_file_name }}")
+          pip3 install @pipReqArgs
         }
 
         "::endgroup::"
