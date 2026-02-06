@@ -49,6 +49,11 @@ inputs:
     required: false
     default: "-e '\\.h' -e '\\.hpp' -e '\\.cpp' -e '\\.ipp' -e '\\.cxx'"
 
+  venv_path:
+    description: 'Path to virtual environment'
+    required: false
+    default: '.venv'
+
   # NOTE: there is no uncrustify version because it could not be set the same default for both ubuntu 20 and 22.
   # And on Ubuntu 22 there is only 1 version available in apt.
 
@@ -76,6 +81,8 @@ runs:
 
     - name: Install Colcon
       uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      with:
+        path: ${{ inputs.venv_path }}
 
     # TODO: Change to main branch when PR is merged to allow c++ check over other files different than cpp hpp
     # (required for .ipp files)
