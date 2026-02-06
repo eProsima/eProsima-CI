@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.46.0](#v0.46.0)
 - [v0.45.0](#v0.45.0)
 - [v0.44.0](#v0.44.0)
 - [v0.43.0](#v0.43.0)
@@ -58,6 +59,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 ## Forthcoming
 
 The upcoming release will include the following **features**:
+
+## v0.46.0
 
 - Add `venv_path` input to uncrustify action to specify the path to a python virtual environment.
 
