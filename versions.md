@@ -59,6 +59,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add `venv_path` input to uncrustify action to specify the path to a python virtual environment.
+
 ## v0.45.0
 
 - Fix regression in windows/install_python_packages action.
