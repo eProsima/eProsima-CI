@@ -48,6 +48,14 @@ inputs:
     required: false
     default: ''
 
+  build-base:
+    description: Build base to be used by colcon.
+    required: false
+
+  install-base:
+    description: Install base to be used by colcon.
+    required: false
+
 runs:
   using: composite
   steps:
@@ -75,6 +83,8 @@ runs:
           -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
 
         colcon ${{ inputs.colcon_args_default }} build `
+          ${{ inputs.build-base && format('--build-base {0}', inputs.build-base) || '' }} `
+          ${{ inputs.install-base && format('--install-base {0}', inputs.install-base) || '' }} `
           --metas ${{ inputs.colcon_meta_file }} `
           ${{ inputs.colcon_build_args_default }} `
           ${{ inputs.colcon_build_args }} `
