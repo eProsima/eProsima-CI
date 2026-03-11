@@ -3,6 +3,10 @@ description: Use colcon build command to build multiple packages
 
 inputs:
 
+  build-base:
+    description: Build base to be used by colcon.
+    required: false
+
   colcon_args_default:
     description: Default arguments to pass to colcon command
     required: false
@@ -38,6 +42,10 @@ inputs:
     required: false
     default: Release
 
+  install-base:
+    description: Install base to be used by colcon.
+    required: false
+
   workspace:
     description: Workspace to build
     required: false
@@ -47,14 +55,6 @@ inputs:
     description: Workspace to source where dependencies are
     required: false
     default: ''
-
-  build-base:
-    description: Build base to be used by colcon.
-    required: false
-
-  install-base:
-    description: Install base to be used by colcon.
-    required: false
 
 runs:
   using: composite
