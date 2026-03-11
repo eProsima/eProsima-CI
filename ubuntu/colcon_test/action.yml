@@ -3,6 +3,10 @@ description: 'Execute colcon test command with arguments given'
 
 inputs:
 
+  build-base:
+    description: Build base to be used by colcon.
+    required: false
+
   colcon_args_default:
     description: Default arguments to pass to colcon command
     required: false
@@ -32,6 +36,10 @@ inputs:
     description: 'Default args to pass to colcon test command'
     required: false
     default: '--timeout 60'
+
+  install-base:
+    description: Install base to be used by colcon.
+    required: false
 
   packages_names:
     description: 'Name of the colcon packages to test'
@@ -113,6 +121,8 @@ runs:
           test_results_file="${{ inputs.workspace }}/test_results/${package}_test_results.xml"
 
           colcon ${{ inputs.colcon_args_default }} test \
+            ${{ inputs.build-base && format('--build-base {0}', inputs.build-base) || '' }} \
+            ${{ inputs.install-base && format('--install-base {0}', inputs.install-base) || '' }} \
             --metas ${COLCON_TEST_META_} \
             ${{ inputs.colcon_test_args_default }} \
             ${{ inputs.colcon_test_args }} \
