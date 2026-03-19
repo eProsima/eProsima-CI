@@ -60,6 +60,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add `build-base` and `install-base` inputs to all colcon actions.
+
 ## v0.46.0
 
 - Add `venv_path` input to uncrustify action to specify the path to a python virtual environment.

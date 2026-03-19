@@ -3,6 +3,10 @@ description: Use colcon build command to build multiple packages
 
 inputs:
 
+  build-base:
+    description: Build base to be used by colcon.
+    required: false
+
   colcon_args_default:
     description: Default arguments to pass to colcon command
     required: false
@@ -37,6 +41,10 @@ inputs:
     description: Set the cmake build type
     required: false
     default: Release
+
+  install-base:
+    description: Install base to be used by colcon.
+    required: false
 
   workspace:
     description: Workspace to build
@@ -86,6 +94,8 @@ runs:
         fi
 
         colcon ${{ inputs.colcon_args_default }} build \
+          ${{ inputs.build-base && format('--build-base {0}', inputs.build-base) || '' }} \
+          ${{ inputs.install-base && format('--install-base {0}', inputs.install-base) || '' }} \
           --metas ${COLCON_BUILD_META_} \
           ${{ inputs.colcon_build_args_default }} \
           ${{ inputs.colcon_build_args }} \
