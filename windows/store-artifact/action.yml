@@ -1,5 +1,5 @@
 name: store-artifact
-description: "Store artifacts in a given path to be used in other jobs (Windows/Linux/macOS)"
+description: "Store artifacts in a given path to be used in other jobs on Windows"
 
 inputs:
   name:

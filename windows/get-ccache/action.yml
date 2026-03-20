@@ -16,9 +16,9 @@ runs:
 
         $erroractionpreference = "stop"
 
-        $content = (Invoke-WebRequest -Uri "https://api.github.com/repos/ccache/ccache/releases" -UseBasicParsing | ConvertFrom-Json)
-        $tag = $content[0].tag_name
-        $name = $content[0].name
+        $content = (Invoke-WebRequest -Uri "https://api.github.com/repos/ccache/ccache/releases/latest" -UseBasicParsing | ConvertFrom-Json)
+        $tag = $content.tag_name
+        $name = $content.name
         $filename = "ccache-$name-windows-x86_64"
         $tarball = "$filename.zip"
 

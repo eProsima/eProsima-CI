@@ -1,11 +1,6 @@
 name: get-cmake
 description: "Get cmake 3.28.3 (Windows)"
 
-inputs:
-  version:
-    description: "CMake version to be installed"
-    required: true
-
 runs:
   using: 'composite'
   steps:

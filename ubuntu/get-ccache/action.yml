@@ -21,13 +21,13 @@ runs:
       id: install-latest-ccache
       run: |
         set -e
-        mkdir /opt/ccache
+        mkdir -p /opt/ccache
         cd /opt/ccache
         mkdir -p bin
         LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/ccache/ccache/releases/latest); \
         LATEST_VERSION=$(echo $LATEST_RELEASE | sed -e 's/.*"tag_name":"v\([^"]*\)".*/\1/'); \
         THRESHOLD="4.13"
-        if [ "$(printf '%s\n%s' "$THRESHOLD" "$LAST_VERSION" | sort -V | head -n1)" = "$THRESHOLD" ]; then
+        if [ "$(printf '%s\n%s' "$THRESHOLD" "$LATEST_VERSION" | sort -V | head -n1)" = "$THRESHOLD" ]; then
           curl -OL https://github.com/ccache/ccache/releases/download/v$LATEST_VERSION/ccache-$LATEST_VERSION-linux-x86_64-glibc.tar.xz && \
           tar xf ccache-$LATEST_VERSION-linux-x86_64-glibc.tar.xz --strip-components=1 --one-top-level=bin
         else
@@ -39,7 +39,7 @@ runs:
     - name: Add CCache to PATH variable to env context
       id: add-ccache-path-env
       run: |
-        echo "PATH=${{ env.WORKSPACE }}/opt/ccache/bin:$PATH" >> $GITHUB_ENV
+        echo "PATH=/opt/ccache/bin:$PATH" >> $GITHUB_ENV
         # echo "CCACHE_COMPILERCHECK=content" >> $GITHUB_ENV
         echo "CCACHE_BASEDIR=${{ env.WORKSPACE }}" >> $GITHUB_ENV
         echo "CCACHE_DIR=${{ inputs.ccache-folder }}" >> $GITHUB_ENV

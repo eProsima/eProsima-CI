@@ -44,7 +44,7 @@ runs:
     - name: Create destination folder path if it does not exist
       run: |
         if [ ! -d "${{ steps.normalize-folder-paths.outputs.destination-path }}" ]; then
-          mkdir -p ${{ steps.normalize-folder-paths.outputs.destination-path }}
+          mkdir -p "${{ steps.normalize-folder-paths.outputs.destination-path }}"
         fi
         echo "Artifact's destination folder path: ${{ steps.normalize-folder-paths.outputs.destination-path }}"
       shell: bash

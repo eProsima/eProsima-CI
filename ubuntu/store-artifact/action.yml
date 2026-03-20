@@ -60,8 +60,8 @@ runs:
         fi
 
         if [ -f "$OUTFILE" ]; then
-          echo "Artifact '${{ inputs.name }}' already exists in destination path '$DEST'"
-          exit 1
+          echo "Artifact '${{ inputs.name }}' already exists in destination path '$DEST'. Removing..."
+          rm -f $OUTFILE
         fi
 
         # Accept multiline and/or comma-separated lists
