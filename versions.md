@@ -4,6 +4,7 @@ This file includes the released versions of **eProsima-CI** along with their con
 The [Forthcoming](#forthcoming) section includes those features added in `main` branch that are not yet in a stable release.
 
 - [Forthcoming](#forthcoming)
+- [v0.47.0](#v0.47.0)
 - [v0.46.0](#v0.46.0)
 - [v0.45.0](#v0.45.0)
 - [v0.44.0](#v0.44.0)
@@ -60,13 +61,15 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
-- Add `build-base` and `install-base` inputs to all colcon actions.
+## v0.47.0
+
 - New action `get-artifact` to download an artifact on our self-hosted runners on Ubuntu and Windows.
 - New action `store-artifact` to upload an artifact on our self-hosted runners on Ubuntu and Windows.
 - New action `purge-artifacts` to delete artifacts on our self-hosted runners on Ubuntu and Windows.
 - New action `get-ccache` to download ccache from on self-hosted runners on Ubuntu and Windows.
 - New action `get-cmake` to download cmake from on self-hosted runners on Windows.
 - New action `get-ninja` to download ninja from on self-hosted runners on Windows.
+- Add `build-base` and `install-base` inputs to all colcon actions.
 
 ## v0.46.0
 
