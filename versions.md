@@ -61,6 +61,12 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 The upcoming release will include the following **features**:
 
 - Add `build-base` and `install-base` inputs to all colcon actions.
+- New action `get-artifact` to download an artifact on our self-hosted runners on Ubuntu and Windows.
+- New action `store-artifact` to upload an artifact on our self-hosted runners on Ubuntu and Windows.
+- New action `purge-artifacts` to delete artifacts on our self-hosted runners on Ubuntu and Windows.
+- New action `get-ccache` to download ccache from on self-hosted runners on Ubuntu and Windows.
+- New action `get-cmake` to download cmake from on self-hosted runners on Windows.
+- New action `get-ninja` to download ninja from on self-hosted runners on Windows.
 
 ## v0.46.0
 
