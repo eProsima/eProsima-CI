@@ -6,6 +6,10 @@ inputs:
     description: "Path to the folder where ccache cache is located"
     required: true
 
+  workspace:
+    description: "Workspace used to set CCACHE_BASEDIR"
+    required: true
+
 runs:
   using: 'composite'
   steps:
@@ -40,8 +44,7 @@ runs:
       id: add-ccache-path-env
       run: |
         echo "PATH=/opt/ccache/bin:$PATH" >> $GITHUB_ENV
-        # echo "CCACHE_COMPILERCHECK=content" >> $GITHUB_ENV
-        echo "CCACHE_BASEDIR=${{ env.WORKSPACE }}" >> $GITHUB_ENV
+        echo "CCACHE_BASEDIR=${{ inputs.workspace }}" >> $GITHUB_ENV
         echo "CCACHE_DIR=${{ inputs.ccache-folder }}" >> $GITHUB_ENV
       shell: bash
 
