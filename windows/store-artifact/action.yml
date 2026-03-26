@@ -13,6 +13,10 @@ inputs:
   destination-folder-path:
     description: 'Destination folder inside the runner to store the artifact'
     required: true
+  workspace:
+    description: Workspace used as root
+    required: false
+    default: ${{ github.workspace }}
 
 runs:
   using: 'composite'
@@ -48,6 +52,8 @@ runs:
           Write-Error "Destination path '$destPath' does not exist"
           exit 1
         }
+
+        cd ${{ inputs.workspace }}
 
         # Read multiline input safely (one path per line)
         $rawPaths = @'
