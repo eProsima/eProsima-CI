@@ -61,6 +61,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.48.0
+
 - Add `workspace` input in windows's `store-artifact` action.
 
 ## v0.47.0
