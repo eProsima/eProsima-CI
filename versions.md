@@ -61,6 +61,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Add `workspace` input in windows's `store-artifact` action.
+
 ## v0.47.0
 
 - New action `get-artifact` to download an artifact on our self-hosted runners on Ubuntu and Windows.
