@@ -104,6 +104,12 @@ runs:
         }
         echo "Using colcon.meta file <$env:COLCON_TEST_META_>"
 
+        # Enter VS dev shell so tests that invoke cl.exe or other MSVC tools at runtime work
+        ls -Path @(${Env:ProgramFiles},${Env:ProgramFiles(x86)}) -Filter '*Visual Studio*' -Directory -ErrorAction SilentlyContinue |
+        ls -R -Filter 'Microsoft.VisualStudio.DevShell.dll' | select -First 1 -OutVariable pwshmodule ; `
+          Import-Module $pwshmodule; Enter-VsDevShell -SetDefaultWindowTitle -VsInstallPath $pwshmodule.Directory.Parent.Parent `
+          -StartInPath (pwd) -DevCmdArguments '/arch=x64 /host_arch=x64'
+
         cd ${{ inputs.workspace }}
         $resultsPath = "${{ inputs.workspace }}\test_results\"
         New-Item -ItemType Directory -Path $resultsPath
