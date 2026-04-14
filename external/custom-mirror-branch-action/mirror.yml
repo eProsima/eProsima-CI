@@ -22,6 +22,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.token }}
+          ref: ${{ inputs.source }}
 
       - name: Push
-        run: git push origin HEAD:refs/heads/${{ inputs.dest }} --force
+        run: git push origin HEAD:refs/heads/${{ inputs.dest }} --force-with-lease
