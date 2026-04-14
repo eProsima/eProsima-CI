@@ -1,0 +1,27 @@
+name: mirror-branch
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        required: true
+        type: string
+      dest:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    name: Mirror ${{ inputs.source }} to ${{ inputs.dest }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.token }}
+
+      - name: Push
+        run: git push origin HEAD:refs/heads/${{ inputs.dest }} --force
