@@ -1,28 +1,26 @@
 name: mirror-branch
+description: Mirror a branch within the same repository
 
-on:
-  workflow_call:
-    inputs:
-      source:
-        required: true
-        type: string
-      dest:
-        required: true
-        type: string
-    secrets:
-      token:
-        required: true
+inputs:
+  source:
+    required: true
+    description: Source branch
+  dest:
+    required: true
+    description: Destination branch
+  github-token:
+    required: true
+    description: GitHub token with push permissions
 
-jobs:
-  mirror:
-    runs-on: ubuntu-latest
-    name: Mirror ${{ inputs.source }} to ${{ inputs.dest }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.token }}
-          ref: ${{ inputs.source }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ inputs.github-token }}
+        ref: ${{ inputs.source }}
 
-      - name: Push
-        run: git push origin HEAD:refs/heads/${{ inputs.dest }} --force-with-lease
+    - name: Push
+      shell: bash
+      run: git push origin HEAD:refs/heads/${{ inputs.dest }} --force-with-lease
