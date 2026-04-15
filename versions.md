@@ -61,6 +61,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- New action `custom-mirror-branch-action` to mirror two branches withing a single repository without using external dependencies.
+
 ## v0.48.0
 
 - Add `workspace` input in windows's `store-artifact` action.
