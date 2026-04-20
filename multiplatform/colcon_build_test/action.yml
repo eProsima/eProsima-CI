@@ -16,6 +16,11 @@ inputs:
     required: false
     default: ''
 
+  colcon_build_args:
+    description: Arguments to pass to colcon build command (use cmake_args input for CMake options)
+    required: false
+    default: '--packages-up-to ${{ inputs.packages_names }}'
+
   cmake_args:
     description: 'Cmake arguments'
     required: false
@@ -68,7 +73,7 @@ runs:
       with:
         colcon_args_default: ${{ inputs.colcon_args_default }}
         colcon_meta_file: ${{ inputs.colcon_meta_file }}
-        colcon_build_args: '--packages-up-to ${{ inputs.packages_names }}'
+        colcon_build_args: ${{ inputs.colcon_build_args }}
         cmake_args: ' ${{ inputs.cmake_args }}'
         workspace: ${{ inputs.workspace }}
         workspace_dependencies: ${{ inputs.workspace_dependencies }}
