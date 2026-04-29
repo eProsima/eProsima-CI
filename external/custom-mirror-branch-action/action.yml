@@ -11,16 +11,21 @@ inputs:
   github-token:
     required: true
     description: GitHub token with push permissions
+  path:
+    required: false
+    description: Relative path under $GITHUB_WORKSPACE to checkout the repository
 
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v4
+    - uses: eProsima/eProsima-CI/external/checkout@v0.49.0
       with:
         fetch-depth: 0
         token: ${{ inputs.github-token }}
         ref: ${{ inputs.source }}
+        path: ${{ inputs.path }}
 
     - name: Push
       shell: bash
+      working-directory: ${{ inputs.path || '.' }}
       run: git push origin HEAD:refs/heads/${{ inputs.dest }} --force-with-lease
