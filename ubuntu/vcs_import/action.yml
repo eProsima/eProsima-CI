@@ -68,7 +68,11 @@ runs:
           do
             [ -e "${d}.git" ] || continue
             # No upstream (tag/detached, or unset tracking) -> nothing to pull, skip.
-            git -C "${d}" rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1 || continue
+            if ! git -C "${d}" rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1
+            then
+              echo "${d} -> no upstream (tag/detached) -> skip"
+              continue
+            fi
             git -C "${d}" pull --ff-only --quiet && echo "${d} -> up to date" \
               || echo "WARN: could not fast-forward ${d}"
           done
