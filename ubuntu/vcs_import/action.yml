@@ -48,11 +48,32 @@ runs:
 
         if [[ "${{ inputs.pull }}" == "true" ]]
         then
-          echo "::group::Set upstream tracking branches"
+          export GIT_TERMINAL_PROMPT=0
           git config --global --add safe.directory '*'
-          for d in ${{ inputs.destination_workspace }}/*/
+
+          echo "::group::Get list of imported repositories from ${{ inputs.vcs_repos_file }}"
+          DST="${{ inputs.destination_workspace }}"
+          # Only operate on the repos declared in this .repos file. The workspace may be
+          # persisted/shared and contain unrelated repos owned by other steps/workflows
+          # (e.g. private ones whose credentials are gone), which must not be touched.
+          mapfile -t REPOS < <(awk '
+            /^repositories:[[:space:]]*$/ { inrepo=1; next }
+            inrepo && /^[^[:space:]]/     { inrepo=0 }
+            inrepo {
+              match($0, /^[[:space:]]*/); indent = RLENGTH
+              line = $0; gsub(/^[[:space:]]+|[[:space:]]+$/, "", line)
+              if (line == "" || line ~ /^#/) next
+              if (base == 0) base = indent
+              if (indent == base && line ~ /:$/) { sub(/:$/, "", line); print line }
+            }
+          ' "${{ inputs.vcs_repos_file }}")
+          echo "::endgroup::"
+
+          echo "::group::Set upstream tracking branches"
+          for name in "${REPOS[@]}"
           do
-            [ -e "${d}.git" ] || continue
+            d="${DST%/}/${name}"
+            [ -e "${d}/.git" ] || continue
             # Detached HEAD (tag/commit pin) has no branch -> skip, so pulls never fail on it.
             br=$(git -C "${d}" symbolic-ref --short -q HEAD) || continue
             if git -C "${d}" show-ref --verify --quiet "refs/remotes/origin/${br}"
@@ -64,9 +85,10 @@ runs:
           echo "::endgroup::"
 
           echo "::group::Fast-forward repositories to upstream"
-          for d in ${{ inputs.destination_workspace }}/*/
+          for name in "${REPOS[@]}"
           do
-            [ -e "${d}.git" ] || continue
+            d="${DST%/}/${name}"
+            [ -e "${d}/.git" ] || continue
             # No upstream (tag/detached, or unset tracking) -> nothing to pull, skip.
             if ! git -C "${d}" rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1
             then
