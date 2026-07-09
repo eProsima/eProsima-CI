@@ -13,19 +13,19 @@ runs:
   steps:
 
     - name: Run in ubuntu
-      uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
+      uses: eProsima/eProsima-CI/ubuntu/install_colcon@v0.50.0
       if: runner.os == 'Linux'
       with:
         mixins: ${{ inputs.mixins }}
 
     - name: Run in macOS
-      uses: eProsima/eProsima-CI/macos/install_colcon@main
+      uses: eProsima/eProsima-CI/macos/install_colcon@v0.50.0
       if: runner.os == 'macOS'
       with:
         mixins: ${{ inputs.mixins }}
 
     - name: Run in windows
-      uses: eProsima/eProsima-CI/windows/install_colcon@main
+      uses: eProsima/eProsima-CI/windows/install_colcon@v0.50.0
       if: runner.os == 'Windows'
       with:
         mixins: ${{ inputs.mixins }}
