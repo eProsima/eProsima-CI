@@ -1,6 +1,13 @@
 name: install_colcon
 description: Install Colcon
 
+inputs:
+
+  mixins:
+    description: 'Whether to register the default colcon mixin repository'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -8,11 +15,17 @@ runs:
     - name: Run in ubuntu
       uses: eProsima/eProsima-CI/ubuntu/install_colcon@main
       if: runner.os == 'Linux'
+      with:
+        mixins: ${{ inputs.mixins }}
 
     - name: Run in macOS
       uses: eProsima/eProsima-CI/macos/install_colcon@main
       if: runner.os == 'macOS'
+      with:
+        mixins: ${{ inputs.mixins }}
 
     - name: Run in windows
       uses: eProsima/eProsima-CI/windows/install_colcon@main
       if: runner.os == 'Windows'
+      with:
+        mixins: ${{ inputs.mixins }}

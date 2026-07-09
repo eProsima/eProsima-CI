@@ -8,6 +8,11 @@ inputs:
     required: false
     default: '.venv'
 
+  mixins:
+    description: 'Whether to register the default colcon mixin repository'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -20,6 +25,7 @@ runs:
         upgrade: true
 
     - name: Download default colcon mixin
+      if: ${{ inputs.mixins == 'true' }}
       shell: bash
       run: colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml; colcon mixin update default
 
