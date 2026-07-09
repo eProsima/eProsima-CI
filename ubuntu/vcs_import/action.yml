@@ -17,6 +17,11 @@ inputs:
     required: false
     default: 'false'
 
+  pull:
+    description: 'Fast-forward each imported repo to its upstream after import. Repos without an upstream (tag/detached) are skipped, never fails the step.'
+    required: false
+    default: 'true'
+
 runs:
   using: composite
   steps:
@@ -40,5 +45,34 @@ runs:
         vcs import ${SKIP_EXISTING} ${{ inputs.destination_workspace }} < ${{ inputs.vcs_repos_file }}
 
         echo "::endgroup::"
+
+        if [[ "${{ inputs.pull }}" == "true" ]]
+        then
+          echo "::group::Set upstream tracking branches"
+          git config --global --add safe.directory '*'
+          for d in ${{ inputs.destination_workspace }}/*/
+          do
+            [ -e "${d}.git" ] || continue
+            # Detached HEAD (tag/commit pin) has no branch -> skip, so pulls never fail on it.
+            br=$(git -C "${d}" symbolic-ref --short -q HEAD) || continue
+            if git -C "${d}" show-ref --verify --quiet "refs/remotes/origin/${br}"
+            then
+              git -C "${d}" branch --set-upstream-to="origin/${br}" "${br}" >/dev/null 2>&1 || true
+              echo "${d} -> tracking origin/${br}"
+            fi
+          done
+          echo "::endgroup::"
+
+          echo "::group::Fast-forward repositories to upstream"
+          for d in ${{ inputs.destination_workspace }}/*/
+          do
+            [ -e "${d}.git" ] || continue
+            # No upstream (tag/detached, or unset tracking) -> nothing to pull, skip.
+            git -C "${d}" rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1 || continue
+            git -C "${d}" pull --ff-only --quiet && echo "${d} -> up to date" \
+              || echo "WARN: could not fast-forward ${d}"
+          done
+          echo "::endgroup::"
+        fi
 
       shell: bash
