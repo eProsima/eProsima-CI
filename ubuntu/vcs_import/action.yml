@@ -56,7 +56,11 @@ runs:
           # Only operate on the repos declared in this .repos file. The workspace may be
           # persisted/shared and contain unrelated repos owned by other steps/workflows
           # (e.g. private ones whose credentials are gone), which must not be touched.
-          mapfile -t REPOS < <(awk '
+          REPOS=()
+          while IFS= read -r name
+          do
+            REPOS+=("${name}")
+          done < <(awk '
             /^repositories:[[:space:]]*$/ { inrepo=1; next }
             inrepo && /^[^[:space:]]/     { inrepo=0 }
             inrepo {
