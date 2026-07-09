@@ -17,6 +17,11 @@ inputs:
     required: false
     default: 'false'
 
+  pull:
+    description: 'Fast-forward each imported repo to its upstream after import. Repos without an upstream (tag/detached) are skipped, never fails the step.'
+    required: false
+    default: 'true'
+
 runs:
   using: composite
   steps:
@@ -40,5 +45,64 @@ runs:
         vcs import ${SKIP_EXISTING} ${{ inputs.destination_workspace }} < ${{ inputs.vcs_repos_file }}
 
         echo "::endgroup::"
+
+        if [[ "${{ inputs.pull }}" == "true" ]]
+        then
+          export GIT_TERMINAL_PROMPT=0
+          git config --global --add safe.directory '*'
+
+          echo "::group::Get list of imported repositories from ${{ inputs.vcs_repos_file }}"
+          DST="${{ inputs.destination_workspace }}"
+          # Only operate on the repos declared in this .repos file. The workspace may be
+          # persisted/shared and contain unrelated repos owned by other steps/workflows
+          # (e.g. private ones whose credentials are gone), which must not be touched.
+          REPOS=()
+          while IFS= read -r name
+          do
+            REPOS+=("${name}")
+          done < <(awk '
+            /^repositories:[[:space:]]*$/ { inrepo=1; next }
+            inrepo && /^[^[:space:]]/     { inrepo=0 }
+            inrepo {
+              match($0, /^[[:space:]]*/); indent = RLENGTH
+              line = $0; gsub(/^[[:space:]]+|[[:space:]]+$/, "", line)
+              if (line == "" || line ~ /^#/) next
+              if (base == 0) base = indent
+              if (indent == base && line ~ /:$/) { sub(/:$/, "", line); print line }
+            }
+          ' "${{ inputs.vcs_repos_file }}")
+          echo "::endgroup::"
+
+          echo "::group::Set upstream tracking branches"
+          for name in "${REPOS[@]}"
+          do
+            d="${DST%/}/${name}"
+            [ -e "${d}/.git" ] || continue
+            # Detached HEAD (tag/commit pin) has no branch -> skip, so pulls never fail on it.
+            br=$(git -C "${d}" symbolic-ref --short -q HEAD) || continue
+            if git -C "${d}" show-ref --verify --quiet "refs/remotes/origin/${br}"
+            then
+              git -C "${d}" branch --set-upstream-to="origin/${br}" "${br}" >/dev/null 2>&1 || true
+              echo "${d} -> tracking origin/${br}"
+            fi
+          done
+          echo "::endgroup::"
+
+          echo "::group::Fast-forward repositories to upstream"
+          for name in "${REPOS[@]}"
+          do
+            d="${DST%/}/${name}"
+            [ -e "${d}/.git" ] || continue
+            # No upstream (tag/detached, or unset tracking) -> nothing to pull, skip.
+            if ! git -C "${d}" rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1
+            then
+              echo "${d} -> no upstream (tag/detached) -> skip"
+              continue
+            fi
+            git -C "${d}" pull --ff-only --quiet && echo "${d} -> up to date" \
+              || echo "WARN: could not fast-forward ${d}"
+          done
+          echo "::endgroup::"
+        fi
 
       shell: bash

@@ -1,4 +1,12 @@
 name: 'install_colcon'
+description: 'Install colcon'
+
+inputs:
+
+  mixins:
+    description: 'Whether to register the default colcon mixin repository'
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -11,5 +19,6 @@ runs:
         upgrade: true
 
     - name: Download default colcon mixin
+      if: ${{ inputs.mixins == 'true' }}
       shell: pwsh
       run: colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml; colcon mixin update default
