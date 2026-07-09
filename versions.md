@@ -61,6 +61,11 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+## v0.50.0
+
+- Pull repos in VCS action
+- Add path as an input to mirror action
+
 ## v0.49.0
 
 - New action `custom-mirror-branch-action` to mirror two branches withing a single repository without using external dependencies.
