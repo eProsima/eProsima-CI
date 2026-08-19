@@ -46,7 +46,13 @@ runs:
         fi
 
         cd ${{ inputs.workspace }}
-        echo "${{ inputs.result_env_var }}=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_} | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
+
+        if ! DIFF_FILES_=$(git diff --name-only ${{ inputs.base_ref }} ${{ inputs.head_ref }} ${GIT_FLAGS_}); then
+          echo "::error::Failed to get git diff between ${{ inputs.base_ref }} and ${{ inputs.head_ref }} in ${{ inputs.workspace }}"
+          exit 1
+        fi
+
+        echo "${{ inputs.result_env_var }}=$(echo "${DIFF_FILES_}" | grep ${{ inputs.grep_args }} | tr '\n' ' ')" >> $GITHUB_ENV
 
         echo "::endgroup::"
 
