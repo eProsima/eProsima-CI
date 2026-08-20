@@ -109,7 +109,7 @@ runs:
       uses: eProsima/eProsima-CI/ubuntu/get_git_diff_files@main
       with:
         result_env_var: MODIFIED_FILES
-        head_ref: origin/${GITHUB_HEAD_REF}
+        head_ref: HEAD
         base_ref: origin/${GITHUB_BASE_REF}
         grep_args: ${{ inputs.file_extensions_grep_args }}
         workspace: ${{ env.WORKSPACE }}/check
