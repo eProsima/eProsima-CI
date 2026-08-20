@@ -68,7 +68,7 @@ The upcoming release will include the following **features**:
 
 ## v0.52.0
 
-- Fix `uncrustify` action for fork branches
+- Fix `uncrustify` and `python_linter` actions for fork branches
 
 ## v0.51.0
 
