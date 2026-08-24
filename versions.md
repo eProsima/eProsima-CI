@@ -66,6 +66,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Update several external actions version to avoid deprecation warnings
+
 ## v0.52.0
 
 - Fix `uncrustify` and `python_linter` actions for fork branches
