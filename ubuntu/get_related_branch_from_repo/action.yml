@@ -62,10 +62,10 @@ runs:
         {
           ret="false";
 
-          if [[ $(git ls-remote ${1} refs/heads/${2} | wc -l | sed 's/ //g') != 0 ]]
+          if [[ $(git "${git_auth[@]}" ls-remote ${1} refs/heads/${2} | wc -l | sed 's/ //g') != 0 ]]
           then
             ret="true"
-          elif [[ $(git ls-remote ${1} refs/tags/${2} | wc -l | sed 's/ //g') != 0 ]]
+          elif [[ $(git "${git_auth[@]}" ls-remote ${1} refs/tags/${2} | wc -l | sed 's/ //g') != 0 ]]
           then
             ret="true"
           fi
@@ -80,9 +80,14 @@ runs:
         result_branch=${{ inputs.fallback_branch }}
         skip_base=${{ inputs.skip_base }}
 
+        # Send the token as an HTTP header (as actions/checkout does) instead of embedding it in the URL,
+        # as some libcurl versions make git drop URL credentials. The empty value resets any inherited header.
+        git_auth=()
         OUR_TOKEN=${{ inputs.token }}
         if [ -n "$OUR_TOKEN" ]; then
-          remote_repo=https://$OUR_TOKEN@github.com/${{ inputs.remote_repository }}.git
+          auth_basic=$(printf 'x-access-token:%s' "$OUR_TOKEN" | base64 | tr -d '\n')
+          echo "::add-mask::${auth_basic}"
+          git_auth=(-c "http.https://github.com/.extraheader=" -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth_basic}")
         fi
 
         # This is a PR event -> deduce which branch to use
