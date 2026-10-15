@@ -66,6 +66,8 @@ The [Forthcoming](#forthcoming) section includes those features added in `main` 
 
 The upcoming release will include the following **features**:
 
+- Use token in `git_auth` header instead of embedded in the URL
+
 ## v0.52.0
 
 - Fix `uncrustify` and `python_linter` actions for fork branches
